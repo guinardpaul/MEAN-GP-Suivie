@@ -1,33 +1,33 @@
-const Bug = require('../models/Bug');
+const CorpsMetiers = require('../models/CorpsMetiers');
 
 module.exports = router => {
   /**
-   * Get All Bugs
+   * Get All Corps Metier
    */
-  router.get('/bugs', (req, res, next) => {
-    Bug.find((err, data) => {
+  router.get('/corps-metier', (req, res, next) => {
+    CorpsMetiers.find((err, data) => {
       if (err) return next(err);
       res.status(200).json(data);
     });
   });
 
   /**
-   * Get One Bug
+   * Get One CorpsMetiers
    */
-  router.get('/bugs/:id', (req, res, next) => {
+  router.get('/corps-metier/:id', (req, res, next) => {
     if (!req.params.id) {
       res.status(400).json({
         success: false,
         message: 'id not provided'
       });
     } else {
-      Bug.findById(req.params.id, (err, data) => {
+      CorpsMetiers.findById(req.params.id, (err, data) => {
         if (data) {
           res.status(200).json(data);
         } else {
           res.status(409).json({
             success: false,
-            message: 'Bug not found',
+            message: 'CorpsMetiers not found',
             err: err
           });
         }
@@ -36,41 +36,41 @@ module.exports = router => {
   });
 
   /**
-   * CREATE Bug
+   * CREATE CorpsMetiers
    */
-  router.post('/bugs', (req, res, next) => {
+  router.post('/corps-metier', (req, res, next) => {
     if (!req.body) {
       res.status(400).json({
         success: false,
         message: 'body not provided'
       });
     } else {
-      Bug.create(req.body, (err, data) => {
+      CorpsMetiers.create(req.body, (err, data) => {
         if (err) {
           res.status(500).json({
             success: false,
-            message: 'Erreur création bug',
+            message: 'Erreur création CorpsMetiers',
             err: err
           });
         } else {
           res.status(201).json({
             success: true,
             obj: data,
-            message: 'Bug créé'
+            message: 'CorpsMetiers créé'
           });
         }
       });
     }
   });
 
-  router.put('/bugs/:id', (req, res, next) => {
+  router.put('/corps-metier/:id', (req, res, next) => {
     if (!req.params.id) {
       res.status(400).json({
         success: false,
         message: 'id not provided'
       });
     } else {
-      Bug.findByIdAndUpdate(
+      CorpsMetiers.findByIdAndUpdate(
         req.params.id,
         req.body,
         { new: true },
@@ -78,14 +78,14 @@ module.exports = router => {
           if (err) {
             res.status(500).json({
               success: false,
-              message: 'Erreur modification bug',
+              message: 'Erreur modification CorpsMetiers',
               err: err
             });
           } else {
             res.status(200).json({
               success: true,
               obj: data,
-              message: 'Bug modifié'
+              message: 'CorpsMetiers modifié'
             });
           }
         }
@@ -94,26 +94,26 @@ module.exports = router => {
   });
 
   /**
-   * DELETE Bug
+   * DELETE CorpsMetiers
    */
-  router.delete('/bugs/:id', (req, res, next) => {
+  router.delete('/corps-metier/:id', (req, res, next) => {
     if (!req.params.id) {
       res.status(400).json({
         success: false,
         message: 'id not provided'
       });
     } else {
-      Bug.findByIdAndRemove(req.params.id, req.body, (err, data) => {
+      CorpsMetiers.findByIdAndRemove(req.params.id, req.body, (err, data) => {
         if (err) {
           res.status(500).json({
             success: false,
-            message: 'Erreur suppresion bug',
+            message: 'Erreur suppresion CorpsMetiers',
             err: err
           });
         } else {
           res.status(200).json({
             success: true,
-            message: 'Bug supprimé'
+            message: 'CorpsMetiers supprimé'
           });
         }
       });

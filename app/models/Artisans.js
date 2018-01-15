@@ -62,13 +62,16 @@ const ArtisanSchema = new mongoose.Schema({
   },
   nom_societe: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
-  corps_metier: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'CorpsMetier',
-    required: true
-  },
+  corps_metier: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'CorpsMetier',
+      required: true
+    }
+  ],
   nom: {
     type: String,
     required: true,
@@ -92,4 +95,4 @@ const ArtisanSchema = new mongoose.Schema({
   numTel: String
 });
 
-module.exports = mongoose.model('Artisan', ArtisanSchema);
+module.exports = mongoose.model('Artisans', ArtisanSchema);
