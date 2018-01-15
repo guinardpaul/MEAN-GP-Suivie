@@ -1,0 +1,57 @@
+<!-- <nav class="navbar navbar-inverse fixed">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" routerLink="client">
+                <img style="margin-top: -12px;" src="../../../assets/images/GP.png" alt="G & P">
+            </a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li routerLinkActive="active">
+                <a routerLink="dashboard">Dashboard</a>
+            </li>
+            <li routerLinkActive="active">
+                <a routerLink="client">Client</a>
+            </li>
+            <li routerLinkActive="active">
+                <a routerLink="bug">Bug</a>
+            </li>
+        </ul>
+    </div>
+</nav> -->
+
+<nav class="navbar navbar-inverse fixed">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" routerLink="client">
+                <img style="margin-top: -12px;" src="../../../assets/images/GP.png" alt="G & P">
+            </a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li *ngIf="_authService.loggedIn() && historique" routerLinkActive="active">
+                <a routerLink="dashboard">Dashboard</a>
+            </li>
+            <li *ngIf="_authService.loggedIn()" routerLinkActive="active">
+                <a routerLink="client">Client</a>
+            </li>
+            <!-- <li routerLinkActive="active"><a routerLink="devis">Devis / Facture</a></li>
+            <li routerLinkActive="active"><a [routerLink]="['facture/facture-accompte']">Facture</a></li> -->
+            <li *ngIf="_authService.loggedIn()" routerLinkActive="active">
+                <a routerLink="bug">Bug</a>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li *ngIf="!_authService.loggedIn()" routerLinkActive="active">
+                <a routerLink="login">
+                    <span class="glyphicon glyphicon-log-in"></span> Se connecter</a>
+            </li>
+            <li *ngIf="_authService.loggedIn()" routerLinkActive="active">
+                <a routerLink="register">
+                    <span class="glyphicon glyphicon-user"></span> Créer un compte</a>
+            </li>
+            <li *ngIf="_authService.loggedIn()">
+                <a class="cursor" (click)="onLogout()">
+                    <span class="glyphicon glyphicon-log-out"></span> Se déconnecter</a>
+            </li>
+        </ul>
+    </div>
+</nav>

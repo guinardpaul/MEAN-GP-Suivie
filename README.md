@@ -1,2 +1,2 @@
-# MEAN-GP-Suivie
-GP Suivie MEAN Stack
+# GPAssocies-MEAN-App
+GP ASSOCIES - SuivieFact - MEAN Stack Application

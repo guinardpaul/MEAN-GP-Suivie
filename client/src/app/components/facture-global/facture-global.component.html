@@ -1,0 +1,132 @@
+<div class="container-fluid container-factGlobal">
+    <h4 style="text-align: center;">Factures</h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Statut</th>
+                <th>Ref</th>
+                <th>Date</th>
+                <th>Montant total TTC</th>
+                <th>Montant facturé TTC</th>
+                <th>Montant réglé</th>
+                <th>Client</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let f of listFactureGlobals | orderByDate: 'date_creation'">
+                <td *ngIf="f.status_factureGlobal">
+                    <img src="{{status_true}}" alt="true">
+                </td>
+                <td *ngIf="!f.status_factureGlobal">
+                    <img src="{{status_false}}" alt="false">
+                </td>
+                <td>{{f.ref_factureGlobal}}</td>
+                <td>{{f.date_creation | date: 'dd/MM/yyyy'}}</td>
+                <td>{{f.montantTtcTotal.toFixed(2)}}</td>
+                <td>{{f.montantTtcFacture.toFixed(2)}}</td>
+                <td>{{f.montantTtcRegle.toFixed(2)}}</td>
+                <td>{{client.nom}} {{client.prenom}}</td>
+                <td>
+                    <div class="btn-group-vertical">
+                        <a class="btn btn-success" [routerLink]="['/facture/facture-accompte', f._id]">Consulter</a>
+                        <button class="btn btn-warning" (click)="onUpdate(f)">Modifier</button>
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#myModal1" (click)="getFactureGlobalToDelete(f)">Supprimer</button>
+                    </div>
+                </td>
+            </tr>
+            <tr class="color-sum" *ngIf="listFactureGlobals.length > 0">
+                <th>Total</th>
+                <th>:</th>
+                <th></th>
+                <th>{{getSumMontantTotal()}}</th>
+                <th>{{getSumMontantFacture()}}</th>
+                <th>{{getSumMontantRegle()}}</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </tbody>
+    </table>
+    <br/>
+    <br/>
+
+    <!-- Confirm delete Modal -->
+    <div id="myModal1" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <form #modalForm="ngForm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Confirmer suppression</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Etes-vous sûr de vouloir supprimer {{factureGlobal.ref_factureGlobal}} ?</p>
+                        <div *ngIf="historique">
+                            <label for="descriptionModif">Description :</label>
+                            <input type="text" name="descriptionModif" id="descriptionModif" class="form-control" placeholder="Expliquer la modification"
+                                [(ngModel)]="descriptionModif" required />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" [disabled]="!modalForm.form.valid" (click)="onDelete(factureGlobal)" data-dismiss="modal">Supprimer</button>
+                        <button class="btn btn-default" data-dismiss="modal" (click)="closeModal()">Annuler</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Update facture global form -->
+    <div class="container-fluid" *ngIf="mode">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h4>Facture Global</h4>
+            </div>
+            <div class="panel-body">
+                <form class="form-horizontal" [formGroup]="factureForm" (submit)="updateFacture()">
+                    <div class="form-group" [ngClass]="{'has-error': (factureForm.controls.ref_factureGlobal.errors && factureForm.controls.ref_factureGlobal.dirty) || (validationRef && factureForm.controls.ref_factureGlobal.dirty),
+                    'has-success': (!factureForm.controls.ref_factureGlobal.errors && !validationRef)}">
+                        <label class="control-label" for="ref_factureGlobal">Ref :</label>
+                        <input type="text" class="form-control" name="ref_factureGlobal" id="ref_factureGlobal" formControlName="ref_factureGlobal"
+                            value="{{factureGlobal.ref_factureGlobal}}" (blur)="verifRef()" autofocus required />
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-danger" *ngIf="factureForm.controls.ref_factureGlobal.errors?.required && factureForm.controls.ref_factureGlobal.dirty">
+                                Ce champ est requis
+                            </li>
+                            <li class="list-group-item list-group-item-danger" *ngIf="validationRef">
+                                Ref déjà utilisée
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="date_creation">Date création :</label>
+                        <input type="date" class="form-control" name="date_creation" id="date_creation" formControlName="date_creation" value="{{factureGlobal.date_creation}}"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="montantTtcTotal">Montant TTC :</label>
+                        <input type="text" class="form-control" name="montantTtcTotal" id="montantTtcTotal" formControlName="montantTtcTotal" value="{{factureGlobal.montantTtcTotal.toFixed(2)}}"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="client">Client :</label>
+                        <input type="text" class="form-control" name="client" id="client" formControlName="client" value="{{client.nom}} {{client.prenom}}"
+                            required />
+                    </div>
+                    <div *ngIf="historique" class="form-group">
+                        <label class="control-label" for="descriptionModif">Description :</label>
+                        <input type="text" class="form-control" name="descriptionModif" id="descriptionModif" placeholder="Expliquer la modification"
+                            formControlName="descriptionModif" value="{{descriptionModif}}" required />
+                    </div>
+                    <div class="form-group">
+                        <md-spinner *ngIf="processing" style="float: left;width: 24px;height: 24px;"></md-spinner>
+                        <button [disabled]="!factureForm.valid || processing || validationRef" type="submit" class="btn btn-success">Modifier</button>
+                        <button [disabled]="processing" class="btn btn-default" (click)="onCancel()">Annuler</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
