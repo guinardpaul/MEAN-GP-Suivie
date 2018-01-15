@@ -14,14 +14,19 @@ const nodemailer = require('nodemailer');
 const port = process.env.PORT || 3001;
 
 // Changer a database.prod quand déployer en production
-const config = require('./app/config/database.prod');
+const config = require('./app/config/database.dev');
 // process.env.NODE_ENV = config.environment;
 
 // mongoDB connection
 const promise = mongoose.connect(config.uri, config.options);
 promise.then((db, err) => {
-    if (err) return console.log(err);
-    console.log('Successfully connected to ' + config.environment + ' mongoDb database:' + config.db);
+  if (err) return console.log(err);
+  console.log(
+    'Successfully connected to ' +
+      config.environment +
+      ' mongoDb database:' +
+      config.db
+  );
 });
 
 // Set app
@@ -42,7 +47,7 @@ const auth = require('./app/routes/authentication')(router, passport);
 // log into console (dev)
 app.use(logger('dev'));
 // Log into file
-// create a write stream (in append mode) 
+// create a write stream (in append mode)
 //var accessLogStream = fs.createWriteStream(path.join(__dirname, 'server.log'), { flags: 'a' })
 //app.use(logger('common', { stream: accessLogStream }))
 
@@ -75,11 +80,12 @@ app.use('/api/mail', mailHandler);
 // allow to refresh page
 // send back to dist/index.html
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, config.static_path, config.static_file));
+  res.sendFile(path.join(__dirname, config.static_path, config.static_file));
 });
-
 
 // Start Server: Listen on port
 app.listen(port, () => {
-    console.log('Listening on port ' + port + ' in ' + config.environment + ' mode.');
+  console.log(
+    'Listening on port ' + port + ' in ' + config.environment + ' mode.'
+  );
 });
