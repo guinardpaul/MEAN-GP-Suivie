@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const CorpsMetier = require('./CorpsMetier');
 mongoose.Promise = global.Promise;
 
 // BackEnd Validators Definition
@@ -61,6 +62,11 @@ const ArtisanSchema = new mongoose.Schema({
   },
   nom_societe: {
     type: String,
+    required: true
+  },
+  corps_metier: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'CorpsMetier',
     required: true
   },
   nom: {
