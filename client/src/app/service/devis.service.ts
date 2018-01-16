@@ -86,8 +86,8 @@ export class DevisService {
    * @returns
    * @memberof DevisService
    */
-  addDevis(devis: Devis) {
-    return this.http.post(`${this.url}/devis`, devis);
+  addDevis(devis: Devis): Observable<any> {
+    return this.http.post<any>(`${this.url}/devis`, devis);
   }
 
   /**
@@ -98,8 +98,8 @@ export class DevisService {
    * @returns
    * @memberof DevisService
    */
-  updateDevis(devis: Devis) {
-    return this.http.put(`${this.url}/devis/${devis._id}`, devis);
+  updateDevis(devis: Devis): Observable<any> {
+    return this.http.put<any>(`${this.url}/devis/${devis._id}`, devis);
   }
 
   /**

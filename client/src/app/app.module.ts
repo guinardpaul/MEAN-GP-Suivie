@@ -1,26 +1,16 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {
-  MatCardModule,
-  MatCheckboxModule,
-  MatFormFieldModule,
-  MatSelectModule,
-  MatInputModule,
-  MatRadioModule,
-  MatButtonModule,
-  MatGridListModule,
-  MatProgressSpinnerModule
-} from '@angular/material';
+import { MatProgressSpinnerModule } from '@angular/material';
 // Angular Flash messages
 import { FlashMessagesModule } from 'ngx-flash-messages';
 // ng2-Charts
 import { ChartsModule } from 'ng2-charts';
-// Routing Module
+// Modules
+import { AuthenticationModule } from './authentication/authentication.module';
 import { AppRoutingModule } from './routing/app-routing.module';
 // import Components
 import { AppComponent } from './app.component';
@@ -33,10 +23,7 @@ import { ValiderDevisComponent } from './components/valider-devis/valider-devis.
 import { FactureAccompteComponent } from './components/facture-accompte/facture-accompte.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { BugsComponent } from './components/bugs/bugs.component';
-import { LoginComponent } from './authentication/components/login/login.component';
-import { RegisterComponent } from './authentication/components/register/register.component';
-import { ForgotPasswordComponent } from './authentication/components/forgot-password/forgot-password.component';
-import { InitPasswordComponent } from './authentication/components/init-password/init-password.component';
+import { AffaireComponent } from './components/affaire/affaire.component';
 // import Services
 import { ClientService } from './service/client.service';
 import { DevisService } from './service/devis.service';
@@ -55,7 +42,6 @@ import { NotAuthGuard } from './routing/not-auth.guard';
 import { SortNumberPipe } from './pipes/sort-number.pipe';
 import { SortStringPipe } from './pipes/sort-string.pipe';
 import { OrderByDatePipe } from './pipes/order-by-date.pipe';
-import { AffaireComponent } from './components/affaire/affaire.component';
 
 @NgModule({
   declarations: [
@@ -69,10 +55,6 @@ import { AffaireComponent } from './components/affaire/affaire.component';
     PageNotFoundComponent,
     FactureAccompteComponent,
     BugsComponent,
-    LoginComponent,
-    RegisterComponent,
-    ForgotPasswordComponent,
-    InitPasswordComponent,
     SortNumberPipe,
     SortStringPipe,
     OrderByDatePipe,
@@ -81,16 +63,8 @@ import { AffaireComponent } from './components/affaire/affaire.component';
   imports: [
     BrowserAnimationsModule,
     AppRoutingModule,
-    MatCardModule,
-    MatCheckboxModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    MatRadioModule,
-    MatButtonModule,
-    MatGridListModule,
+    AuthenticationModule,
     MatProgressSpinnerModule,
-    HttpModule,
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,

@@ -93,8 +93,8 @@ export class FactureGlobalService {
    * @returns
    * @memberof FactureGlobalService
    */
-  addFactureGlobal(factureGlobal: FactureGlobal) {
-    return this.http.post(`${this.url}/facture-global`, factureGlobal);
+  addFactureGlobal(factureGlobal: FactureGlobal): Observable<any> {
+    return this.http.post<any>(`${this.url}/facture-global`, factureGlobal);
   }
 
   /**

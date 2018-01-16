@@ -31,7 +31,7 @@ export class BugsService {
    * @memberof BugsService
    */
   getAllBugs() {
-    return this.http.get(`${this.url}/bugs`);
+    return this.http.get<Bug[]>(`${this.url}/bugs`);
   }
 
   /**
@@ -42,7 +42,7 @@ export class BugsService {
    * @memberof BugsService
    */
   getOneBug(id: number) {
-    return this.http.get(`${this.url}/bugs/${id}`);
+    return this.http.get<Bug>(`${this.url}/bugs/${id}`);
   }
 
   /**

@@ -62,8 +62,8 @@ export class ClientService {
    * @returns
    * @memberof ClientService
    */
-  addClient(client: Client) {
-    return this.http.post(`${this.url}/clients`, client);
+  addClient(client: Client): Observable<any> {
+    return this.http.post<any>(`${this.url}/clients`, client);
   }
 
   /**
@@ -73,8 +73,8 @@ export class ClientService {
    * @returns
    * @memberof ClientService
    */
-  updateClient(client: Client) {
-    return this.http.put(`${this.url}/clients/${client._id}`, client);
+  updateClient(client: Client): Observable<any> {
+    return this.http.put<any>(`${this.url}/clients/${client._id}`, client);
   }
 
   /**
@@ -84,8 +84,8 @@ export class ClientService {
    * @returns
    * @memberof ClientService
    */
-  deleteClient(id: number) {
-    return this.http.delete(`${this.url}/clients/${id}`);
+  deleteClient(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.url}/clients/${id}`);
   }
 
   /**

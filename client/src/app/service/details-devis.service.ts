@@ -31,8 +31,8 @@ export class DetailsDevisService {
    * @returns
    * @memberof DetailsDevisService
    */
-  getDetailsDevisByDevis(id_dev: number) {
-    return this.http.get(`${this.url}/details-devis/${id_dev}`);
+  getDetailsDevisByDevis(id_dev: number): Observable<DetailsDevis[]> {
+    return this.http.get<DetailsDevis[]>(`${this.url}/details-devis/${id_dev}`);
   }
 
   /**

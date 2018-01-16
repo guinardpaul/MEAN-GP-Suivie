@@ -1,4 +1,4 @@
-const CorpsMetiers = require('../models/CorpsMetiers');
+const CorpsMetiers = require('../models/CorpsMetier');
 
 module.exports = router => {
   /**
