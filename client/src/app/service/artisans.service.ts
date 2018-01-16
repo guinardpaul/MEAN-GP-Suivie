@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
 // Models
 import { Artisan } from '../models/artisan';
+// Environment variables
 import { environment } from '../../environments/environment';
 
 @Injectable()
@@ -14,38 +12,30 @@ export class ArtisansService {
 
   /**
    * Creates an instance of ArtisansService.
-   * @param {Http} http http module
+   * @param {HttpClient} http http module
    * @memberof ArtisansService
    */
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
     this.url = environment.url;
   }
 
   getAllArtisans() {
-    return this.http.get(`${this.url}/artisans`).map(res => res.json());
+    return this.http.get(`${this.url}/artisans`);
   }
 
   getOneArtisan(id_artisan: number) {
-    return this.http
-      .get(`${this.url}/artisans/${id_artisan}`)
-      .map(res => res.json());
+    return this.http.get(`${this.url}/artisans/${id_artisan}`);
   }
 
   addArtisan(Artisans: Artisan) {
-    return this.http
-      .post(`${this.url}/artisans`, Artisans)
-      .map(res => res.json());
+    return this.http.post(`${this.url}/artisans`, Artisans);
   }
 
   updateArtisan(Artisans: Artisan) {
-    return this.http
-      .put(`${this.url}/artisans/${Artisans._id}`, Artisans)
-      .map(res => res.json());
+    return this.http.put(`${this.url}/artisans/${Artisans._id}`, Artisans);
   }
 
   deleteArtisan(id_artisan: number) {
-    return this.http
-      .delete(`${this.url}/artisans/${id_artisan}`)
-      .map(res => res.json());
+    return this.http.delete(`${this.url}/artisans/${id_artisan}`);
   }
 }

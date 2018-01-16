@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { tokenNotExpired } from 'angular2-jwt';
 // Models
 import { User } from '../../models/User';
-// Environments
+// Environment variables
 import { environment } from '../../../environments/environment';
 /**
  * Authentication Service
@@ -23,9 +23,7 @@ export class AuthService {
    * @param {HttpClient} _http httpClient
    * @memberof AuthService
    */
-  constructor(
-    private _http: HttpClient
-  ) {
+  constructor(private _http: HttpClient) {
     this.url = environment.url;
   }
 
@@ -70,7 +68,7 @@ export class AuthService {
   }
   /**
    * Get User object by Email
-   * 
+   *
    * @param {string} email user email
    * @memberof AuthService
    */
@@ -80,7 +78,7 @@ export class AuthService {
 
   /**
    * Get User Object by Id
-   * 
+   *
    * @param {number} id User id
    * @memberof AuthService
    */
@@ -90,7 +88,7 @@ export class AuthService {
 
   /**
    * Init User password
-   * 
+   *
    * @param {User} user User object
    * @memberof AuthService
    */
@@ -107,5 +105,4 @@ export class AuthService {
   loggedIn(): boolean {
     return tokenNotExpired();
   }
-
 }

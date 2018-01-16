@@ -18,7 +18,7 @@ import { historique } from '../../../environments/config';
 // Services
 /**
  * Component used for facture accompte and reglement
- * 
+ *
  * @author Paul GUINARD
  * @export
  * @class FactureAccompteComponent
@@ -27,12 +27,12 @@ import { historique } from '../../../environments/config';
 @Component({
   selector: 'app-facture-accompte',
   templateUrl: './facture-accompte.component.html',
-  styleUrls: [ './facture-accompte.component.css' ]
+  styleUrls: ['./facture-accompte.component.css']
 })
 export class FactureAccompteComponent implements OnInit {
   /**
    * list factures accomptes
-   * 
+   *
    * @type {FactureAccompte[]}
    * @memberof FactureAccompteComponent
    */
@@ -40,7 +40,7 @@ export class FactureAccompteComponent implements OnInit {
 
   /**
    * list reglements
-   * 
+   *
    * @type {Reglement[]}
    * @memberof FactureAccompteComponent
    */
@@ -48,7 +48,7 @@ export class FactureAccompteComponent implements OnInit {
 
   /**
    * list factures global
-   * 
+   *
    * @type {FactureGlobal[]}
    * @memberof FactureAccompteComponent
    */
@@ -56,7 +56,7 @@ export class FactureAccompteComponent implements OnInit {
 
   /**
    * facture global id
-   * 
+   *
    * @type {number}
    * @memberof FactureAccompteComponent
    */
@@ -64,7 +64,7 @@ export class FactureAccompteComponent implements OnInit {
 
   /**
    * facture global
-   * 
+   *
    * @type {*}
    * @memberof FactureAccompteComponent
    */
@@ -72,7 +72,7 @@ export class FactureAccompteComponent implements OnInit {
 
   /**
    * facture accompte
-   * 
+   *
    * @type {*}
    * @memberof FactureAccompteComponent
    */
@@ -80,7 +80,7 @@ export class FactureAccompteComponent implements OnInit {
 
   /**
    * reglement
-   * 
+   *
    * @type {*}
    * @memberof FactureAccompteComponent
    */
@@ -88,7 +88,7 @@ export class FactureAccompteComponent implements OnInit {
 
   /**
    * client
-   * 
+   *
    * @type {Client}
    * @memberof FactureAccompteComponent
    */
@@ -96,7 +96,7 @@ export class FactureAccompteComponent implements OnInit {
 
   /**
    * Description modif on delete facture accompte
-   * 
+   *
    * @type {string}
    * @memberof FactureAccompteComponent
    */
@@ -105,7 +105,7 @@ export class FactureAccompteComponent implements OnInit {
   // Validation form
   /**
    * validation ref facture accompte
-   * 
+   *
    * @type {boolean}
    * @memberof FactureAccompteComponent
    */
@@ -113,7 +113,7 @@ export class FactureAccompteComponent implements OnInit {
 
   /**
    * validation montant facture accompte
-   * 
+   *
    * @type {boolean}
    * @memberof FactureAccompteComponent
    */
@@ -121,7 +121,7 @@ export class FactureAccompteComponent implements OnInit {
 
   /**
    * validation reglement facture accompte
-   * 
+   *
    * @type {boolean}
    * @memberof FactureAccompteComponent
    */
@@ -129,7 +129,7 @@ export class FactureAccompteComponent implements OnInit {
 
   /**
    * on process
-   * 
+   *
    * @memberof FactureAccompteComponent
    */
   processing = false;
@@ -137,21 +137,21 @@ export class FactureAccompteComponent implements OnInit {
   // Mode display form
   /**
    * mode form facture accompte
-   * 
+   *
    * @memberof FactureAccompteComponent
    */
   mode = false;
 
   /**
    * mode form reglement
-   * 
+   *
    * @memberof FactureAccompteComponent
    */
   modeAddReglement = false;
 
   /**
    * montant TTC total
-   * 
+   *
    * @type {number}
    * @memberof FactureAccompteComponent
    */
@@ -159,7 +159,7 @@ export class FactureAccompteComponent implements OnInit {
 
   /**
    * montant TTC facturé
-   * 
+   *
    * @type {number}
    * @memberof FactureAccompteComponent
    */
@@ -167,7 +167,7 @@ export class FactureAccompteComponent implements OnInit {
 
   /**
    * facture form
-   * 
+   *
    * @type {FormGroup}
    * @memberof FactureAccompteComponent
    */
@@ -175,7 +175,7 @@ export class FactureAccompteComponent implements OnInit {
 
   /**
    * reglement form
-   * 
+   *
    * @type {FormGroup}
    * @memberof FactureAccompteComponent
    */
@@ -183,7 +183,7 @@ export class FactureAccompteComponent implements OnInit {
 
   /**
    * Checkbox reglement complet
-   * 
+   *
    * @type {boolean}
    * @memberof FactureAccompteComponent
    */
@@ -192,21 +192,21 @@ export class FactureAccompteComponent implements OnInit {
   // Status images
   /**
    * image status true
-   * 
+   *
    * @memberof FactureAccompteComponent
    */
   status_true = '../../assets/images/status_true.png';
 
   /**
    * image status false
-   * 
+   *
    * @memberof FactureAccompteComponent
    */
   status_false = '../../assets/images/status_false.png';
 
   /**
    * Creates an instance of FactureAccompteComponent.
-   * 
+   *
    * @param {ActivatedRoute} activatedRoute request routes param
    * @param {FactureGlobalService} factureGlobalService facture global service
    * @param {FactureAccompteService} factureAccompteService facture Accompte service
@@ -242,24 +242,26 @@ export class FactureAccompteComponent implements OnInit {
    */
   getOneClient(id: number) {
     // Fetch Client from database
-    this.clientService.getOneClient(this.factureGlobal.client)
+    this.clientService
+      .getOneClient(this.factureGlobal.client)
       .subscribe(
-      data => this.client = data,
-      err => console.log('Erreur :' + err)
+        data => (this.client = data),
+        err => console.log('Erreur :' + err)
       );
   }
 
   /**
    * Get All Facture Global by Client
-   * 
+   *
    * @param {number} id client id
    * @memberof FactureAccompteComponent
    */
   getAllFactureGlobalByClient(id: number) {
-    this.factureGlobalService.getAllFactureGlobalByClient(id)
+    this.factureGlobalService
+      .getAllFactureGlobalByClient(id)
       .subscribe(
-      data => this.listFactureGlobal = data,
-      err => console.log('Erreur :' + err)
+        data => (this.listFactureGlobal = data),
+        err => console.log('Erreur :' + err)
       );
   }
 
@@ -270,14 +272,13 @@ export class FactureAccompteComponent implements OnInit {
    * @memberof FactureAccompteComponent
    */
   getOneFactureGlobal(id: number) {
-    this.factureGlobalService.getOneFactureGlobalById(id)
-      .subscribe(
+    this.factureGlobalService.getOneFactureGlobalById(id).subscribe(
       data => {
         this.factureGlobal = data;
         this.getOneClient(data.client);
       },
       err => console.log(err)
-      );
+    );
   }
 
   /**
@@ -286,10 +287,11 @@ export class FactureAccompteComponent implements OnInit {
    * @memberof FactureAccompteComponent
    */
   getAllFactureAccompte() {
-    this.factureAccompteService.getAllFactureAccompte()
+    this.factureAccompteService
+      .getAllFactureAccompte()
       .subscribe(
-      factureAccompte => this.listFactureAccompte = factureAccompte,
-      err => console.log(err)
+        factureAccompte => (this.listFactureAccompte = factureAccompte),
+        err => console.log(err)
       );
   }
 
@@ -300,35 +302,37 @@ export class FactureAccompteComponent implements OnInit {
    * @memberof FactureAccompteComponent
    */
   getAllFactureAccompteByFactureGlobal(id: number) {
-    this.factureAccompteService.getAllFactureAccompteByFactureGlobal(id)
+    this.factureAccompteService
+      .getAllFactureAccompteByFactureGlobal(id)
       .subscribe(
-      factureAccompte => {
-        this.listFactureAccompte = factureAccompte;
-      },
-      err => console.log(err)
+        factureAccompte => {
+          this.listFactureAccompte = factureAccompte;
+        },
+        err => console.log(err)
       );
   }
 
   /**
-  * Get All Valid Facture Mois By Facture Global
-  *
-  * @param {number} id factureGlobal._id
-  * @memberof FactureAccompteComponent
-  */
+   * Get All Valid Facture Mois By Facture Global
+   *
+   * @param {number} id factureGlobal._id
+   * @memberof FactureAccompteComponent
+   */
   getAllValidFactureAccompteByFactureGlobal(id: number) {
     this.listFactureAccompte = [];
-    this.factureAccompteService.getAllFactureAccompteByFactureGlobal(id)
+    this.factureAccompteService
+      .getAllFactureAccompteByFactureGlobal(id)
       .subscribe(
-      factureAccompte => {
-        for (const f in factureAccompte) {
-          if (factureAccompte.hasOwnProperty(f)) {
-            if (factureAccompte[ f ].valid) {
-              this.listFactureAccompte.push(factureAccompte[ f ]);
+        factureAccompte => {
+          for (const f in factureAccompte) {
+            if (factureAccompte.hasOwnProperty(f)) {
+              if (factureAccompte[f].valid) {
+                this.listFactureAccompte.push(factureAccompte[f]);
+              }
             }
           }
-        }
-      },
-      err => console.log(err)
+        },
+        err => console.log(err)
       );
   }
 
@@ -339,12 +343,11 @@ export class FactureAccompteComponent implements OnInit {
    * @memberof FactureAccompteComponent
    */
   getAllReglementByFactureAccompte(id: number) {
-    this.reglementService.getReglementByFactureAccompte(id)
-      .subscribe(
+    this.reglementService.getReglementByFactureAccompte(id).subscribe(
       listReglements => {
         this.listReglement = listReglements;
       },
-      err => console.log(err),
+      err => console.log(err)
     );
   }
 
@@ -361,33 +364,35 @@ export class FactureAccompteComponent implements OnInit {
       date_creation: this.factureForm.get('date_creation').value,
       montantFacture: this.factureForm.get('montantFacture').value,
       reglementClient: 0,
-      factureGlobal: this.factureGlobal._id,
+      factureGlobal: this.factureGlobal._id
     };
 
-    this.factureAccompteService.addFactureAccompte(newFacture)
-      .subscribe(
-      data => {
+    this.factureAccompteService
+      .addFactureAccompte(newFacture)
+      .subscribe(data => {
         if (data.success) {
           this.flashMessages.show(data.message, {
-            classes: [ 'alert', 'alert-success' ],
+            classes: ['alert', 'alert-success'],
             timeout: 3000
           });
           // Update facture global montantTtcFacture
-          this.updateMontantFactureGlobal(this.factureGlobal, newFacture.montantFacture);
+          this.updateMontantFactureGlobal(
+            this.factureGlobal,
+            newFacture.montantFacture
+          );
           // Update facture global status
           this.updateStatusFactureGlobal(this.factureGlobal);
 
           this.onSuccess();
         } else {
           this.flashMessages.show('data.message', {
-            classes: [ 'alert', 'alert-danger' ],
+            classes: ['alert', 'alert-danger'],
             timeout: 3000
           });
           this.processing = false;
           this.enableFactureForm();
         }
-      }
-      );
+      });
   }
 
   /**
@@ -406,29 +411,36 @@ export class FactureAccompteComponent implements OnInit {
     };
 
     // add Reglement
-    this.reglementService.addReglement(newReglement)
-      .subscribe(
+    this.reglementService.addReglement(newReglement).subscribe(
       data => {
         this.flashMessages.show(data.message, {
-          classes: [ 'alert', 'alert-success' ],
+          classes: ['alert', 'alert-success'],
           timeout: 3000
         });
         // update Facture accompte with new reglementClient
-        this.updateReglementClientFactureAccompte(this.factureAccompte, newReglement.reglementTtc);
+        this.updateReglementClientFactureAccompte(
+          this.factureAccompte,
+          newReglement.reglementTtc
+        );
         // update facture Accompte Status
         this.updateStatusFactureAccompte(this.factureAccompte);
         // update facture global reglement
-        this.updateReglementClientFactureGlobal(this.factureGlobal, newReglement.reglementTtc);
+        this.updateReglementClientFactureGlobal(
+          this.factureGlobal,
+          newReglement.reglementTtc
+        );
 
         this.onSuccess();
-      }, err => {
+      },
+      err => {
         this.flashMessages.show(JSON.parse(err._body).message, {
-          classes: [ 'alert', 'alert-danger' ],
+          classes: ['alert', 'alert-danger'],
           timeout: 3000
         });
         this.processing = false;
         this.enableReglementForm();
-      });
+      }
+    );
   }
 
   /**
@@ -440,75 +452,89 @@ export class FactureAccompteComponent implements OnInit {
    * @memberof FactureAccompteComponent
    */
   deleteFactureAccompte(factureAccompte: FactureAccompte) {
-    this.reglementService.getReglementByFactureAccompte(factureAccompte._id)
+    this.reglementService
+      .getReglementByFactureAccompte(factureAccompte._id)
       .subscribe(
-      data => {
-        if (data.length === 0) {
+        data => {
+          if (data.length === 0) {
+            if (historique) {
+              // Set value delete
+              factureAccompte.valid = false;
+              factureAccompte.description = this.descriptionModif;
+              factureAccompte.updated_at = new Date();
+              this.factureAccompteService
+                .updateFactureAccompte(factureAccompte)
+                .subscribe(factureData => {
+                  if (factureData.success) {
+                    this.flashMessages.show(factureData.message, {
+                      classes: ['alert', 'alert-warning'],
+                      timeout: 3000
+                    });
+                    // Update Facture global montantTtcFacture
+                    this.updateMontantFactureGlobal(
+                      this.factureGlobal,
+                      -factureAccompte.montantFacture
+                    );
+                    // Update facture global reglementTtcTotal
+                    this.updateReglementClientFactureGlobal(
+                      this.factureGlobal,
+                      -factureAccompte.reglementClient
+                    );
 
-          if (historique) {
-            // Set value delete
-            factureAccompte.valid = false;
-            factureAccompte.description = this.descriptionModif;
-            factureAccompte.updated_at = new Date();
-            this.factureAccompteService.updateFactureAccompte(factureAccompte)
-              .subscribe(
-              factureData => {
-                if (factureData.success) {
-                  this.flashMessages.show(factureData.message, {
-                    classes: [ 'alert', 'alert-warning' ],
-                    timeout: 3000
-                  });
-                  // Update Facture global montantTtcFacture
-                  this.updateMontantFactureGlobal(this.factureGlobal, -factureAccompte.montantFacture);
-                  // Update facture global reglementTtcTotal
-                  this.updateReglementClientFactureGlobal(this.factureGlobal, -factureAccompte.reglementClient);
+                    this.onSuccess();
+                  } else {
+                    this.flashMessages.show(factureData.message, {
+                      classes: ['alert', 'alert-danger'],
+                      timeout: 3000
+                    });
+                  }
+                });
+            } else {
+              this.factureAccompteService
+                .deleteFactureAccompte(factureAccompte._id)
+                .subscribe(factureData => {
+                  if (factureData.success) {
+                    this.flashMessages.show(factureData.message, {
+                      classes: ['alert', 'alert-warning'],
+                      timeout: 3000
+                    });
+                    // Update Facture global montantTtcFacture
+                    this.updateMontantFactureGlobal(
+                      this.factureGlobal,
+                      -factureAccompte.montantFacture
+                    );
+                    // Update facture global reglementTtcTotal
+                    this.updateReglementClientFactureGlobal(
+                      this.factureGlobal,
+                      -factureAccompte.reglementClient
+                    );
 
-                  this.onSuccess();
-                } else {
-                  this.flashMessages.show(data.message, {
-                    classes: [ 'alert', 'alert-danger' ],
-                    timeout: 3000
-                  });
-                }
-              }
-              );
+                    this.onSuccess();
+                  } else {
+                    this.flashMessages.show(factureData.message, {
+                      classes: ['alert', 'alert-danger'],
+                      timeout: 3000
+                    });
+                  }
+                });
+            }
           } else {
-            this.factureAccompteService.deleteFactureAccompte(factureAccompte._id)
-              .subscribe(
-              factureData => {
-                if (factureData.success) {
-                  this.flashMessages.show(factureData.message, {
-                    classes: [ 'alert', 'alert-warning' ],
-                    timeout: 3000
-                  });
-                  // Update Facture global montantTtcFacture
-                  this.updateMontantFactureGlobal(this.factureGlobal, -factureAccompte.montantFacture);
-                  // Update facture global reglementTtcTotal
-                  this.updateReglementClientFactureGlobal(this.factureGlobal, -factureAccompte.reglementClient);
-
-                  this.onSuccess();
-                } else {
-                  this.flashMessages.show(data.message, {
-                    classes: [ 'alert', 'alert-danger' ],
-                    timeout: 3000
-                  });
-                }
+            this.flashMessages.show(
+              "Suppression impossible ! La facture d'accompte est associée à des règlements",
+              {
+                classes: ['alert', 'alert-danger'],
+                timeout: 3000
               }
-              );
+            );
           }
-        } else {
-          this.flashMessages.show('Suppression impossible ! La facture d\'accompte est associée à des règlements', {
-            classes: [ 'alert', 'alert-danger' ],
-            timeout: 3000
-          });
-        }
-      }, err => console.log('Erreur :' + err)
+        },
+        err => console.log('Erreur :' + err)
       );
   }
 
   /**
    * Set facture accompte to delete
-   * 
+   *
    * @param {FactureAccompte} factureAccompte facture accompte body
    * @memberof FactureAccompteComponent
    */
@@ -518,7 +544,7 @@ export class FactureAccompteComponent implements OnInit {
 
   /**
    * on close modal
-   * 
+   *
    * @memberof FactureAccompteComponent
    */
   closeModal() {
@@ -531,38 +557,41 @@ export class FactureAccompteComponent implements OnInit {
    * - Update reglementClient facture global
    * - Update status facture global
    * - Update status client
-   * 
+   *
    * @param {number} id reglement._id
-   * @param {number} reglementClient reglement.reglementTtc 
+   * @param {number} reglementClient reglement.reglementTtc
    * @memberof FactureAccompteComponent
    */
   deleteReglement(id: number, reglementClient: number) {
     this.processing = true;
-    this.reglementService.deleteReglement(id)
-      .subscribe(
-      data => {
-        if (data.success) {
-          this.flashMessages.show(data.message, {
-            classes: [ 'alert', 'alert-warning' ],
-            timeout: 3000
-          });
-          // Update facture accompte reglementClient
-          this.updateReglementClientFactureAccompte(this.factureAccompte, -reglementClient);
-          // Update facture global reglementTtcTotal
-          this.updateReglementClientFactureGlobal(this.factureGlobal, -reglementClient);
-          // Get all reglement by facture accompte
-          this.getAllReglementByFactureAccompte(this.factureAccompte._id);
+    this.reglementService.deleteReglement(id).subscribe(data => {
+      if (data.success) {
+        this.flashMessages.show(data.message, {
+          classes: ['alert', 'alert-warning'],
+          timeout: 3000
+        });
+        // Update facture accompte reglementClient
+        this.updateReglementClientFactureAccompte(
+          this.factureAccompte,
+          -reglementClient
+        );
+        // Update facture global reglementTtcTotal
+        this.updateReglementClientFactureGlobal(
+          this.factureGlobal,
+          -reglementClient
+        );
+        // Get all reglement by facture accompte
+        this.getAllReglementByFactureAccompte(this.factureAccompte._id);
 
-          this.processing = false;
-        } else {
-          this.flashMessages.show(data.message, {
-            classes: [ 'alert', 'alert-danger' ],
-            timeout: 3000
-          });
-          this.processing = false;
-        }
+        this.processing = false;
+      } else {
+        this.flashMessages.show(data.message, {
+          classes: ['alert', 'alert-danger'],
+          timeout: 3000
+        });
+        this.processing = false;
       }
-      );
+    });
   }
 
   /**
@@ -573,20 +602,22 @@ export class FactureAccompteComponent implements OnInit {
    * @param {FactureAccompte} factureAccompte facture accompte body
    * @memberof FactureAccompteComponent
    */
-  updateReglementClientFactureAccompte(factureAccompte: FactureAccompte, reglementClient: number) {
+  updateReglementClientFactureAccompte(
+    factureAccompte: FactureAccompte,
+    reglementClient: number
+  ) {
     // Set new reglementClient montant
     this.factureAccompte.reglementClient += Number(reglementClient);
     // Request service
-    this.factureAccompteService.updateFactureAccompte(factureAccompte)
-      .subscribe(
-      data => {
+    this.factureAccompteService
+      .updateFactureAccompte(factureAccompte)
+      .subscribe(data => {
         if (data.success) {
           // Update status facture accompte
           this.updateStatusFactureAccompte(data.obj);
           // this.onSuccess();
         }
-      }
-      );
+      });
   }
 
   /**
@@ -605,10 +636,11 @@ export class FactureAccompteComponent implements OnInit {
       status_factureAccompte = true;
     }
 
-    this.factureAccompteService.updateStatusFactureAccompte(factureAccompte, status_factureAccompte)
+    this.factureAccompteService
+      .updateStatusFactureAccompte(factureAccompte, status_factureAccompte)
       .subscribe(
-      data => console.log('Status facture accompte'),
-      err => console.log(err)
+        data => console.log('Status facture accompte'),
+        err => console.log(err)
       );
     // Get all facture accompte by facture global
     if (historique) {
@@ -634,14 +666,15 @@ export class FactureAccompteComponent implements OnInit {
       status_factureGlobal = true;
     }
 
-    this.factureGlobalService.updateStatusFactureGlobal(factureGlobal, status_factureGlobal)
+    this.factureGlobalService
+      .updateStatusFactureGlobal(factureGlobal, status_factureGlobal)
       .subscribe(
-      data => {
-        console.log('Status facture global updated');
-        this.updateStatusClient();
-      },
-      err => console.log('Erreur :' + err)
-      )
+        data => {
+          console.log('Status facture global updated');
+          this.updateStatusClient();
+        },
+        err => console.log('Erreur :' + err)
+      );
   }
 
   /**
@@ -652,12 +685,16 @@ export class FactureAccompteComponent implements OnInit {
    * @param {number} montantFacture
    * @memberof FactureAccompteComponent
    */
-  updateMontantFactureGlobal(factureGlobal: FactureGlobal, montantFacture: number) {
+  updateMontantFactureGlobal(
+    factureGlobal: FactureGlobal,
+    montantFacture: number
+  ) {
     factureGlobal.montantTtcFacture += Number(montantFacture);
-    this.factureGlobalService.updateFactureGlobal(factureGlobal)
+    this.factureGlobalService
+      .updateFactureGlobal(factureGlobal)
       .subscribe(
-      data => console.log('updateMontantFactureGlobal réussi'),
-      err => console.log('Erreur :' + err)
+        data => console.log('updateMontantFactureGlobal réussi'),
+        err => console.log('Erreur :' + err)
       );
   }
 
@@ -669,17 +706,19 @@ export class FactureAccompteComponent implements OnInit {
    * @param {number} Reglement
    * @memberof FactureAccompteComponent
    */
-  updateReglementClientFactureGlobal(factureGlobal: FactureGlobal, reglement: number) {
+  updateReglementClientFactureGlobal(
+    factureGlobal: FactureGlobal,
+    reglement: number
+  ) {
     factureGlobal.montantTtcRegle += Number(reglement);
-    this.factureGlobalService.updateFactureGlobal(factureGlobal)
-      .subscribe(
+    this.factureGlobalService.updateFactureGlobal(factureGlobal).subscribe(
       data => {
         console.log('updateReglementClientFactureGlobal réussi');
         // update facture Global Status
         this.updateStatusFactureGlobal(this.factureGlobal);
       },
       err => console.log('Erreur :' + err)
-      );
+    );
   }
 
   /**
@@ -695,29 +734,32 @@ export class FactureAccompteComponent implements OnInit {
 
     // Fetch Facture Globals from Database
     // this.getAllFactureGlobalByClient(this.client._id);
-    this.factureGlobalService.getAllFactureGlobalByClient(this.client._id)
+    this.factureGlobalService
+      .getAllFactureGlobalByClient(this.client._id)
       .subscribe(
-      data => {
-        // Si list non vide : check each factureGlobal.status dans listFactureGlobal
-        if (data.length > 0) {
-          for (const factureGlobal in data) {
-            if (data.hasOwnProperty(factureGlobal)) {
-              if (data[ factureGlobal ].status_factureGlobal === false) {
-                status_client = false;
+        data => {
+          // Si list non vide : check each factureGlobal.status dans listFactureGlobal
+          if (data.length > 0) {
+            for (const factureGlobal in data) {
+              if (data.hasOwnProperty(factureGlobal)) {
+                if (data[factureGlobal].status_factureGlobal === false) {
+                  status_client = false;
+                }
               }
             }
+          } else {
+            status_client = false;
           }
-        } else {
-          status_client = false;
-        }
-        // Update Status client
-        this.clientService.updateStatus(this.client, status_client)
-          .subscribe(
-          clientData => console.log('Status client mis à jour'),
-          err => console.log('Erreur' + err)
-          );
-      }, err => console.log('Erreur :' + err)
-      )
+          // Update Status client
+          this.clientService
+            .updateStatus(this.client, status_client)
+            .subscribe(
+              clientData => console.log('Status client mis à jour'),
+              err => console.log('Erreur' + err)
+            );
+        },
+        err => console.log('Erreur :' + err)
+      );
 
     /*  // Si status_client === true && client.status_client === false
      if (status_client && this.client.status_client === false) {
@@ -775,27 +817,35 @@ export class FactureAccompteComponent implements OnInit {
     let montantFactureRestant = 0;
     for (const facture in this.listFactureAccompte) {
       if (this.listFactureAccompte.hasOwnProperty(facture)) {
-        sommeMontantFacture += this.listFactureAccompte[ facture ].montantFacture;
+        sommeMontantFacture += this.listFactureAccompte[facture].montantFacture;
       }
     }
     // Vérif si somme des Montants Facturés est égale montant TTC total de la facture
     if (this.factureGlobal.montantTtcTotal > sommeMontantFacture) {
       // Calcul montant facturé max restant
-      montantFactureRestant = this.factureGlobal.montantTtcTotal - sommeMontantFacture;
+      montantFactureRestant =
+        this.factureGlobal.montantTtcTotal - sommeMontantFacture;
       // Generate form and set values
       this.generateForm();
       const latest_date = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
-      this.factureForm.get('ref_factureAccompte').setValue(this.factureGlobal.ref_factureGlobal);
+      this.factureForm
+        .get('ref_factureAccompte')
+        .setValue(this.factureGlobal.ref_factureGlobal);
       this.factureForm.get('date_creation').setValue(latest_date);
       this.factureGlobal.date_creation = latest_date;
-      this.factureForm.get('montantFacture').setValue(montantFactureRestant.toFixed(2));
+      this.factureForm
+        .get('montantFacture')
+        .setValue(montantFactureRestant.toFixed(2));
       this.factureAccompte.montantFacture = montantFactureRestant;
       this.mode = true;
     } else {
-      this.flashMessages.show('Création impossible : le montant total de la facture est égal à la somme des montants facturés', {
-        classes: [ 'alert', 'alert-warning' ],
-        timeout: 6000
-      });
+      this.flashMessages.show(
+        'Création impossible : le montant total de la facture est égal à la somme des montants facturés',
+        {
+          classes: ['alert', 'alert-warning'],
+          timeout: 6000
+        }
+      );
     }
   }
 
@@ -814,7 +864,10 @@ export class FactureAccompteComponent implements OnInit {
     this.getAllReglementByFactureAccompte(factureAccompte._id);
     this.reglement = {};
     this.factureAccompte = factureAccompte;
-    const latest_date = this.datePipe.transform(this.factureAccompte.date_creation, 'yyyy-MM-dd');
+    const latest_date = this.datePipe.transform(
+      this.factureAccompte.date_creation,
+      'yyyy-MM-dd'
+    );
     this.factureAccompte.date_creation = latest_date;
     this.reglementForm.get('date_creation').setValue(latest_date);
     this.modeAddReglement = true;
@@ -824,7 +877,9 @@ export class FactureAccompteComponent implements OnInit {
   onReglementComplet() {
     this.reglementComplet = !this.reglementComplet;
     if (this.reglementComplet) {
-      const reglementRestant = this.factureAccompte.montantFacture - this.factureAccompte.reglementClient;
+      const reglementRestant =
+        this.factureAccompte.montantFacture -
+        this.factureAccompte.reglementClient;
       this.reglementForm.get('reglementTtc').setValue(reglementRestant);
       this.validationReglement = false;
     } else {
@@ -857,13 +912,19 @@ export class FactureAccompteComponent implements OnInit {
    */
   generateForm() {
     this.factureForm = this.formBuilder.group({
-      ref_factureAccompte: [ this.factureGlobal.ref_factureGlobal, Validators.required ],
-      date_creation: [ Date.now ],
-      montantFacture: [ this.factureAccompte.montantFacture, Validators.compose([
-        Validators.required,
-        this.isNumber
-      ]) ],
-      factureGlobal: [ { value: this.factureAccompte.factureGlobal, disabled: true }, Validators.required ]
+      ref_factureAccompte: [
+        this.factureGlobal.ref_factureGlobal,
+        Validators.required
+      ],
+      date_creation: [Date.now],
+      montantFacture: [
+        this.factureAccompte.montantFacture,
+        Validators.compose([Validators.required, this.isNumber])
+      ],
+      factureGlobal: [
+        { value: this.factureAccompte.factureGlobal, disabled: true },
+        Validators.required
+      ]
     });
   }
 
@@ -874,19 +935,24 @@ export class FactureAccompteComponent implements OnInit {
    */
   generateReglementForm() {
     this.reglementForm = this.formBuilder.group({
-      ref_factureAccompte: [ { value: this.factureAccompte.ref_factureAccompte, disabled: true }, Validators.required ],
-      date_creation: [ { value: this.factureAccompte.date_creation }],
-      montantFacture: [ { value: this.factureAccompte.montantFacture, disabled: true }],
-      reglementTtc: [ this.factureAccompte.reglementClient, Validators.compose([
-        Validators.required,
-        this.isNumber
-      ]) ]
+      ref_factureAccompte: [
+        { value: this.factureAccompte.ref_factureAccompte, disabled: true },
+        Validators.required
+      ],
+      date_creation: [{ value: this.factureAccompte.date_creation }],
+      montantFacture: [
+        { value: this.factureAccompte.montantFacture, disabled: true }
+      ],
+      reglementTtc: [
+        this.factureAccompte.reglementClient,
+        Validators.compose([Validators.required, this.isNumber])
+      ]
     });
   }
 
   /**
    * Disable facture accompte form controls
-   * 
+   *
    * @memberof FactureAccompteComponent
    */
   disableFactureForm() {
@@ -895,7 +961,7 @@ export class FactureAccompteComponent implements OnInit {
 
   /**
    * Disable reglement form controls
-   * 
+   *
    * @memberof FactureAccompteComponent
    */
   disableReglementForm() {
@@ -904,28 +970,28 @@ export class FactureAccompteComponent implements OnInit {
 
   /**
    * Enable Facture accompte form controls on error
-   * 
+   *
    * @memberof FactureAccompteComponent
    */
   enableFactureForm() {
-    this.factureForm.controls[ 'ref_factureAccompte' ].enable();
-    this.factureForm.controls[ 'date_creation' ].enable();
-    this.factureForm.controls[ 'montantFacture' ].enable();
+    this.factureForm.controls['ref_factureAccompte'].enable();
+    this.factureForm.controls['date_creation'].enable();
+    this.factureForm.controls['montantFacture'].enable();
   }
 
   /**
    * Enable reglement form controls on error
-   * 
+   *
    * @memberof FactureAccompteComponent
    */
   enableReglementForm() {
-    this.reglementForm.controls[ 'date_creation' ].enable();
-    this.reglementForm.controls[ 'reglementTtc' ].enable();
+    this.reglementForm.controls['date_creation'].enable();
+    this.reglementForm.controls['reglementTtc'].enable();
   }
 
   /**
    * Somme montantFacture
-   * 
+   *
    * @returns {string} somme
    * @memberof FactureAccompteComponent
    */
@@ -933,7 +999,7 @@ export class FactureAccompteComponent implements OnInit {
     let sum = 0;
     for (const fact in this.listFactureAccompte) {
       if (this.listFactureAccompte.hasOwnProperty(fact)) {
-        sum += this.listFactureAccompte[ fact ].montantFacture;
+        sum += this.listFactureAccompte[fact].montantFacture;
       }
     }
     return sum.toFixed(2);
@@ -941,7 +1007,7 @@ export class FactureAccompteComponent implements OnInit {
 
   /**
    * Somme reglementClient
-   * 
+   *
    * @returns {string} somme
    * @memberof FactureAccompteComponent
    */
@@ -949,7 +1015,7 @@ export class FactureAccompteComponent implements OnInit {
     let sum = 0;
     for (const fact in this.listFactureAccompte) {
       if (this.listFactureAccompte.hasOwnProperty(fact)) {
-        sum += this.listFactureAccompte[ fact ].reglementClient;
+        sum += this.listFactureAccompte[fact].reglementClient;
       }
     }
     return sum.toFixed(2);
@@ -958,9 +1024,9 @@ export class FactureAccompteComponent implements OnInit {
   // VALIDATIONS
   /**
    * Check if controls.value is a number
-   * 
+   *
    * @param {any} controls value to check
-   * @returns 
+   * @returns
    * @memberof FactureAccompteComponent
    */
   isNumber(controls) {
@@ -975,7 +1041,7 @@ export class FactureAccompteComponent implements OnInit {
   }
 
   /**
-   * 
+   *
    * (blur) listener : Verification de la ref_factureAccompte.
    * - si data.success === true && ref != factureAccompte.ref => ref_factureAccompte utilisée => validationRef = true,
    * - si data.success === false => ref_factureAccompte non utilisée => validationRef = false
@@ -983,49 +1049,59 @@ export class FactureAccompteComponent implements OnInit {
    * @memberof ValiderDevisComponent
    */
   verifRef(): boolean {
-    this.factureAccompteService.getOneFactureAccompteByRef(this.factureGlobal._id, this.factureForm.get('ref_factureAccompte').value)
+    this.factureAccompteService
+      .getOneFactureAccompteByRef(
+        this.factureGlobal._id,
+        this.factureForm.get('ref_factureAccompte').value
+      )
       .subscribe(
-      data => {
-        if (data.success) {
-          // onUpdate : Vérif si ref dans l'input == ref initial du factureAccompte 
-          if (this.factureForm.get('ref_factureAccompte').value !== this.factureAccompte.ref_factureAccompte) {
-            return this.validationRef = true;
+        data => {
+          if (data.success) {
+            // onUpdate : Vérif si ref dans l'input == ref initial du factureAccompte
+            if (
+              this.factureForm.get('ref_factureAccompte').value !==
+              this.factureAccompte.ref_factureAccompte
+            ) {
+              return (this.validationRef = true);
+            }
           }
+        },
+        error => {
+          console.log(error);
         }
-      },
-      error => {
-        console.log(error)
-      }
       );
-    return this.validationRef = false;
+    return (this.validationRef = false);
   }
 
   /**
    * (blur) listener : Vérification du montantFacturé de la facture accompte
-   * 
+   *
    * @returns {boolean} set validationMontantFacture
    * @memberof FactureAccompteComponent
    */
   verifMontantFacture(): boolean {
-    const montantRestant = this.factureGlobal.montantTtcTotal - this.factureGlobal.montantTtcFacture;
+    const montantRestant =
+      this.factureGlobal.montantTtcTotal - this.factureGlobal.montantTtcFacture;
     if (this.factureForm.get('montantFacture').value > montantRestant) {
-      return this.validationMontantFacture = true;
+      return (this.validationMontantFacture = true);
     }
-    return this.validationMontantFacture = false;
+    return (this.validationMontantFacture = false);
   }
 
   /**
    * (blur) listener : Vérifiaction du reglement de la facture accompte
-   * 
+   *
    * @returns {boolean} set validationReglement
    * @memberof FactureAccompteComponent
    */
   verifReglement(): boolean {
-    const reglementRestant = this.factureAccompte.montantFacture - this.factureAccompte.reglementClient;
+    const reglementRestant =
+      this.factureAccompte.montantFacture -
+      this.factureAccompte.reglementClient;
     if (this.reglementForm.get('reglementTtc').value > reglementRestant) {
-      return this.validationReglement = true;
+      return (this.validationReglement = true);
     }
-    return this.validationReglement = false;
+    return (this.validationReglement = false);
   }
 
   /**
@@ -1037,8 +1113,8 @@ export class FactureAccompteComponent implements OnInit {
    * @memberof FactureAccompteComponent
    */
   ngOnInit() {
-    if (this.activatedRoute.snapshot.params[ 'id_fact' ] !== undefined) {
-      this.id_fact = this.activatedRoute.snapshot.params[ 'id_fact' ];
+    if (this.activatedRoute.snapshot.params['id_fact'] !== undefined) {
+      this.id_fact = this.activatedRoute.snapshot.params['id_fact'];
       if (historique) {
         this.getAllValidFactureAccompteByFactureGlobal(this.id_fact);
       } else {
@@ -1046,8 +1122,7 @@ export class FactureAccompteComponent implements OnInit {
       }
       this.getOneFactureGlobal(this.id_fact);
     } else {
-      this.router.navigate([ '/pageNotFound' ]);
+      this.router.navigate(['/pageNotFound']);
     }
   }
-
 }

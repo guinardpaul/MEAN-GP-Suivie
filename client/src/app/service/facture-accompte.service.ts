@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
 // Models
 import { FactureAccompte } from '../models/factureAccompte';
+// Environment variables
 import { environment } from '../../environments/environment';
 
 /**
@@ -20,10 +18,10 @@ export class FactureAccompteService {
 
   /**
    * Creates an instance of FactureAccompteService.
-   * @param {Http} http http module
+   * @param {HttpClient} http http module
    * @memberof FactureAccompteService factureAccompte service
    */
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
     this.url = environment.url;
   }
 
@@ -33,9 +31,8 @@ export class FactureAccompteService {
    * @returns
    * @memberof FactureAccompteService
    */
-  getAllFactureAccompte() {
-    return this.http.get(`${this.url}/facture-accompte`)
-      .map(res => res.json());
+  getAllFactureAccompte(): Observable<FactureAccompte[]> {
+    return this.http.get<FactureAccompte[]>(`${this.url}/facture-accompte`);
   }
 
   /**
@@ -45,9 +42,12 @@ export class FactureAccompteService {
    * @returns
    * @memberof FactureAccompteService
    */
-  getAllFactureAccompteByFactureGlobal(id_fact: number) {
-    return this.http.get(`${this.url}/facture-accompte/facture-global/${id_fact}`)
-      .map(res => res.json());
+  getAllFactureAccompteByFactureGlobal(
+    id_fact: number
+  ): Observable<FactureAccompte[]> {
+    return this.http.get<FactureAccompte[]>(
+      `${this.url}/facture-accompte/facture-global/${id_fact}`
+    );
   }
 
   /**
@@ -57,23 +57,28 @@ export class FactureAccompteService {
    * @returns
    * @memberof FactureAccompteService
    */
-  getOneFactureAccompte(id: number) {
-    return this.http.get(`${this.url}/facture-accompte/${id}`)
-      .map(res => res.json());
+  getOneFactureAccompte(id: number): Observable<FactureAccompte> {
+    return this.http.get<FactureAccompte>(`${this.url}/facture-accompte/${id}`);
   }
 
   /**
    * Get One Facture accompte by ref.
-	 * Method to check unique key of ref_factureAccompte.
-   * 
+   * Method to check unique key of ref_factureAccompte.
+   *
    * @param {number} id_factureGlobal facture global id
    * @param {any} ref_factureAccompte facture accompte ref
-   * @returns 
+   * @returns
    * @memberof FactureAccompteService
    */
-  getOneFactureAccompteByRef(id_factureGlobal: number, ref_factureAccompte) {
-    return this.http.get(`${this.url}/facture-accompte/facture-global/${id_factureGlobal}/ref/${ref_factureAccompte}`)
-      .map(res => res.json());
+  getOneFactureAccompteByRef(
+    id_factureGlobal: number,
+    ref_factureAccompte
+  ): Observable<any> {
+    return this.http.get<any>(
+      `${
+        this.url
+      }/facture-accompte/facture-global/${id_factureGlobal}/ref/${ref_factureAccompte}`
+    );
   }
 
   /**
@@ -83,9 +88,8 @@ export class FactureAccompteService {
    * @returns
    * @memberof FactureAccompteService
    */
-  addFactureAccompte(factureAccompte: any) {
-    return this.http.post(`${this.url}/facture-accompte`, factureAccompte)
-      .map(res => res.json());
+  addFactureAccompte(factureAccompte: any): Observable<any> {
+    return this.http.post<any>(`${this.url}/facture-accompte`, factureAccompte);
   }
 
   /**
@@ -95,24 +99,31 @@ export class FactureAccompteService {
    * @returns
    * @memberof FactureAccompteService
    */
-  updateFactureAccompte(factureAccompte: FactureAccompte) {
-    return this.http.put(`${this.url}/facture-accompte/${factureAccompte._id}`, factureAccompte)
-      .map(res => res.json());
+  updateFactureAccompte(factureAccompte: FactureAccompte): Observable<any> {
+    return this.http.put<any>(
+      `${this.url}/facture-accompte/${factureAccompte._id}`,
+      factureAccompte
+    );
   }
 
   /**
    * Update Facture Accompte status
-   * 
+   *
    * @param {FactureAccompte} factureAccompte facture Accompte body
-   * @returns 
+   * @returns
    * @memberof FactureAccompteService
    */
-  updateStatusFactureAccompte(factureAccompte: FactureAccompte, status_factureAccompte) {
+  updateStatusFactureAccompte(
+    factureAccompte: FactureAccompte,
+    status_factureAccompte
+  ) {
     // Set status facture accompte
     factureAccompte.status_factureAccompte = status_factureAccompte;
     // PUT request
-    return this.http.put(`${this.url}/facture-accompte/${factureAccompte._id}`, factureAccompte)
-      .map(res => res.json());
+    return this.http.put(
+      `${this.url}/facture-accompte/${factureAccompte._id}`,
+      factureAccompte
+    );
   }
 
   /**
@@ -122,9 +133,7 @@ export class FactureAccompteService {
    * @returns
    * @memberof FactureAccompteService
    */
-  deleteFactureAccompte(id: number) {
-    return this.http.delete(`${this.url}/facture-accompte/${id}`)
-      .map(res => res.json());
+  deleteFactureAccompte(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.url}/facture-accompte/${id}`);
   }
-
 }

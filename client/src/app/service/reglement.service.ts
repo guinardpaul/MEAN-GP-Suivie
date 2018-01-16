@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
 // Models
 import { Reglement } from '../models/reglement';
+// Environement variables
 import { environment } from '../../environments/environment';
 
 /**
- * 
+ *
  * @author Paul GUINARD
  * @export
  * @class ReglementService
@@ -20,59 +18,54 @@ export class ReglementService {
 
   /**
    * Creates an instance of ReglementService.
-   * @param {Http} http http module
+   * @param {HttpClient} http http module
    * @memberof ReglementService
    */
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
     this.url = environment.url;
   }
 
   /**
    * Get All Reglement by FactureAccompte._id
-   * 
+   *
    * @param {number} id FactureAccompte._id
-   * @returns 
+   * @returns
    * @memberof ReglementService
    */
-  getReglementByFactureAccompte(id: number): Observable<any> {
-    return this.http.get(`${this.url}/reglements/${id}`)
-      .map(res => res.json());
+  getReglementByFactureAccompte(id: number): Observable<Reglement[]> {
+    return this.http.get<Reglement[]>(`${this.url}/reglements/${id}`);
   }
 
   /**
    * Save Reglement
-   * 
+   *
    * @param {*} reglement body
-   * @returns 
+   * @returns
    * @memberof ReglementService
    */
-  addReglement(reglement: any) {
-    return this.http.post(`${this.url}/reglements`, reglement)
-      .map(res => res.json());
+  addReglement(reglement: any): Observable<any> {
+    return this.http.post<any>(`${this.url}/reglements`, reglement);
   }
 
   /**
    * Update reglement
-   * 
+   *
    * @param {Reglement} reglement body
-   * @returns 
+   * @returns
    * @memberof ReglementService
    */
   updateReglement(reglement: Reglement) {
-    return this.http.put(`${this.url}/reglements/${reglement._id}`, reglement)
-      .map(res => res.json());
+    return this.http.put(`${this.url}/reglements/${reglement._id}`, reglement);
   }
 
   /**
    * Delete reglement
-   * 
+   *
    * @param {number} id reglement._id
-   * @returns 
+   * @returns
    * @memberof ReglementService
    */
-  deleteReglement(id: number) {
-    return this.http.delete(`${this.url}/reglements/${id}`)
-      .map(res => res.json());
+  deleteReglement(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.url}/reglements/${id}`);
   }
-
 }

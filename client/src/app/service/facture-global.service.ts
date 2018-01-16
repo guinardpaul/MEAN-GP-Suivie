@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
 // Models
 import { FactureGlobal } from '../models/factureGlobal';
 import { environment } from '../../environments/environment';
@@ -20,10 +17,10 @@ export class FactureGlobalService {
 
   /**
    * Creates an instance of FactureGlobalService.
-   * @param {Http} http http module
+   * @param {HttpClient} http http module
    * @memberof FactureGlobalService facture global service
    */
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
     this.url = environment.url;
   }
 
@@ -34,8 +31,7 @@ export class FactureGlobalService {
    * @memberof FactureGlobalService
    */
   getAllFactureGlobal(): Observable<FactureGlobal[]> {
-    return this.http.get(`${this.url}/facture-global`)
-      .map(res => res.json());
+    return this.http.get<FactureGlobal[]>(`${this.url}/facture-global`);
   }
 
   /**
@@ -46,8 +42,7 @@ export class FactureGlobalService {
    * @memberof FactureGlobalService
    */
   getOneFactureGlobalById(id: number): Observable<FactureGlobal> {
-    return this.http.get(`${this.url}/facture-global/${id}`)
-      .map(res => res.json());
+    return this.http.get<FactureGlobal>(`${this.url}/facture-global/${id}`);
   }
 
   /**
@@ -58,34 +53,37 @@ export class FactureGlobalService {
    * @memberof FactureGlobalService
    */
   getAllFactureGlobalByClient(id_client: number): Observable<FactureGlobal[]> {
-    return this.http.get(`${this.url}/facture-global/client/${id_client}`)
-      .map(res => res.json());
+    return this.http.get<FactureGlobal[]>(
+      `${this.url}/facture-global/client/${id_client}`
+    );
   }
 
   /**
    * Get All Facture Global by Devis
-   * 
+   *
    * @param {number} id Devis id
-   * @returns 
+   * @returns
    * @memberof FactureGlobalService
    */
   getAllFactureGlobalByDevis(id: number): Observable<FactureGlobal[]> {
-    return this.http.get(`${this.url}/facture-global/devis/${id}`)
-      .map(res => res.json());
+    return this.http.get<FactureGlobal[]>(
+      `${this.url}/facture-global/devis/${id}`
+    );
   }
 
   /**
    * Get One Facture Global by ref.
-	 * Method to check unique key of ref_factureGlobal.
-   * 
+   * Method to check unique key of ref_factureGlobal.
+   *
    * @param {number} id_client client id
    * @param {string} ref ref facture global
-   * @returns 
+   * @returns
    * @memberof FactureGlobalService
    */
   getOneFactureGlobalByRef(id_client: number, ref: string): Observable<any> {
-    return this.http.get(`${this.url}/facture-global/client/${id_client}/ref/${ref}`)
-      .map(res => res.json());
+    return this.http.get(
+      `${this.url}/facture-global/client/${id_client}/ref/${ref}`
+    );
   }
 
   /**
@@ -96,8 +94,7 @@ export class FactureGlobalService {
    * @memberof FactureGlobalService
    */
   addFactureGlobal(factureGlobal: FactureGlobal) {
-    return this.http.post(`${this.url}/facture-global`, factureGlobal)
-      .map(res => res.json());
+    return this.http.post(`${this.url}/facture-global`, factureGlobal);
   }
 
   /**
@@ -108,23 +105,30 @@ export class FactureGlobalService {
    * @memberof FactureGlobalService
    */
   updateFactureGlobal(factureGlobal: FactureGlobal) {
-    return this.http.put(`${this.url}/facture-global/${factureGlobal._id}`, factureGlobal)
-      .map(res => res.json());
+    return this.http.put(
+      `${this.url}/facture-global/${factureGlobal._id}`,
+      factureGlobal
+    );
   }
 
   /**
    * Update Facture Global status
-   * 
+   *
    * @param {FactureGlobal} factureGlobal facture Global body
-   * @returns 
+   * @returns
    * @memberof FactureGlobalService
    */
-  updateStatusFactureGlobal(factureGlobal: FactureGlobal, status_factureGlobal) {
+  updateStatusFactureGlobal(
+    factureGlobal: FactureGlobal,
+    status_factureGlobal
+  ) {
     // Set Status facture Global
     factureGlobal.status_factureGlobal = status_factureGlobal;
     // PUT Request
-    return this.http.put(`${this.url}/facture-global/${factureGlobal._id}`, factureGlobal)
-      .map(res => res.json());
+    return this.http.put(
+      `${this.url}/facture-global/${factureGlobal._id}`,
+      factureGlobal
+    );
   }
 
   /**
@@ -135,8 +139,6 @@ export class FactureGlobalService {
    * @memberof FactureGlobalService
    */
   deleteFactureGlobal(id_fact: number) {
-    return this.http.delete(`${this.url}/facture-global/${id_fact}`)
-      .map(res => res.json());
+    return this.http.delete(`${this.url}/facture-global/${id_fact}`);
   }
-
 }

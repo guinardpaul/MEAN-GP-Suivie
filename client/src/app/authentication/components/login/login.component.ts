@@ -20,7 +20,7 @@ import { AuthGuard } from '../../../routing/auth.guard';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: [ './login.component.css' ]
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
   private loginForm: FormGroup;
@@ -28,8 +28,12 @@ export class LoginComponent implements OnInit {
   private processing: boolean;
   private previousUrl: string;
 
-  private get email(): string { return this.loginForm.get('email').value as string; }
-  private get password(): string { return this.loginForm.get('password').value as string; }
+  private get email(): string {
+    return this.loginForm.get('email').value as string;
+  }
+  private get password(): string {
+    return this.loginForm.get('password').value as string;
+  }
 
   /**
    * Creates an instance of LoginComponent.
@@ -61,17 +65,23 @@ export class LoginComponent implements OnInit {
    */
   createForm() {
     this.loginForm = this._fb.group({
-      email: [ '', Validators.compose([
-        Validators.required,
-        Validators.minLength(6),
-        Validators.maxLength(100),
-        this._validationService.emailValidation
-      ]) ],
-      password: [ '', Validators.compose([
-        Validators.required,
-        Validators.minLength(6),
-        Validators.maxLength(150)
-      ]) ]
+      email: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(100),
+          this._validationService.emailValidation
+        ])
+      ],
+      password: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(150)
+        ])
+      ]
     });
   }
 
@@ -85,13 +95,16 @@ export class LoginComponent implements OnInit {
   getErrorMessage(arg: string): string {
     switch (arg) {
       case 'email':
-        return this.loginForm.controls[ 'email' ].hasError('required') ? 'Ce champ est requis' :
-          this.loginForm.controls[ 'email' ].hasError('emailValidation') ? 'Email invalide' :
-            '';
+        return this.loginForm.controls['email'].hasError('required')
+          ? 'Ce champ est requis'
+          : this.loginForm.controls['email'].hasError('emailValidation')
+            ? 'Email invalide'
+            : '';
 
       case 'password':
-        return this.loginForm.controls[ 'password' ].hasError('required') ? 'Ce champ est requis' :
-          '';
+        return this.loginForm.controls['password'].hasError('required')
+          ? 'Ce champ est requis'
+          : '';
 
       default:
         break;
@@ -115,34 +128,36 @@ export class LoginComponent implements OnInit {
       password: this.password
     };
     // Appel function login()
-    this._authService.login(this.user)
-      .subscribe(data => {
+    this._authService.login(this.user).subscribe(
+      data => {
         // Si passport return success
         if (data.info.success) {
           // Store user data et token
           this._authService.storeUserData(data.token);
           this._flashMsg.show('Connexion avec succés', {
-            classes: [ 'alert', 'alert-success' ], timeout: 1500
+            classes: ['alert', 'alert-success'],
+            timeout: 1500
           });
 
           // Redirect to home ou previousUrl page
           setTimeout(() => {
-            this._router.navigate([ '/client' ]);
+            this._router.navigate(['/affaires']);
           }, 1000);
         }
-      }, err => {
+      },
+      err => {
         this.processing = false;
         if (!err.ok) {
           this._flashMsg.show(err.error.message, {
-            classes: [ 'alert', 'alert-danger' ], timeout: 3000
+            classes: ['alert', 'alert-danger'],
+            timeout: 3000
           });
         } else {
           console.log(err);
         }
-      });
+      }
+    );
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

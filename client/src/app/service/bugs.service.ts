@@ -1,16 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
-
 // Models
 import { Bug } from '../models/bug';
+// Environment variables
 import { environment } from '../../environments/environment';
 
 /**
- * 
+ *
  * @author Paul GUINARD
  * @export
  * @class BugsService
@@ -20,70 +17,64 @@ export class BugsService {
   private url: string;
   /**
    * Creates an instance of BugsService.
-   * @param {Http} http http module
+   * @param {HttpClient} http http module
    * @memberof BugsService
    */
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
     this.url = environment.url;
   }
 
   /**
    * Get All Bugs
-   * 
-   * @returns 
+   *
+   * @returns
    * @memberof BugsService
    */
   getAllBugs() {
-    return this.http.get(`${this.url}/bugs`)
-      .map(res => res.json());
+    return this.http.get(`${this.url}/bugs`);
   }
 
   /**
    * Get One Bug
-   * 
+   *
    * @param {number} id bug._id
-   * @returns 
+   * @returns
    * @memberof BugsService
    */
   getOneBug(id: number) {
-    return this.http.get(`${this.url}/bugs/${id}`)
-      .map(res => res.json());
+    return this.http.get(`${this.url}/bugs/${id}`);
   }
 
   /**
    * Add Bug
-   * 
+   *
    * @param {*} bug bug body
-   * @returns 
+   * @returns
    * @memberof BugsService
    */
   addBug(bug: any) {
-    return this.http.post(`${this.url}/bugs`, bug)
-      .map(res => res.json());
+    return this.http.post(`${this.url}/bugs`, bug);
   }
 
   /**
    * Update Bug
-   * 
+   *
    * @param {Bug} bug bug body
    * @returns
    * @memberof BugsService
    */
   updateBug(bug: Bug) {
-    return this.http.put(`${this.url}/bugs/${bug._id}`, bug)
-      .map(res => res.json());
+    return this.http.put(`${this.url}/bugs/${bug._id}`, bug);
   }
 
   /**
    * Delete Bug
-   * 
+   *
    * @param {number} id bug._id
-   * @returns 
+   * @returns
    * @memberof BugsService
    */
   deleteBug(id: number) {
-    return this.http.delete(`${this.url}/bugs/${id}`)
-      .map(res => res.json());
+    return this.http.delete(`${this.url}/bugs/${id}`);
   }
-
 }

@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
 // Models
 import { CorpsMetier } from '../models/corps-metier';
+// Environment variables
 import { environment } from '../../environments/environment';
 
 @Injectable()
@@ -14,38 +12,33 @@ export class CorpsMetierService {
 
   /**
    * Creates an instance of CorpsMetierService.
-   * @param {Http} http http module
+   * @param {HttpClient} http http module
    * @memberof CorpsMetierService
    */
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
     this.url = environment.url;
   }
 
   getAllCorpsMetier() {
-    return this.http.get(`${this.url}/corps-metier`).map(res => res.json());
+    return this.http.get(`${this.url}/corps-metier`);
   }
 
   getOneCorpsMetier(id_corps_metier: number) {
-    return this.http
-      .get(`${this.url}/corps-metier/${id_corps_metier}`)
-      .map(res => res.json());
+    return this.http.get(`${this.url}/corps-metier/${id_corps_metier}`);
   }
 
   addCorpsMetier(corpsMetier: CorpsMetier) {
-    return this.http
-      .post(`${this.url}/corps-metier`, corpsMetier)
-      .map(res => res.json());
+    return this.http.post(`${this.url}/corps-metier`, corpsMetier);
   }
 
   updateCorpsMetier(corpsMetier: CorpsMetier) {
-    return this.http
-      .put(`${this.url}/corps-metier/${corpsMetier._id}`, corpsMetier)
-      .map(res => res.json());
+    return this.http.put(
+      `${this.url}/corps-metier/${corpsMetier._id}`,
+      corpsMetier
+    );
   }
 
   deleteCorpsMetier(id_corps_metier: number) {
-    return this.http
-      .delete(`${this.url}/corps-metier/${id_corps_metier}`)
-      .map(res => res.json());
+    return this.http.delete(`${this.url}/corps-metier/${id_corps_metier}`);
   }
 }
