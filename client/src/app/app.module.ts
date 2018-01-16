@@ -21,7 +21,7 @@ import { FlashMessagesModule } from 'ngx-flash-messages';
 // ng2-Charts
 import { ChartsModule } from 'ng2-charts';
 // Routing Module
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule } from './routing/app-routing.module';
 // import Components
 import { AppComponent } from './app.component';
 import { ClientComponent } from './components/client/client.component';
@@ -55,6 +55,7 @@ import { NotAuthGuard } from './routing/not-auth.guard';
 import { SortNumberPipe } from './pipes/sort-number.pipe';
 import { SortStringPipe } from './pipes/sort-string.pipe';
 import { OrderByDatePipe } from './pipes/order-by-date.pipe';
+import { AffaireComponent } from './components/affaire/affaire.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { OrderByDatePipe } from './pipes/order-by-date.pipe';
     InitPasswordComponent,
     SortNumberPipe,
     SortStringPipe,
-    OrderByDatePipe
+    OrderByDatePipe,
+    AffaireComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -110,6 +112,6 @@ import { OrderByDatePipe } from './pipes/order-by-date.pipe';
     ValidationService,
     EmailService
   ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

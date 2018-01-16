@@ -22,7 +22,7 @@
 <nav class="navbar navbar-inverse fixed">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" routerLink="client">
+            <a class="navbar-brand" routerLink="affaires">
                 <img style="margin-top: -12px;" src="../../../assets/images/GP.png" alt="G & P">
             </a>
         </div>
@@ -31,7 +31,7 @@
                 <a routerLink="dashboard">Dashboard</a>
             </li>
             <li *ngIf="_authService.loggedIn()" routerLinkActive="active">
-                <a routerLink="client">Client</a>
+                <a routerLink="affaires">Affaires</a>
             </li>
             <!-- <li routerLinkActive="active"><a routerLink="devis">Devis / Facture</a></li>
             <li routerLinkActive="active"><a [routerLink]="['facture/facture-accompte']">Facture</a></li> -->
