@@ -23,8 +23,8 @@ export class ArtisansService {
     return this.http.get(`${this.url}/artisans`);
   }
 
-  getOneArtisan(id_artisan: number) {
-    return this.http.get(`${this.url}/artisans/${id_artisan}`);
+  getOneArtisan(id_artisan: number): Observable<Artisan> {
+    return this.http.get<Artisan>(`${this.url}/artisans/${id_artisan}`);
   }
 
   addArtisan(Artisans: Artisan) {

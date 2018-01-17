@@ -8,29 +8,30 @@ import { CIVILITE } from './civilite.enum';
  * @class Client
  */
 export class Client {
-    _id?: number;
-    affaire?: string;
-    status_client?: boolean;
-    civilite?: CIVILITE;
-    nom: string;
-    prenom: string;
-    adresseFact?: string;
-    complAdresseFact?: string;
-    cpFact?: string;
-    villeFact?: string;
-    adresseChantier?: string;
-    complAdresseChantier?: string;
-    cpChantier?: string;
-    villeChantier?: string;
-    email: string;
-    numTel: string;
+  _id?: number;
+  affaire?: string;
+  status_client?: boolean;
+  moe: [number];
+  civilite?: CIVILITE;
+  nom: string;
+  prenom: string;
+  adresseFact?: string;
+  complAdresseFact?: string;
+  cpFact?: string;
+  villeFact?: string;
+  adresseChantier?: string;
+  complAdresseChantier?: string;
+  cpChantier?: string;
+  villeChantier?: string;
+  email: string;
+  numTel: string;
 
-    /**
-     * Creates an instance of Client.
-     * @param {Object} [value={}]
-     * @memberof Client
-     */
-    constructor(value: Object = {}) {
-        Object.assign(this, value);
-    }
+  /**
+   * Creates an instance of Client.
+   * @param {Object} [value={}]
+   * @memberof Client
+   */
+  constructor(value: Object = {}) {
+    Object.assign(this, value);
+  }
 }

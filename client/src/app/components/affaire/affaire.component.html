@@ -1,3 +1,13 @@
+<div class="affaire-navbar">
+  <app-affaire-navbar></app-affaire-navbar>
+</div>
+<!-- 
+  Problème: ne s'affichera que pour affaire component.
+  Voir si on la rajoute partout ==> besoin de passer l'id_client dans tous les components
+  Trouve un moyen pour charger des routes children pour que la page affaire soit une page de base contenant un 
+  router-outlet des children components (devis/factures ...)
+ -->
+
 <div class="container-fluid">
   <h4>Num Affaire : {{client.affaire}}</h4>
   <h4>Client: {{client.nom}} {{client.prenom}}</h4>

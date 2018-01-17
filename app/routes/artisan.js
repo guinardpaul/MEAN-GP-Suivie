@@ -1,4 +1,4 @@
-const Artisans = require('../models/Artisans');
+const Artisans = require('../models/Artisan');
 
 module.exports = router => {
   /**
@@ -36,7 +36,7 @@ module.exports = router => {
   });
 
   /**
-   * Get One Artisans
+   * Get One Artisans by id
    */
   router.get('/artisans/:id', (req, res, next) => {
     if (!req.params.id) {

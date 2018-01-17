@@ -1,6 +1,5 @@
 // Enum
 import { CIVILITE } from './civilite.enum';
-import { CorpsMetier } from './corps-metier';
 /**
  * Artisan model
  *
@@ -11,7 +10,7 @@ export class Artisan {
   _id?: number;
   civilite?: CIVILITE;
   nom_societe: string;
-  corps_metier: [CorpsMetier];
+  corps_metier: number;
   nom: string;
   prenom: string;
   adresse?: string;

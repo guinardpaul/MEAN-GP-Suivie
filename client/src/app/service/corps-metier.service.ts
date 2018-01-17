@@ -23,8 +23,10 @@ export class CorpsMetierService {
     return this.http.get(`${this.url}/corps-metier`);
   }
 
-  getOneCorpsMetier(id_corps_metier: number) {
-    return this.http.get(`${this.url}/corps-metier/${id_corps_metier}`);
+  getOneCorpsMetier(id_corps_metier: number): Observable<CorpsMetier> {
+    return this.http.get<CorpsMetier>(
+      `${this.url}/corps-metier/${id_corps_metier}`
+    );
   }
 
   addCorpsMetier(corpsMetier: CorpsMetier) {

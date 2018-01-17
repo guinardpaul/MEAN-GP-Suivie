@@ -35,6 +35,8 @@ import { BugsService } from './service/bugs.service';
 import { AuthService } from './authentication/services/auth.service';
 import { ValidationService } from './authentication/services/validation.service';
 import { EmailService } from './authentication/services/email.service';
+import { ArtisansService } from './service/artisans.service';
+import { CorpsMetierService } from './service/corps-metier.service';
 // Guards
 import { AuthGuard } from './routing/auth.guard';
 import { NotAuthGuard } from './routing/not-auth.guard';
@@ -42,6 +44,7 @@ import { NotAuthGuard } from './routing/not-auth.guard';
 import { SortNumberPipe } from './pipes/sort-number.pipe';
 import { SortStringPipe } from './pipes/sort-string.pipe';
 import { OrderByDatePipe } from './pipes/order-by-date.pipe';
+import { AffaireNavbarComponent } from './components/affaire-navbar/affaire-navbar.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +61,8 @@ import { OrderByDatePipe } from './pipes/order-by-date.pipe';
     SortNumberPipe,
     SortStringPipe,
     OrderByDatePipe,
-    AffaireComponent
+    AffaireComponent,
+    AffaireNavbarComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -84,7 +88,9 @@ import { OrderByDatePipe } from './pipes/order-by-date.pipe';
     NotAuthGuard,
     AuthService,
     ValidationService,
-    EmailService
+    EmailService,
+    ArtisansService,
+    CorpsMetierService
   ],
   bootstrap: [AppComponent]
 })

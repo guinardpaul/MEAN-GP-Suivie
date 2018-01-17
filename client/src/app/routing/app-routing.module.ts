@@ -17,6 +17,7 @@ import { RegisterComponent } from '../authentication/components/register/registe
 import { ForgotPasswordComponent } from '../authentication/components/forgot-password/forgot-password.component';
 import { InitPasswordComponent } from '../authentication/components/init-password/init-password.component';
 import { AffaireComponent } from 'app/components/affaire/affaire.component';
+import { AffaireNavbarComponent } from 'app/components/affaire-navbar/affaire-navbar.component';
 
 /**
  * routes definition

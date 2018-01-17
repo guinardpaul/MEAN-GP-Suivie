@@ -1,0 +1,26 @@
+<ul class="nav nav-pills nav-justified affaire-navbar">
+
+  <li *ngIf="errorLoading" class="error">
+    &nbsp; Erreur lors du chargement des infos de l'affaire. Veuillez réessayer
+  </li>
+
+  <li *ngFor="let moe of moeList">
+    <a href="#">{{moe.corps_metier}}</a>
+  </li>
+
+  <li *ngIf="!errorLoading" class="active">
+    <a href="#">Affaire N° {{client.affaire}}</a>
+  </li>
+  <li *ngIf="!errorLoading">
+    <a href="#">Gérer les MOE</a>
+  </li>
+  <li *ngIf="!errorLoading">
+    <a href="#">MOE 1</a>
+  </li>
+  <li *ngIf="!errorLoading">
+    <a href="#">MOE 2</a>
+  </li>
+  <li *ngIf="!errorLoading">
+    <a href="#">MOE 3</a>
+  </li>
+</ul>

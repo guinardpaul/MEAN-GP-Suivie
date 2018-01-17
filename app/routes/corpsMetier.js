@@ -12,7 +12,7 @@ module.exports = router => {
   });
 
   /**
-   * Get One CorpsMetiers
+   * Get One CorpsMetiers by id
    */
   router.get('/corps-metier/:id', (req, res, next) => {
     if (!req.params.id) {
