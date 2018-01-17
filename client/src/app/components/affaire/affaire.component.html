@@ -1,3 +1,23 @@
-<p>
-  affaire works!
-</p>
+<div class="container-fluid">
+  <h4>Num Affaire : {{client.affaire}}</h4>
+  <h4>Client: {{client.nom}} {{client.prenom}}</h4>
+  <a class="btn btn-default" [routerLink]="['/affaires']">Retour liste affaires</a>
+
+  <br/>
+
+  <p>Résumé de l'affaire (graph ou tableau à définir)</p>
+  <p>bouton ajout MOE:</p>
+  <p>
+    quand on clique, ajoute un duo list sélectionnable pour ajouter ou enlever un artisans d'une affaire.</p>
+  <p>
+    mettre un danger lorsqu'on déselectionne un artisan... voir comment le gérer dans la BDD pour ne pas perdre toutes les données
+    d'un artisans si on l'enlève de l'affaire.
+  </p>
+  <p>
+    Ajouter la possibilité de créer des artisans et des corps de métiers qui seraient non présent dans la BDD (nouvelle page
+    avec retour direct dans l'id de l'affaire lorsque les modifications sont terminées)
+  </p>
+  <p>Ajouter les différents MOE liés à l'affaire dans la navbar pour accéder au suivi</p>
+  <p>(Ajouter bouton MOE ou liste déroulante dans cette page pour charger les données spécifiques à cet MOE dans le tableau
+    de bord de l'affaire)</p>
+</div>

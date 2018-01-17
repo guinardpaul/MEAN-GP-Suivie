@@ -32,7 +32,7 @@
                 <td>{{client.numTel}}</td>
                 <td>
                     <div class="btn-group-vertical">
-                        <a class="btn btn-success" [routerLink]="['/devis/client', client._id]">Consulter</a>
+                        <a class="btn btn-success" [routerLink]="['/affaires', client._id]">Consulter</a>
                         <button class="btn btn-warning" (click)="onUpdate(client)">Modifier</button>
                         <button class="btn btn-danger" data-toggle="modal" data-target="#myModal" (click)="getClientToDelete(client)">Supprimer</button>
                     </div>
