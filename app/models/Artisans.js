@@ -65,13 +65,11 @@ const ArtisanSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  corps_metier: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'CorpsMetier',
-      required: true
-    }
-  ],
+  corps_metier: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'CorpsMetier',
+    required: true
+  },
   nom: {
     type: String,
     required: true,
