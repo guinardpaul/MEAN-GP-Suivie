@@ -12,6 +12,30 @@ module.exports = router => {
   });
 
   /**
+   * Get All Artisans by CorpsMetier._id
+   */
+  router.get('/artisans/corps-metier/:id', (req, res, next) => {
+    if (!req.params.id) {
+      res.status(400).json({
+        success: false,
+        message: 'id not provided'
+      });
+    } else {
+      Artisans.find({ corpsMetier: req.params.id }, (err, data) => {
+        if (data) {
+          res.status(200).json(data);
+        } else {
+          res.status(409).json({
+            success: false,
+            message: 'Artisans not found',
+            err: err
+          });
+        }
+      });
+    }
+  });
+
+  /**
    * Get One Artisans
    */
   router.get('/artisans/:id', (req, res, next) => {

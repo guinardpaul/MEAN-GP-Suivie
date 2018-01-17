@@ -69,11 +69,16 @@ const ClientSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  artisans: [
+  moe: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Artisans',
-      required: true
+      corps_metier: {
+        type: String
+      },
+      artisan: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Artisans',
+        required: true
+      }
     }
   ],
   nom: {
