@@ -62,8 +62,7 @@ const ArtisanSchema = new mongoose.Schema({
   },
   nom_societe: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   corps_metier: {
     type: mongoose.Schema.Types.ObjectId,
@@ -72,12 +71,10 @@ const ArtisanSchema = new mongoose.Schema({
   },
   nom: {
     type: String,
-    required: true,
     validate: nomValidator
   },
   prenom: {
     type: String,
-    required: true,
     validate: prenomValidator
   },
   email: {

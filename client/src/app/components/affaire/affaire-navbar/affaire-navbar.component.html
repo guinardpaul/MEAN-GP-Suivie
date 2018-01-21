@@ -9,13 +9,13 @@
   </li>
 
   <li *ngIf="!errorLoading" class="active">
-    <a href="#">Affaire N° {{client.affaire}}</a>
+    <a [routerLink]="['/affaires', id_client]">Affaire N° {{client.affaire}}</a>
   </li>
   <li *ngIf="!errorLoading">
-    <a href="#">Gérer les MOE</a>
+    <a routerLink="gestion-moe">Gérer les MOE</a>
   </li>
   <li *ngIf="!errorLoading">
-    <a href="#">MOE 1</a>
+    <a routerLink="devis">MOE 1</a>
   </li>
   <li *ngIf="!errorLoading">
     <a href="#">MOE 2</a>

@@ -16,8 +16,6 @@ import { LoginComponent } from '../authentication/components/login/login.compone
 import { RegisterComponent } from '../authentication/components/register/register.component';
 import { ForgotPasswordComponent } from '../authentication/components/forgot-password/forgot-password.component';
 import { InitPasswordComponent } from '../authentication/components/init-password/init-password.component';
-import { AffaireComponent } from 'app/components/affaire/affaire.component';
-import { AffaireNavbarComponent } from 'app/components/affaire-navbar/affaire-navbar.component';
 
 /**
  * routes definition
@@ -44,11 +42,7 @@ const routes: Routes = [
     component: ClientComponent,
     canActivate: [AuthGuard]
   },
-  {
-    path: 'affaires/:id_client',
-    component: AffaireComponent,
-    canActivate: [AuthGuard]
-  },
+
   // { path: 'devis', component: DevisComponent },
   // path Devis by client._id
   {

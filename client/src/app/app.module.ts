@@ -44,7 +44,11 @@ import { NotAuthGuard } from './routing/not-auth.guard';
 import { SortNumberPipe } from './pipes/sort-number.pipe';
 import { SortStringPipe } from './pipes/sort-string.pipe';
 import { OrderByDatePipe } from './pipes/order-by-date.pipe';
-import { AffaireNavbarComponent } from './components/affaire-navbar/affaire-navbar.component';
+import { AffaireRoutingModule } from 'app/routing/affaire-routing.module';
+import { AffaireNavbarComponent } from 'app/components/affaire/affaire-navbar/affaire-navbar.component';
+import { AffaireDashboardComponent } from 'app/components/affaire/affaire-dashboard/affaire-dashboard.component';
+import { GestionMoeComponent } from './components/affaire/gestion-moe/gestion-moe.component';
+import { ArtisanComponent } from './components/affaire/gestion-moe/artisan/artisan.component';
 
 @NgModule({
   declarations: [
@@ -62,18 +66,22 @@ import { AffaireNavbarComponent } from './components/affaire-navbar/affaire-navb
     SortStringPipe,
     OrderByDatePipe,
     AffaireComponent,
-    AffaireNavbarComponent
+    AffaireNavbarComponent,
+    AffaireDashboardComponent,
+    GestionMoeComponent,
+    ArtisanComponent
   ],
   imports: [
     BrowserAnimationsModule,
-    AppRoutingModule,
     AuthenticationModule,
     MatProgressSpinnerModule,
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
     FlashMessagesModule,
-    ChartsModule
+    ChartsModule,
+    AffaireRoutingModule,
+    AppRoutingModule
   ],
   providers: [
     ClientService,

@@ -1,0 +1,130 @@
+<div class="panel-group container">
+  <form class="form-horizontal" [formGroup]="artisanForm" (submit)="addArtisan()">
+    <div class="panel-info col-sm-4">
+      <div class="panel-heading">Société
+        <span style="font-weight: bold">(Requis)</span>
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label for="corps_metier">Corps de métier :</label>
+          <!--  <select class="form-control" name="corps_metier" id="corps_metier" formControlName="corps_metier">
+            <option>Corps de métier ...</option>
+            <option *ngFor="let key of keys" ([ngValue])="key">{{corps_metierEnum[key]}}</option>
+          </select> -->
+          <input class="form-control" name="corps_metier" id="corps_metier" formControlName="corps_metier" />
+          <button>Ajouter Corps de métier</button>
+        </div>
+
+        <div class="form-group" [ngClass]="{'has-error': (artisanForm.controls.nom_societe.errors && artisanForm.controls.nom_societe.dirty),
+              'has-success': (!artisanForm.controls.nom_societe.errors)}">
+          <label for="nom_societe">Nom Société :</label>
+          <input type="text" class="form-control" name="nom_societe" value="{{artisan.nom_societe}}" id="nom_societe" formControlName="nom_societe"
+            required />
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-danger" *ngIf="artisanForm.controls.nom_societe.errors?.required && artisanForm.controls.nom_societe.dirty">
+              Ce champ est requis
+            </li>
+          </ul>
+        </div>
+
+        <div class="form-group" [ngClass]="{'has-error': (artisanForm.controls.email.errors && artisanForm.controls.email.dirty),
+      'has-success': (!artisanForm.controls.email.errors)}">
+          <label for="email">Email :</label>
+          <input type="text" class="form-control" name="email" value="{{artisan.email}}" id="email" formControlName="email" required
+          />
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-danger" *ngIf="artisanForm.controls.email.errors?.required && artisanForm.controls.email.dirty">Ce champ est requis</li>
+            <li class="list-group-item list-group-item-danger" *ngIf="artisanForm.controls.email.errors?.emailValidation && artisanForm.controls.email.dirty
+        && !artisanForm.controls.email.errors?.required">
+              L'email n'est pas valide
+            </li>
+          </ul>
+        </div>
+
+        <div class="form-group" [ngClass]="{'has-error': (artisanForm.controls.numTel.errors && artisanForm.controls.numTel.dirty), 'has-success': (!artisanForm.controls.numTel.errors)}">
+          <label for="numTel">Tél :</label>
+          <input type="text" class="form-control" name="numTel" value="{{artisan.numTel}}" id="numTel" formControlName="numTel" />
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-danger" *ngIf="artisanForm.controls.numTel.errors?.numTelValidation && artisanForm.controls.numTel.dirty">Le tel doit être composé de chiffre, '-' ou '.'</li>
+            <li class="list-group-item list-group-item-danger" *ngIf="artisanForm.controls.numTel.errors?.minlength && artisanForm.controls.numTel.dirty
+      && !artisanForm.controls.numTel.errors?.numTelValidation">
+              Le tel doit être composé de 10 chiffres
+            </li>
+          </ul>
+        </div>
+
+        <div class="form-group">
+          <md-spinner *ngIf="processing" style="float: left;width: 24px;height: 24px;"></md-spinner>
+          <button [disabled]="!artisanForm.valid || processing" type="submit" class="btn btn-success">Sauver</button>
+          <button [disabled]="processing" (click)="onCancel()" class="btn btn-default">Annuler</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-info col-sm-4">
+      <div class="panel-heading">
+        Artisan
+        <span style="font-style: italic">(Optionnel)</span>
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label for="civilite">Civilité :</label>
+          <select class="form-control" name="civilite" id="civilite" formControlName="civilite">
+            <option>Civilité...</option>
+            <option *ngFor="let key of keys" ([ngValue])="key">{{civiliteEnum[key]}}</option>
+          </select>
+        </div>
+
+        <div class="form-group" [ngClass]="{'has-error': (artisanForm.controls.nom.errors && artisanForm.controls.nom.dirty),
+              'has-success': (!artisanForm.controls.nom.errors)}">
+          <label for="nom">Nom :</label>
+          <input type="text" class="form-control" name="nom" value="{{artisan.nom}}" id="nom" formControlName="nom" />
+          <ul *ngIf="artisanForm.controls.nom.errors?.nomPrenomValidation && artisanForm.controls.nom.dirty" class="list-group">
+            <li class="list-group-item list-group-item-danger" *ngIf="artisanForm.controls.nom.errors?.nomPrenomValidation && artisanForm.controls.nom.dirty">
+              Le nom doit être composé uniquement de lettres
+            </li>
+          </ul>
+        </div>
+
+        <div class="form-group" [ngClass]="{'has-error': (artisanForm.controls.prenom.errors && artisanForm.controls.prenom.dirty && !artisanForm.controls.prenom.required),
+          'has-success': (!artisanForm.controls.prenom.errors)}">
+          <label for="prenom">Prénom :</label>
+          <input type="text" class="form-control" name="prenom" value="{{artisan.prenom}}" id="prenom" formControlName="prenom" />
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-danger" *ngIf="artisanForm.controls.prenom.errors?.nomPrenomValidation && artisanForm.controls.prenom.dirty
+            && !artisanForm.controls.prenom.errors?.required">
+              Le prénom doit être composé uniquement de lettres
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-info col-sm-4">
+      <div class="panel-heading">Adresse</div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label for="adresse">Adresse :</label>
+          <input type="text" class="form-control" name="adresse" value="{{artisan.adresse}}" id="adresse" formControlName="adresse"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="complAdresse">Complément d'adresse :</label>
+          <input type="text" class="form-control" name="complAdresse" value="{{artisan.complAdresse}}" id="complAdresse" formControlName="complAdresse"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="cp">Code postal :</label>
+          <input type="text" class="form-control" name="cp" value="{{artisan.cp}}" id="cp" formControlName="cp" />
+        </div>
+
+        <div class="form-group">
+          <label for="ville">Ville :</label>
+          <input type="text" class="form-control" name="ville" value="{{artisan.ville}}" id="ville" formControlName="ville" />
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
