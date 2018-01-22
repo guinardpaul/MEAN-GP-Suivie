@@ -4,16 +4,19 @@
     &nbsp; Erreur lors du chargement des infos de l'affaire. Veuillez réessayer
   </li>
 
-  <li *ngFor="let moe of moeList">
-    <a href="#">{{moe.corps_metier}}</a>
-  </li>
-
   <li *ngIf="!errorLoading" class="active">
     <a [routerLink]="['/affaires', id_client]">Affaire N° {{client.affaire}}</a>
   </li>
+
   <li *ngIf="!errorLoading">
     <a routerLink="gestion-moe">Gérer les MOE</a>
   </li>
+
+  <li *ngFor="let artisan of artisansList | async">
+    <a [routerLink]="['/affaires',id_client,'devis', artisan._id]">{{artisan.corps_metier}}</a>
+  </li>
+
+
   <li *ngIf="!errorLoading">
     <a routerLink="devis">MOE 1</a>
   </li>

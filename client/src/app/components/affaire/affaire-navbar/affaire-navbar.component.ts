@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 // Services
 import { ClientService } from '../../../service/client.service';
 import { ArtisansService } from '../../../service/artisans.service';
@@ -8,6 +9,7 @@ import { CorpsMetierService } from '../../../service/corps-metier.service';
 import { Client } from '../../../models/client';
 import { Artisan } from '../../../models/artisan';
 import { CorpsMetier } from '../../../models/corps-metier';
+import { empty } from 'rxjs/Observer';
 
 @Component({
   selector: 'app-affaire-navbar',
@@ -15,10 +17,11 @@ import { CorpsMetier } from '../../../models/corps-metier';
   styleUrls: ['./affaire-navbar.component.css']
 })
 export class AffaireNavbarComponent implements OnInit {
+  private id_client: number;
+  private _client: Observable<Client>;
+  private client: Client;
+  private artisansList: Observable<Artisan[]>;
   private errorLoading = false;
-  private id_client;
-  private client = new Client();
-  private moeList: CorpsMetier[];
 
   constructor(
     private _clientService: ClientService,
@@ -28,53 +31,32 @@ export class AffaireNavbarComponent implements OnInit {
     private activatedRoute: ActivatedRoute
   ) {}
 
-  getClient(id_client: number) {
-    this._clientService.getOneClient(id_client).subscribe(
-      data => {
-        this.client = data;
-        this.getMOEByClient(this.client);
-      },
-      err => {
-        console.log(err);
-        this.errorLoading = true;
-      }
-    );
-  }
-
-  getMOEByClient(client: Client) {
-    this.moeList = [];
-    for (const artisan_id in client.moe) {
-      if (client.moe.hasOwnProperty(artisan_id)) {
-        const element = client.moe[artisan_id];
-        this._artisansService.getOneArtisan(client.moe[artisan_id]).subscribe(
-          data => {
-            this._corpsMetierService
-              .getOneCorpsMetier(data.corps_metier)
-              .subscribe(
-                corpsMetier => {
-                  this.moeList.push(corpsMetier);
-                },
-                err => {
-                  console.log(err);
-                }
-              );
-          },
-          err => {
-            console.log(err);
-          }
-        );
-      }
-    }
-    console.log(this.moeList);
+  getMOEByClient(id_client: number) {
+    this.artisansList = this._artisansService.artisansByClient;
   }
 
   ngOnInit() {
-    /*  if (this.activatedRoute.snapshot.params['id_client'] !== undefined) {
-      this.id_client = this.activatedRoute.snapshot.params['id_client'];
-      this.getClient(this.id_client);
-    } else {
-      this.errorLoading = true;
-    } */
-    this.client = this._clientService.client;
+    if (this.activatedRoute.snapshot.params['id_client'] !== undefined) {
+      this._clientService.error.subscribe(erreur => {
+        console.log(erreur);
+        if (erreur) {
+          this.id_client = this.activatedRoute.snapshot.params['id_client'];
+
+          this._client = this._clientService.client;
+          const subscription = this._client.subscribe(
+            data => {
+              this.client = data;
+            },
+            err => {
+              console.log(err);
+            }
+          );
+
+          this.getMOEByClient(this.id_client);
+        } else {
+          this.errorLoading = true;
+        }
+      });
+    }
   }
 }

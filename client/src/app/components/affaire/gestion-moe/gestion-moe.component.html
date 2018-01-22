@@ -1,5 +1,20 @@
-<p>
-  gestion-moe works!
-</p>
+<div class="container-fluid">
+  <div class="col-sm-6">
+    <h3>Artisans lié à l'affaire</h3>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let clientArtisan of clientArtisansList | async">
+        {{clientArtisan.corps_metier}}
+      </li>
+    </ul>
+  </div>
 
-<a routerLink="artisans">Ajouter un Artisan</a>
+  <div class="col-sm-6">
+    <h3>Liste d'artisan enregistré</h3>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let artisan of artisansList | async">
+        {{artisan.corps_metier}}
+      </li>
+    </ul>
+    <a class="btn btn-default" routerLink="artisans">Ajouter un Artisan</a>
+  </div>
+</div>

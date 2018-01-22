@@ -14,7 +14,8 @@ const affaireRoutes: Routes = [
       { path: '', component: AffaireDashboardComponent },
       { path: 'gestion-moe', component: GestionMoeComponent },
       { path: 'gestion-moe/artisans', component: ArtisanComponent },
-      { path: 'devis', component: DevisComponent }
+      { path: 'devis', component: DevisComponent },
+      { path: 'devis/:id_artisan', component: DevisComponent }
     ]
   }
 ];

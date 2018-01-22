@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 // Models
 import { Client } from '../models/client';
 // Environment variables
 import { environment } from '../../environments/environment';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 /**
  *
@@ -15,8 +16,11 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class ClientService {
   private url;
-  public client = new Client();
-
+  public client: Observable<Client>;
+  private _client: BehaviorSubject<Client>;
+  private dataStore: { client: Client };
+  private _error: BehaviorSubject<HttpErrorResponse>;
+  public error: Observable<HttpErrorResponse>;
   /**
    * Creates an instance of ClientService.
    * @param {HttpClient} http http module
@@ -24,6 +28,12 @@ export class ClientService {
    */
   constructor(private http: HttpClient) {
     this.url = environment.url;
+    this.dataStore = { client: null };
+    this._client = <BehaviorSubject<Client>>new BehaviorSubject({});
+    this.client = this._client.asObservable();
+    this._error = <BehaviorSubject<HttpErrorResponse>>new BehaviorSubject({});
+    this.error = this._error.asObservable();
+    console.log(this.error);
   }
 
   /**
@@ -57,10 +67,13 @@ export class ClientService {
   getClient(id: number) {
     return this.http.get<Client>(`${this.url}/clients/${id}`).subscribe(
       data => {
-        this.client = data;
-        console.log(data);
+        this.dataStore.client = data;
+        this._client.next(Object.assign({}, this.dataStore).client);
       },
-      err => console.log(err)
+      err => {
+        this.error = err;
+        console.log(this.error);
+      }
     );
   }
 

@@ -1,1 +1,3 @@
-export const moe = {};
+export const moe = {
+  terassement: 'Terassement'
+};
