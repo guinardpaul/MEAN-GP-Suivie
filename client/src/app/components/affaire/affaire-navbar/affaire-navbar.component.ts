@@ -69,11 +69,12 @@ export class AffaireNavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.activatedRoute.snapshot.params['id_client'] !== undefined) {
+    /*  if (this.activatedRoute.snapshot.params['id_client'] !== undefined) {
       this.id_client = this.activatedRoute.snapshot.params['id_client'];
       this.getClient(this.id_client);
     } else {
       this.errorLoading = true;
-    }
+    } */
+    this.client = this._clientService.client;
   }
 }

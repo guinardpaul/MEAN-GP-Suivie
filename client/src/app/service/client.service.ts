@@ -15,6 +15,8 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class ClientService {
   private url;
+  public client = new Client();
+
   /**
    * Creates an instance of ClientService.
    * @param {HttpClient} http http module
@@ -43,6 +45,23 @@ export class ClientService {
    */
   getOneClient(id: number): Observable<Client> {
     return this.http.get<Client>(`${this.url}/clients/${id}`);
+  }
+
+  /**
+   * Get one client.
+   *
+   * @param {number} id client._id
+   * @returns
+   * @memberof ClientService
+   */
+  getClient(id: number) {
+    return this.http.get<Client>(`${this.url}/clients/${id}`).subscribe(
+      data => {
+        this.client = data;
+        console.log(data);
+      },
+      err => console.log(err)
+    );
   }
 
   /**
