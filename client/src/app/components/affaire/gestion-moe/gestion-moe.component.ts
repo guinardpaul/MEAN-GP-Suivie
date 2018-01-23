@@ -19,18 +19,28 @@ export class GestionMoeComponent implements OnInit {
   private artisansList: Observable<Artisan[]>;
   private _client: Observable<Client>;
   private client = new Client();
+  private artisanToAdd = new Artisan();
+  private artisanToRemove = new Artisan();
 
   constructor(
     private _artisansService: ArtisansService,
     private _clientService: ClientService
   ) {}
 
-  addArtisanToAffaire(artisan: Artisan) {
-    console.log(artisan);
+  selectArtisanToRemove(artisan: Artisan) {
+    this.artisanToRemove = artisan;
   }
 
-  removeArtisanToAffaire(artisan: Artisan) {
-    console.log(artisan);
+  selectArtisanToAdd(artisan: Artisan) {
+    this.artisanToAdd = artisan;
+  }
+
+  addArtisanToAffaire() {
+    this._artisansService.addArtisanToAffaire(this.artisanToAdd);
+  }
+
+  removeArtisanToAffaire() {
+    this._artisansService.removeArtisanToAffaire(this.artisanToRemove);
   }
 
   updateClient(client: Client) {

@@ -33,12 +33,13 @@ export class ArtisansService {
     this.artisans = this._artisans.asObservable();
   }
 
-  getAllArtisans() {
+  getAllArtisans(id_client: number) {
     return this.http.get<Artisan[]>(`${this.url}/artisans`).subscribe(
       data => {
         this.dataStore.artisans = data;
-        console.log(this.dataStore);
         this._artisans.next(Object.assign({}, this.dataStore).artisans);
+        // Get Artisans By Client
+        this.getAllArtisansByClient(id_client);
       },
       err => {
         console.log(err);
@@ -48,7 +49,24 @@ export class ArtisansService {
 
   getAllArtisansAvailable() {}
 
+  // Impossible d'utiliser array.filter car clients est une array
   getAllArtisansByClient(id_client: number) {
+    this.dataStore.artisansByClient = [];
+    this.dataStore.artisans.forEach((artisan, i) => {
+      if (artisan.clients.length > 0) {
+        artisan.clients.forEach(id => {
+          if (id === id_client) {
+            this.dataStore.artisansByClient.push(artisan);
+          }
+        });
+      }
+    });
+
+    return this._artisansByClient.next(
+      Object.assign({}, this.dataStore).artisansByClient
+    );
+
+    /* 
     return this.http
       .get<Artisan[]>(`${this.url}/artisans/client/${id_client}`)
       .subscribe(
@@ -62,19 +80,43 @@ export class ArtisansService {
         err => {
           console.log(err);
         }
-      );
+      ); */
+  }
+
+  addArtisanToAffaire(artisan: Artisan) {
+    this.dataStore.artisans.forEach((art, i) => {
+      if (art._id === artisan._id) {
+        this.dataStore.artisansByClient.push(artisan);
+      }
+    });
+
+    return this._artisansByClient.next(
+      Object.assign({}, this.dataStore).artisansByClient
+    );
+  }
+
+  removeArtisanToAffaire(artisan: Artisan) {
+    this.dataStore.artisans.forEach((art, i) => {
+      if (art._id === artisan._id) {
+        this.dataStore.artisansByClient.splice(i, 1);
+      }
+    });
+
+    return this._artisansByClient.next(
+      Object.assign({}, this.dataStore).artisansByClient
+    );
   }
 
   getOneArtisan(id_artisan: number): Observable<Artisan> {
     return this.http.get<Artisan>(`${this.url}/artisans/${id_artisan}`);
   }
 
-  addArtisan(Artisans: Artisan) {
-    return this.http.post(`${this.url}/artisans`, Artisans);
+  addArtisan(artisan: Artisan) {
+    return this.http.post(`${this.url}/artisans`, artisan);
   }
 
-  updateArtisan(Artisans: Artisan) {
-    return this.http.put(`${this.url}/artisans/${Artisans._id}`, Artisans);
+  updateArtisan(artisan: Artisan) {
+    return this.http.put(`${this.url}/artisans/${artisan._id}`, artisan);
   }
 
   deleteArtisan(id_artisan: number) {

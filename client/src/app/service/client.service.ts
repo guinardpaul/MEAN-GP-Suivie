@@ -33,7 +33,6 @@ export class ClientService {
     this.client = this._client.asObservable();
     this._error = <BehaviorSubject<HttpErrorResponse>>new BehaviorSubject({});
     this.error = this._error.asObservable();
-    console.log(this.error);
   }
 
   /**

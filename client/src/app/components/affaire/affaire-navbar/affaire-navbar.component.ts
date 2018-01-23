@@ -9,7 +9,6 @@ import { CorpsMetierService } from '../../../service/corps-metier.service';
 import { Client } from '../../../models/client';
 import { Artisan } from '../../../models/artisan';
 import { CorpsMetier } from '../../../models/corps-metier';
-import { empty } from 'rxjs/Observer';
 
 @Component({
   selector: 'app-affaire-navbar',

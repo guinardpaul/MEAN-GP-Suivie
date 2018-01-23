@@ -11,6 +11,7 @@ export class Artisan {
   civilite?: CIVILITE;
   nom_societe: string;
   corps_metier: number;
+  clients: [number];
   nom: string;
   prenom: string;
   adresse?: string;

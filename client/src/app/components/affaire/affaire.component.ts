@@ -25,8 +25,11 @@ export class AffaireComponent implements OnInit {
       this.id_client = this.activatedRoute.snapshot.params['id_client'];
 
       this._clientService.getClient(this.id_client);
-      this._artisansService.getAllArtisansByClient(this.id_client);
-      this._artisansService.getAllArtisans();
+      this._artisansService.getAllArtisans(this.id_client);
+
+      // setTimeout(() => {
+      // this._artisansService.getAllArtisansByClient(this.id_client);
+      // }, 2000);
     }
   }
 }
