@@ -37,26 +37,19 @@ export class AffaireNavbarComponent implements OnInit {
 
   ngOnInit() {
     if (this.activatedRoute.snapshot.params['id_client'] !== undefined) {
-      this._clientService.error.subscribe(erreur => {
-        console.log(erreur);
-        if (erreur) {
-          this.id_client = this.activatedRoute.snapshot.params['id_client'];
+      this.id_client = this.activatedRoute.snapshot.params['id_client'];
 
-          this._client = this._clientService.client;
-          const subscription = this._client.subscribe(
-            data => {
-              this.client = data;
-            },
-            err => {
-              console.log(err);
-            }
-          );
-
-          this.getMOEByClient(this.id_client);
-        } else {
-          this.errorLoading = true;
+      this._client = this._clientService.client;
+      const subscription = this._client.subscribe(
+        data => {
+          this.client = data;
+        },
+        err => {
+          console.log(err);
         }
-      });
+      );
+
+      this.getMOEByClient(this.id_client);
     }
   }
 }

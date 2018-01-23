@@ -1,20 +1,52 @@
 <div class="container-fluid">
+  {{client | json}}
+
+
+  <!-- 
+select à 2 colonnes ?
+ajouter modal pour sécuriser la suppression d'artisan à l'affaire => problème si suppr et remet : perte des données 
+==> Solution ?
+-->
   <div class="col-sm-6">
     <h3>Artisans lié à l'affaire</h3>
-    <ul class="list-group">
-      <li class="list-group-item" *ngFor="let clientArtisan of clientArtisansList | async">
-        {{clientArtisan.corps_metier}}
-      </li>
-    </ul>
+    <table class="table table-striped">
+      <thead>
+        <th>Corps de métier</th>
+        <th>Société</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Supprimer de l'affaire</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let clientArtisan of clientArtisansList | async">
+          <td>{{clientArtisan.corps_metier}}</td>
+          <td>{{clientArtisan.nom_societe}}</td>
+          <td>{{clientArtisan.nom}}</td>
+          <td>{{clientArtisan.prenom}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <div class="col-sm-6">
     <h3>Liste d'artisan enregistré</h3>
-    <ul class="list-group">
-      <li class="list-group-item" *ngFor="let artisan of artisansList | async">
-        {{artisan.corps_metier}}
-      </li>
-    </ul>
+    <table class="table table-striped">
+      <thead>
+        <th>Corps de métier</th>
+        <th>Société</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let artisan of artisansList | async">
+          <td>{{artisan.corps_metier}}</td>
+          <td>{{artisan.nom_societe}}</td>
+          <td>{{artisan.nom}}</td>
+          <td>{{artisan.prenom}}</td>
+        </tr>
+      </tbody>
+    </table>
+
     <a class="btn btn-default" routerLink="artisans">Ajouter un Artisan</a>
   </div>
 </div>

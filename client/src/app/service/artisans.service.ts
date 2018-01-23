@@ -46,6 +46,8 @@ export class ArtisansService {
     );
   }
 
+  getAllArtisansAvailable() {}
+
   getAllArtisansByClient(id_client: number) {
     return this.http
       .get<Artisan[]>(`${this.url}/artisans/client/${id_client}`)
