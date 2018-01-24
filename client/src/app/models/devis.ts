@@ -12,7 +12,7 @@ export class Devis {
   tauxTva: number;
   montantTtc: number;
   client: number;
-  moe?: number;
+  artisan?: number;
   valid?: boolean;
   description?: string;
   updated_at?: Date;

@@ -29,7 +29,7 @@ const DevisSchema = new mongoose.Schema({
     ref: 'Client',
     required: true
   },
-  moe: {
+  artisan: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Artisan',
     required: true

@@ -134,6 +134,44 @@ export class ArtisansService {
     return this.http.put(`${this.url}/artisans/${artisan._id}`, artisan);
   }
 
+  updateArtisansToAffaire(id_client: number) {
+    // Update artisansByClient list
+    this.dataStore.artisansByClient.forEach((artisan, i) => {
+      // Check si id_client n'est pas déjà lié à artisan
+      if (!artisan.clients.includes(id_client)) {
+        artisan.clients.push(id_client);
+        this.http
+          .put<Artisan>(`${this.url}/artisans/${artisan._id}`, artisan)
+          .subscribe(data => {
+            if (data._id === artisan._id) {
+              this.dataStore.artisansByClient[i] = data;
+            }
+          });
+      }
+    });
+
+    // Update artisans list
+    this.dataStore.artisans.forEach((artisan, i) => {
+      // Check si id_client est lié à artisan
+      if (artisan.clients.includes(id_client)) {
+        artisan.clients.splice(artisan.clients.indexOf(id_client), 1);
+        this.http
+          .put<Artisan>(`${this.url}/artisans/${artisan._id}`, artisan)
+          .subscribe(data => {
+            if (data._id === artisan._id) {
+              this.dataStore.artisans[i] = data;
+            }
+          });
+      }
+    });
+
+    this._artisans.next(Object.assign({}, this.dataStore).artisans);
+
+    this._artisansByClient.next(
+      Object.assign({}, this.dataStore).artisansByClient
+    );
+  }
+
   deleteArtisan(id_artisan: number) {
     return this.http.delete(`${this.url}/artisans/${id_artisan}`);
   }

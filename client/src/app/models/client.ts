@@ -11,7 +11,6 @@ export class Client {
   _id?: number;
   affaire?: string;
   status_client?: boolean;
-  moe?: [number];
   civilite?: CIVILITE;
   nom: string;
   prenom: string;

@@ -10,7 +10,7 @@ ajouter modal pour sécuriser la suppression d'artisan à l'affaire => problème
   <div class="container">
     <div class="col-sm-5">
       <h3>Artisans lié à l'affaire</h3>
-      <select multiple class="form-control" size="8">
+      <select class="form-control" size="8">
         <option (click)="selectArtisanToRemove(clientArtisan)" *ngFor="let clientArtisan of clientArtisansList | async">{{clientArtisan.corps_metier}} {{clientArtisan.nom_societe}}</option>
       </select>
 
@@ -45,7 +45,7 @@ ajouter modal pour sécuriser la suppression d'artisan à l'affaire => problème
 
     <div class="col-sm-5">
       <h3>Liste d'artisan enregistré</h3>
-      <select multiple class="form-control" size="8">
+      <select class="form-control" size="8">
         <option (click)="selectArtisanToAdd(artisan)" *ngFor="let artisan of artisansList | async">{{artisan.corps_metier}} {{artisan.nom_societe}}</option>
       </select>
 
@@ -91,7 +91,7 @@ ajouter modal pour sécuriser la suppression d'artisan à l'affaire => problème
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-danger" [disabled]="!modalForm.form.valid" (click)="sauverModifications()" data-dismiss="modal">Confirmer</button>
+          <button class="btn btn-danger" (click)="sauverModifications()" data-dismiss="modal">Confirmer</button>
           <button class="btn btn-default" data-dismiss="modal">Annuler</button>
         </div>
       </div>

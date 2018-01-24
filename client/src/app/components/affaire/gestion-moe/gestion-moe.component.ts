@@ -46,18 +46,15 @@ export class GestionMoeComponent implements OnInit {
   }
 
   sauverModifications() {
-    console.log(this.clientArtisansList);
-    // Update artisan.clients from clientArtisansList
-  }
-
-  updateClient(client: Client) {
-    console.log(client);
+    this._artisansService.updateArtisansToAffaire(this.client._id);
   }
 
   ngOnInit() {
     this.clientArtisansList = this._artisansService.artisansByClient;
     this.artisansList = this._artisansService.artisans;
     this._client = this._clientService.client;
-    const subscribe = this._client.subscribe(data => (this.client = data));
+    const subscribe = this._client
+      .subscribe(data => (this.client = data))
+      .unsubscribe();
   }
 }

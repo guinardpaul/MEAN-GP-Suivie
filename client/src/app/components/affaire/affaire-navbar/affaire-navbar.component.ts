@@ -29,26 +29,27 @@ export class AffaireNavbarComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {}
+  subscribeToList() {}
 
-  getMOEByClient(id_client: number) {
-    this.artisansList = this._artisansService.artisansByClient;
-  }
+  unsubscribeToList() {}
 
   ngOnInit() {
     if (this.activatedRoute.snapshot.params['id_client'] !== undefined) {
       this.id_client = this.activatedRoute.snapshot.params['id_client'];
 
       this._client = this._clientService.client;
-      const subscription = this._client.subscribe(
-        data => {
-          this.client = data;
-        },
-        err => {
-          console.log(err);
-        }
-      );
+      const subscription = this._client
+        .subscribe(
+          data => {
+            this.client = data;
+          },
+          err => {
+            console.log(err);
+          }
+        )
+        .unsubscribe();
 
-      this.getMOEByClient(this.id_client);
+      this.artisansList = this._artisansService.artisansByClient;
     }
   }
 }
