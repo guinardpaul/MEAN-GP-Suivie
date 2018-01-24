@@ -15,6 +15,7 @@ import { DevisService } from '../../service/devis.service';
 import { FactureGlobalService } from '../../service/facture-global.service';
 // Env const
 import { historique } from '../../../environments/config';
+import { ArtisansService } from 'app/service/artisans.service';
 
 /**
  *
@@ -109,6 +110,14 @@ export class DevisComponent implements OnInit {
   id_client: number;
 
   /**
+   * artisan id
+   *
+   * @type {number}
+   * @memberof DevisComponent
+   */
+  id_artisan: number;
+
+  /**
    * mode form
    *
    * @memberof DevisComponent
@@ -147,6 +156,7 @@ export class DevisComponent implements OnInit {
    * @param {FlashMessagesService} flashMessages angular flash messages
    * @param {DetailsDevisService} detailsDevisService Details Devis service
    * @param {FactureGlobalService} factureGlobalService Facture global service
+   * @param {ArtisansService} artisanService Artisan service
    * @param {Router} router router
    * @memberof DevisComponent
    */
@@ -159,6 +169,7 @@ export class DevisComponent implements OnInit {
     private flashMessages: FlashMessagesService,
     private detailsDevisService: DetailsDevisService,
     private factureGlobalService: FactureGlobalService,
+    private artisanService: ArtisansService,
     private router: Router
   ) {
     this.generateForm();
@@ -1091,7 +1102,9 @@ export class DevisComponent implements OnInit {
       this.id_client = this.activatedRoute.root.snapshot.children[0].params[
         'id_client'
       ];
-      // this.getAllDevisByClient(this.id_client);
+      if (this.activatedRoute.snapshot.params['id_artisan'] !== undefined) {
+        this.id_artisan = this.activatedRoute.snapshot.params['id_artisan'];
+      }
       if (historique) {
         this.getAllValidDevisByClient(this.id_client);
       } else {

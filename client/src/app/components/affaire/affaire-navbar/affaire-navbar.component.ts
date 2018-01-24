@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 // Services
@@ -9,47 +9,44 @@ import { CorpsMetierService } from '../../../service/corps-metier.service';
 import { Client } from '../../../models/client';
 import { Artisan } from '../../../models/artisan';
 import { CorpsMetier } from '../../../models/corps-metier';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-affaire-navbar',
   templateUrl: './affaire-navbar.component.html',
   styleUrls: ['./affaire-navbar.component.css']
 })
-export class AffaireNavbarComponent implements OnInit {
+export class AffaireNavbarComponent implements OnInit, OnDestroy {
   private id_client: number;
   private _client: Observable<Client>;
   private client: Client;
-  private artisansList: Observable<Artisan[]>;
-  private errorLoading = false;
+  private artisansByClientList: Observable<Artisan[]>;
+  private subscription: Subscription;
 
   constructor(
     private _clientService: ClientService,
     private _artisansService: ArtisansService,
-    private _corpsMetierService: CorpsMetierService,
-    private router: Router,
     private activatedRoute: ActivatedRoute
   ) {}
-  subscribeToList() {}
-
-  unsubscribeToList() {}
 
   ngOnInit() {
     if (this.activatedRoute.snapshot.params['id_client'] !== undefined) {
       this.id_client = this.activatedRoute.snapshot.params['id_client'];
-
       this._client = this._clientService.client;
-      const subscription = this._client
-        .subscribe(
-          data => {
-            this.client = data;
-          },
-          err => {
-            console.log(err);
-          }
-        )
-        .unsubscribe();
+      this.subscription = this._client.subscribe(
+        data => {
+          this.client = data;
+        },
+        err => {
+          console.log(err);
+        }
+      );
 
-      this.artisansList = this._artisansService.artisansByClient;
+      this.artisansByClientList = this._artisansService.artisansByClientNavBar;
     }
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

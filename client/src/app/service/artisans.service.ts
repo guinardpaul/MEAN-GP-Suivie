@@ -13,9 +13,15 @@ export class ArtisansService {
   // UTILISER FILTRE ?
   artisansByClient: Observable<Artisan[]>;
   artisans: Observable<Artisan[]>;
+  artisansByClientNavBar: Observable<Artisan[]>;
   private _artisansByClient: BehaviorSubject<Artisan[]>;
   private _artisans: BehaviorSubject<Artisan[]>;
-  private dataStore: { artisansByClient: Artisan[]; artisans: Artisan[] };
+  private _artisansByClientNavBar: BehaviorSubject<Artisan[]>;
+  private dataStore: {
+    artisansByClient: Artisan[];
+    artisans: Artisan[];
+    artisansByClientNavBar: Artisan[];
+  };
 
   /**
    * Creates an instance of ArtisansService.
@@ -24,13 +30,21 @@ export class ArtisansService {
    */
   constructor(private http: HttpClient) {
     this.url = environment.url;
-    this.dataStore = { artisansByClient: [], artisans: [] };
+    this.dataStore = {
+      artisansByClient: [],
+      artisans: [],
+      artisansByClientNavBar: []
+    };
     this._artisansByClient = <BehaviorSubject<Artisan[]>>new BehaviorSubject(
       []
     );
     this.artisansByClient = this._artisansByClient.asObservable();
     this._artisans = <BehaviorSubject<Artisan[]>>new BehaviorSubject([]);
     this.artisans = this._artisans.asObservable();
+    this._artisansByClientNavBar = <BehaviorSubject<
+      Artisan[]
+    >>new BehaviorSubject([]);
+    this.artisansByClientNavBar = this._artisansByClientNavBar.asObservable();
   }
 
   getAllArtisans(id_client: number) {
@@ -61,6 +75,14 @@ export class ArtisansService {
       }
     });
     this.getAllArtisansAvailable();
+
+    this.dataStore.artisansByClientNavBar = [
+      ...this.dataStore.artisansByClient
+    ];
+    this._artisansByClientNavBar.next(
+      Object.assign({}, this.dataStore).artisansByClientNavBar
+    );
+
     return this._artisansByClient.next(
       Object.assign({}, this.dataStore).artisansByClient
     );
@@ -169,6 +191,13 @@ export class ArtisansService {
 
     this._artisansByClient.next(
       Object.assign({}, this.dataStore).artisansByClient
+    );
+
+    this.dataStore.artisansByClientNavBar = [
+      ...this.dataStore.artisansByClient
+    ];
+    this._artisansByClientNavBar.next(
+      Object.assign({}, this.dataStore).artisansByClientNavBar
     );
   }
 

@@ -38,24 +38,24 @@ module.exports = router => {
   });
 
   /**
-   * GET ALL DEVIS BY CLIENT & MOE
+   * GET ALL DEVIS BY CLIENT & artisan
    */
-  router.get('/devis/client/:client/moe/:moe', (req, res, next) => {
+  router.get('/devis/client/:client/artisan/:artisan', (req, res, next) => {
     if (!req.params.client) {
       return res.status(400).json({
         success: false,
         message: 'client._id not provided'
       });
-    } else if (!req.params.moe) {
+    } else if (!req.params.artisan) {
       return res.status(400).json({
         success: false,
-        message: 'moe._id not provided'
+        message: 'artisan._id not provided'
       });
     } else {
       // associe client to params
       // {} display all Devis informations
       Devis.find(
-        { client: req.params.client, moe: req.params.moe },
+        { client: req.params.client, artisan: req.params.artisan },
         {},
         (err, data) => {
           if (data) {

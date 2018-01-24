@@ -16,7 +16,7 @@
     <a routerLink="devis">GP</a>
   </li>
 
-  <li *ngFor="let artisan of artisansList | async">
+  <li *ngFor="let artisan of artisansByClientList | async">
     <a [routerLink]="['/affaires',id_client,'devis', artisan._id]">{{artisan.corps_metier}}</a>
   </li>
 

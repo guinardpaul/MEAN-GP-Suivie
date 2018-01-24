@@ -26,10 +26,6 @@ export class AffaireComponent implements OnInit {
 
       this._clientService.getClient(this.id_client);
       this._artisansService.getAllArtisans(this.id_client);
-
-      // setTimeout(() => {
-      // this._artisansService.getAllArtisansByClient(this.id_client);
-      // }, 2000);
     }
   }
 }

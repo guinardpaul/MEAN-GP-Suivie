@@ -38,39 +38,42 @@ module.exports = router => {
   });
 
   /**
-   * GET ALL FactureGlobal BY CLIENT & MOE
+   * GET ALL FactureGlobal BY CLIENT & artisan
    */
-  router.get('/facture-global/client/:client/moe/:moe', (req, res, next) => {
-    if (!req.params.client) {
-      return res.status(400).json({
-        success: false,
-        message: 'client_id not provided'
-      });
-    } else if (!req.params.moe) {
-      return res.status(400).json({
-        success: false,
-        message: 'moe._id not provided'
-      });
-    } else {
-      // associe client to params
-      // {} display all FactureGlobal informations
-      FactureGlobal.find(
-        { client: req.params.client, moe: req.params.moe },
-        {},
-        (err, data) => {
-          if (data) {
-            return res.status(200).json(data);
-          } else {
-            return res.status(500).json({
-              success: false,
-              message: 'Facture Global not found',
-              err: err
-            });
+  router.get(
+    '/facture-global/client/:client/artisan/:artisan',
+    (req, res, next) => {
+      if (!req.params.client) {
+        return res.status(400).json({
+          success: false,
+          message: 'client_id not provided'
+        });
+      } else if (!req.params.artisan) {
+        return res.status(400).json({
+          success: false,
+          message: 'artisan._id not provided'
+        });
+      } else {
+        // associe client to params
+        // {} display all FactureGlobal informations
+        FactureGlobal.find(
+          { client: req.params.client, artisan: req.params.artisan },
+          {},
+          (err, data) => {
+            if (data) {
+              return res.status(200).json(data);
+            } else {
+              return res.status(500).json({
+                success: false,
+                message: 'Facture Global not found',
+                err: err
+              });
+            }
           }
-        }
-      );
+        );
+      }
     }
-  });
+  );
 
   /**
    * GET All FactureGlobal by Devis
