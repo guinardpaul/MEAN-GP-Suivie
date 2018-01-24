@@ -1,6 +1,6 @@
 <div class="container-fluid">
-  {{client | json}}
-
+  <h4>Num Affaire : {{client.affaire}}</h4>
+  <h4>Client: {{client.nom}} {{client.prenom}}</h4>
 
   <!-- 
 select à 2 colonnes ?
@@ -40,7 +40,7 @@ ajouter modal pour sécuriser la suppression d'artisan à l'affaire => problème
       <button (click)="addArtisanToAffaire()" class="btn btn-default">
         <span class="glyphicon glyphicon-chevron-left"></span>
       </button>
-      <button class="btn btn-success">Sauvegarder</button>
+      <button data-toggle="modal" data-target="#myModal" class="btn btn-success">Sauvegarder</button>
     </div>
 
     <div class="col-sm-5">
@@ -68,5 +68,33 @@ ajouter modal pour sécuriser la suppression d'artisan à l'affaire => problème
 
       <a class="btn btn-default" routerLink="artisans">Ajouter un Artisan</a>
     </div>
+  </div>
+</div>
+
+<!-- Confirm delete Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <form #modalForm="ngForm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Confirmer modifications</h4>
+        </div>
+        <div class="modal-body">
+          <p>Etes-vous sûr de vouloir continuer ?
+            <br /> La suppression d'un artisan entraînera la perte des données pour cet artisan.</p>
+          <div *ngIf="historique">
+            <label for="descriptionModif">Description :</label>
+            <input type="text" name="descriptionModif" id="descriptionModif" class="form-control" placeholder="Expliquer la modification"
+              [(ngModel)]="descriptionModif" required />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger" [disabled]="!modalForm.form.valid" (click)="sauverModifications()" data-dismiss="modal">Confirmer</button>
+          <button class="btn btn-default" data-dismiss="modal">Annuler</button>
+        </div>
+      </div>
+    </form>
   </div>
 </div>

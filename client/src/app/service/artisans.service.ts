@@ -47,9 +47,8 @@ export class ArtisansService {
     );
   }
 
-  getAllArtisansAvailable() {}
-
   // Impossible d'utiliser array.filter car clients est une array
+  // vraiment impossible ?
   getAllArtisansByClient(id_client: number) {
     this.dataStore.artisansByClient = [];
     this.dataStore.artisans.forEach((artisan, i) => {
@@ -61,7 +60,7 @@ export class ArtisansService {
         });
       }
     });
-
+    this.getAllArtisansAvailable();
     return this._artisansByClient.next(
       Object.assign({}, this.dataStore).artisansByClient
     );
@@ -83,28 +82,44 @@ export class ArtisansService {
       ); */
   }
 
+  getAllArtisansAvailable() {
+    this.dataStore.artisans = this.dataStore.artisans.filter(function(art) {
+      return this.indexOf(art) < 0;
+    }, this.dataStore.artisansByClient);
+
+    this._artisans.next(Object.assign({}, this.dataStore).artisans);
+  }
+
+  // Push artisan from dataStore.artisans correspondant à @param artisan
   addArtisanToAffaire(artisan: Artisan) {
     this.dataStore.artisans.forEach((art, i) => {
       if (art._id === artisan._id) {
         this.dataStore.artisansByClient.push(artisan);
       }
     });
+    // Update dataStore.artisans list with filter
+    this.getAllArtisansAvailable();
 
     return this._artisansByClient.next(
       Object.assign({}, this.dataStore).artisansByClient
     );
   }
 
+  // Splice artisan from dataStore.artisansByClient correspondant à @param artisan
+  // &
+  // Push artisan from dataStore.artisansByClient to dataStore.artisans
   removeArtisanToAffaire(artisan: Artisan) {
-    this.dataStore.artisans.forEach((art, i) => {
+    this.dataStore.artisansByClient.forEach((art, i) => {
       if (art._id === artisan._id) {
         this.dataStore.artisansByClient.splice(i, 1);
+        this.dataStore.artisans.push(art);
       }
     });
 
-    return this._artisansByClient.next(
+    this._artisansByClient.next(
       Object.assign({}, this.dataStore).artisansByClient
     );
+    this._artisans.next(Object.assign({}, this.dataStore).artisans);
   }
 
   getOneArtisan(id_artisan: number): Observable<Artisan> {

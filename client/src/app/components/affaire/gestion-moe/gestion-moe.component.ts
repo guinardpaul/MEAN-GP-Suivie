@@ -37,10 +37,17 @@ export class GestionMoeComponent implements OnInit {
 
   addArtisanToAffaire() {
     this._artisansService.addArtisanToAffaire(this.artisanToAdd);
+    this.artisanToAdd = new Artisan();
   }
 
   removeArtisanToAffaire() {
     this._artisansService.removeArtisanToAffaire(this.artisanToRemove);
+    this.artisanToRemove = new Artisan();
+  }
+
+  sauverModifications() {
+    console.log(this.clientArtisansList);
+    // Update artisan.clients from clientArtisansList
   }
 
   updateClient(client: Client) {
