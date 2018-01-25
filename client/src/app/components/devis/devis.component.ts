@@ -13,9 +13,9 @@ import { ClientService } from '../../service/client.service';
 import { DetailsDevisService } from '../../service/details-devis.service';
 import { DevisService } from '../../service/devis.service';
 import { FactureGlobalService } from '../../service/facture-global.service';
+import { ArtisansService } from 'app/service/artisans.service';
 // Env const
 import { historique } from '../../../environments/config';
-import { ArtisansService } from 'app/service/artisans.service';
 
 /**
  *
@@ -115,7 +115,7 @@ export class DevisComponent implements OnInit {
    * @type {number}
    * @memberof DevisComponent
    */
-  id_artisan: number;
+  id_artisan: number | string;
 
   /**
    * mode form
@@ -214,9 +214,10 @@ export class DevisComponent implements OnInit {
    * @param {number} id client._id
    * @memberof DevisComponent
    */
-  getAllDevisByClient(id: number) {
+  getAllDevisByClient(id_client: number, id_artisan?: number) {
+    this.listDevis = [];
     this.devisService
-      .getAllDevisByClient(id)
+      .getAllDevisByClient(id_client, id_artisan)
       .subscribe(
         devis => (this.listDevis = devis),
         error => console.log('Erreur :' + error)
@@ -231,9 +232,9 @@ export class DevisComponent implements OnInit {
    * @param {number} id client._id
    * @memberof DevisComponent
    */
-  getAllValidDevisByClient(id: number) {
+  getAllValidDevisByClient(id_client: number, id_artisan?: number) {
     this.listDevis = [];
-    this.devisService.getAllDevisByClient(id).subscribe(
+    this.devisService.getAllDevisByClient(id_client, id_artisan).subscribe(
       devis => {
         for (const dev in devis) {
           if (devis.hasOwnProperty(dev)) {
@@ -1087,10 +1088,6 @@ export class DevisComponent implements OnInit {
    * @memberof DevisComponent
    */
   ngOnInit() {
-    console.log(this.activatedRoute);
-    console.log(
-      this.activatedRoute.root.snapshot.children[0].params['id_client']
-    );
     // used for <select> client options
     // this.getAllClient();
     // différentes routes à utiliser quand le dashboard sera implémenté
@@ -1102,14 +1099,35 @@ export class DevisComponent implements OnInit {
       this.id_client = this.activatedRoute.root.snapshot.children[0].params[
         'id_client'
       ];
-      if (this.activatedRoute.snapshot.params['id_artisan'] !== undefined) {
-        this.id_artisan = this.activatedRoute.snapshot.params['id_artisan'];
-      }
-      if (historique) {
+      this.activatedRoute.params.subscribe(params => {
+        if (params['id_artisan']) {
+          this.id_artisan = params['id_artisan'];
+          // Load data correspondant a l'id_artisan
+          if (this.id_artisan === 'GP') {
+            if (historique) {
+              this.getAllValidDevisByClient(this.id_client);
+            } else {
+              this.getAllDevisByClient(this.id_client);
+            }
+          } else {
+            // Load data by id_client & id_artisan
+            if (historique) {
+              this.getAllValidDevisByClient(
+                this.id_client,
+                params['id_artisan']
+              );
+            } else {
+              this.getAllDevisByClient(this.id_client, params['id_artisan']);
+            }
+          }
+        }
+      });
+      /* if (historique) {
         this.getAllValidDevisByClient(this.id_client);
       } else {
         this.getAllDevisByClient(this.id_client);
-      }
+      } */
+
       this.getClient(this.id_client);
     } else {
       this.router.navigate(['/pageNotFound']);

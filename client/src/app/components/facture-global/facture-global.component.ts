@@ -58,6 +58,14 @@ export class FactureGlobalComponent implements OnInit {
   id_client: number;
 
   /**
+   * artisan id
+   *
+   * @type {number}
+   * @memberof FactureGlobalComponent
+   */
+  id_artisan: number | string;
+
+  /**
    * Attribut Description facture global
    *
    * @type {string}
@@ -155,20 +163,22 @@ export class FactureGlobalComponent implements OnInit {
    * @param {any} client_id client id
    * @memberof FactureGlobalComponent
    */
-  getAllValidFactureGlobalByClient(client_id) {
+  getAllValidFactureGlobalByClient(id_client: number, id_artisan?: number) {
     this.listFactureGlobals = [];
-    this.factureGlobalService.getAllFactureGlobalByClient(client_id).subscribe(
-      fact => {
-        for (const f in fact) {
-          if (fact.hasOwnProperty(f)) {
-            if (fact[f].valid) {
-              this.listFactureGlobals.push(fact[f]);
+    this.factureGlobalService
+      .getAllFactureGlobalByClient(id_client, id_artisan)
+      .subscribe(
+        fact => {
+          for (const f in fact) {
+            if (fact.hasOwnProperty(f)) {
+              if (fact[f].valid) {
+                this.listFactureGlobals.push(fact[f]);
+              }
             }
           }
-        }
-      },
-      err => console.log('Could not load valid factures')
-    );
+        },
+        err => console.log('Could not load valid factures')
+      );
   }
 
   /**
@@ -178,9 +188,9 @@ export class FactureGlobalComponent implements OnInit {
    * @param {number} id client._id
    * @memberof FactureGlobalComponent
    */
-  getAllFactureGlobalByClient(id: number) {
+  getAllFactureGlobalByClient(id_client: number, id_artisan?: number) {
     this.factureGlobalService
-      .getAllFactureGlobalByClient(id)
+      .getAllFactureGlobalByClient(id_client, id_artisan)
       .subscribe(
         factureGlobal => (this.listFactureGlobals = factureGlobal),
         error => console.log('Error ' + error)
@@ -681,9 +691,6 @@ export class FactureGlobalComponent implements OnInit {
    * @memberof FactureGlobalComponent
    */
   ngOnInit() {
-    console.log(
-      this.activatedRoute.root.snapshot.children[0].params['id_client']
-    );
     // différentes routes à implémenter pour le dashboard
     if (
       this.activatedRoute.root.snapshot.children[0].params['id_client'] !==
@@ -692,6 +699,29 @@ export class FactureGlobalComponent implements OnInit {
       this.id_client = this.activatedRoute.root.snapshot.children[0].params[
         'id_client'
       ];
+      this.activatedRoute.params.subscribe(params => {
+        this.id_artisan = params['id_artisan'];
+
+        if (this.id_artisan === 'GP') {
+          if (historique) {
+            this.getAllValidFactureGlobalByClient(this.id_client);
+          } else {
+            this.getAllFactureGlobalByClient(this.id_client);
+          }
+        } else {
+          if (historique) {
+            this.getAllValidFactureGlobalByClient(
+              this.id_client,
+              params['id_artisan']
+            );
+          } else {
+            this.getAllFactureGlobalByClient(
+              this.id_client,
+              params['id_artisan']
+            );
+          }
+        }
+      });
       if (historique) {
         this.getAllValidFactureGlobalByClient(this.id_client);
       } else {

@@ -52,10 +52,20 @@ export class FactureGlobalService {
    * @returns
    * @memberof FactureGlobalService
    */
-  getAllFactureGlobalByClient(id_client: number): Observable<FactureGlobal[]> {
-    return this.http.get<FactureGlobal[]>(
-      `${this.url}/facture-global/client/${id_client}`
-    );
+  getAllFactureGlobalByClient(
+    id_client: number,
+    id_artisan?: number
+  ): Observable<FactureGlobal[]> {
+    let url;
+    if (id_artisan === undefined) {
+      url = `${this.url}/facture-global/client/${id_client}`;
+    } else {
+      url = `${
+        this.url
+      }/facture-global/client/${id_client}/artisan/${id_artisan}`;
+    }
+
+    return this.http.get<FactureGlobal[]>(url);
   }
 
   /**

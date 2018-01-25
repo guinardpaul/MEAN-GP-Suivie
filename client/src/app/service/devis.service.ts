@@ -49,8 +49,18 @@ export class DevisService {
    * @returns
    * @memberof DevisService
    */
-  getAllDevisByClient(client_id: number): Observable<Devis[]> {
-    return this.http.get<Devis[]>(`${this.url}/devis/client/${client_id}`);
+  getAllDevisByClient(
+    client_id: number,
+    artisan_id?: number
+  ): Observable<Devis[]> {
+    let url;
+    if (artisan_id === undefined) {
+      url = `${this.url}/devis/client/${client_id}`;
+    } else {
+      url = `${this.url}/devis/client/${client_id}/artisan/${artisan_id}`;
+    }
+
+    return this.http.get<Devis[]>(url);
   }
 
   /**

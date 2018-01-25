@@ -32,6 +32,7 @@ export class AffaireNavbarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (this.activatedRoute.snapshot.params['id_client'] !== undefined) {
       this.id_client = this.activatedRoute.snapshot.params['id_client'];
+
       this._client = this._clientService.client;
       this.subscription = this._client.subscribe(
         data => {
