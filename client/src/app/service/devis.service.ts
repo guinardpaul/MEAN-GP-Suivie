@@ -5,6 +5,8 @@ import { Observable } from 'rxjs/Observable';
 import { Devis } from '../models/devis';
 // Environment variables
 import { environment } from '../../environments/environment';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { debug } from 'util';
 
 /**
  *
@@ -15,6 +17,9 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class DevisService {
   private url;
+  devisList: Observable<Devis[]>;
+  private _devisList: BehaviorSubject<Devis[]>;
+  private dataStore: { devisList: Devis[] };
 
   /**
    * Creates an instance of DevisService.
@@ -23,6 +28,9 @@ export class DevisService {
    */
   constructor(private http: HttpClient) {
     this.url = environment.url;
+    this.dataStore = { devisList: [] };
+    this._devisList = <BehaviorSubject<Devis[]>>new BehaviorSubject([]);
+    this.devisList = this._devisList.asObservable();
   }
 
   /**
@@ -49,10 +57,7 @@ export class DevisService {
    * @returns
    * @memberof DevisService
    */
-  getAllDevisByClient(
-    client_id: number,
-    artisan_id?: number
-  ): Observable<Devis[]> {
+  getAllDevisByClient(client_id: number, artisan_id?: number) {
     let url;
     if (artisan_id === undefined) {
       url = `${this.url}/devis/client/${client_id}`;
@@ -60,7 +65,15 @@ export class DevisService {
       url = `${this.url}/devis/client/${client_id}/artisan/${artisan_id}`;
     }
 
-    return this.http.get<Devis[]>(url);
+    return this.http.get<Devis[]>(url).subscribe(
+      data => {
+        this.dataStore.devisList = data;
+        this._devisList.next(Object.assign({}, this.dataStore).devisList);
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 
   /**
@@ -96,8 +109,17 @@ export class DevisService {
    * @returns
    * @memberof DevisService
    */
-  addDevis(devis: Devis): Observable<any> {
+  addDevis(devis: Devis) {
     return this.http.post<any>(`${this.url}/devis`, devis);
+    /* .subscribe(
+      data => {
+        this.dataStore.devisList = [...this.dataStore.devisList, data];
+        this._devisList.next(Object.assign({}, this.dataStore).devisList);
+      },
+      err => {
+        console.log(err);
+      }
+    ); */
   }
 
   /**
@@ -108,8 +130,21 @@ export class DevisService {
    * @returns
    * @memberof DevisService
    */
-  updateDevis(devis: Devis): Observable<any> {
+  updateDevis(devis: Devis) {
     return this.http.put<any>(`${this.url}/devis/${devis._id}`, devis);
+    /* .subscribe(
+        data => {
+          this.dataStore.devisList.forEach((dev, i) => {
+            if (dev._id === devis._id) {
+              this.dataStore.devisList[i] = data;
+            }
+          });
+          this._devisList.next(Object.assign({}, this.dataStore).devisList);
+        },
+        err => {
+          console.log(err);
+        }
+      ); */
   }
 
   /**
@@ -121,5 +156,15 @@ export class DevisService {
    */
   deleteDevis(id_dev: number) {
     return this.http.delete(`${this.url}/devis/${id_dev}`);
+    /* .subscribe(data => {
+      this.dataStore.devisList.forEach((dev,i) => {
+        if(dev._id === id_dev){
+          this.dataStore.devisList.splice(i,1)
+        }
+      })
+      this._devisList.next(Object.assign({},this.dataStore).devisList);
+    },err => {
+      console.log(err);
+    }) */
   }
 }

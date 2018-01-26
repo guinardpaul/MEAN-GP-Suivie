@@ -4,19 +4,19 @@
     &nbsp; Erreur lors du chargement des infos de l'affaire. Veuillez réessayer
   </li>
 
-  <li *ngIf="!errorLoading" class="active">
-    <a [routerLink]="['/affaires', id_client]">Affaire N° {{client.affaire}}</a>
+  <li *ngIf="!errorLoading" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+    <a class="dashboard-page" [routerLink]="['/affaires', id_client]">Affaire N° {{client.affaire}}</a>
   </li>
 
-  <li *ngIf="!errorLoading">
+  <li *ngIf="!errorLoading" routerLinkActive="active">
     <a routerLink="gestion-moe">Gérer les MOE</a>
   </li>
 
-  <li *ngIf="!errorLoading">
+  <li *ngIf="!errorLoading" routerLinkActive="active">
     <a [routerLink]="['/affaires', id_client, 'devis', 'GP']">GP</a>
   </li>
 
-  <li *ngFor="let artisan of artisansByClientList | async">
+  <li *ngFor="let artisan of artisansByClientList | async" routerLinkActive="active">
     <a [routerLink]="['/affaires', id_client, 'devis', artisan._id]">{{artisan.corps_metier}}</a>
   </li>
 

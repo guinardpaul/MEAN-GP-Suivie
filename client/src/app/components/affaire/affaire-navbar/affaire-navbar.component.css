@@ -11,3 +11,11 @@
   font-weight: bold;
   font-size: 20px;
 }
+
+.dashboard-page {
+  background-color: rgb(247, 171, 31);
+}
+
+/* .dashboard-page:hover {
+  background-color: rgb(212, 164, 73);
+} */

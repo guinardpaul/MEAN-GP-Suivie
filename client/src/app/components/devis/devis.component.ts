@@ -16,6 +16,7 @@ import { FactureGlobalService } from '../../service/facture-global.service';
 import { ArtisansService } from 'app/service/artisans.service';
 // Env const
 import { historique } from '../../../environments/config';
+import { Observable } from 'rxjs/Observable';
 
 /**
  *
@@ -36,7 +37,7 @@ export class DevisComponent implements OnInit {
    * @type {Devis[]}
    * @memberof DevisComponent
    */
-  listDevis: Devis[] = [];
+  listDevis: Observable<Devis[]>;
 
   /**
    * list clients
@@ -202,7 +203,7 @@ export class DevisComponent implements OnInit {
     this.devisService
       .getAllDevis()
       .subscribe(
-        devis => (this.listDevis = devis),
+        devis => console.log(devis),
         error => console.log('Erreur :' + error)
       );
   }
@@ -215,13 +216,8 @@ export class DevisComponent implements OnInit {
    * @memberof DevisComponent
    */
   getAllDevisByClient(id_client: number, id_artisan?: number) {
-    this.listDevis = [];
-    this.devisService
-      .getAllDevisByClient(id_client, id_artisan)
-      .subscribe(
-        devis => (this.listDevis = devis),
-        error => console.log('Erreur :' + error)
-      );
+    this.devisService.getAllDevisByClient(id_client, id_artisan);
+    this.listDevis = this.devisService.devisList;
   }
 
   /**
@@ -233,19 +229,8 @@ export class DevisComponent implements OnInit {
    * @memberof DevisComponent
    */
   getAllValidDevisByClient(id_client: number, id_artisan?: number) {
-    this.listDevis = [];
-    this.devisService.getAllDevisByClient(id_client, id_artisan).subscribe(
-      devis => {
-        for (const dev in devis) {
-          if (devis.hasOwnProperty(dev)) {
-            if (devis[dev].valid) {
-              this.listDevis.push(devis[dev]);
-            }
-          }
-        }
-      },
-      error => console.log('Erreur :' + error)
-    );
+    this.devisService.getAllDevisByClient(id_client, id_artisan);
+    this.listDevis = this.devisService.devisList;
   }
 
   /**
