@@ -4,6 +4,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FlashMessagesService } from 'ngx-flash-messages';
 // Models
+import {
+  GP_flash_config,
+  GP_flash_messages
+} from '../../models/constants/GP-messages-utils';
 import { Client } from '../../models/client';
 import { Devis } from '../../models/devis';
 import { CONST_TAUX } from '../../models/taux.const';
@@ -37,7 +41,7 @@ export class DevisComponent implements OnInit {
    * @type {Devis[]}
    * @memberof DevisComponent
    */
-  listDevis: Observable<Devis[]>;
+  listDevis: Devis[] = [];
 
   /**
    * list clients
@@ -116,7 +120,7 @@ export class DevisComponent implements OnInit {
    * @type {number}
    * @memberof DevisComponent
    */
-  id_artisan: number | string;
+  id_artisan: number;
 
   /**
    * mode form
@@ -216,8 +220,14 @@ export class DevisComponent implements OnInit {
    * @memberof DevisComponent
    */
   getAllDevisByClient(id_client: number, id_artisan?: number) {
-    this.devisService.getAllDevisByClient(id_client, id_artisan);
-    this.listDevis = this.devisService.devisList;
+    this.devisService.getAllDevisByClient(id_client, id_artisan).subscribe(
+      data => {
+        this.listDevis = data;
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 
   /**
@@ -229,8 +239,15 @@ export class DevisComponent implements OnInit {
    * @memberof DevisComponent
    */
   getAllValidDevisByClient(id_client: number, id_artisan?: number) {
-    this.devisService.getAllDevisByClient(id_client, id_artisan);
-    this.listDevis = this.devisService.devisList;
+    this.listDevis = [];
+    this.devisService.getAllDevisByClient(id_client, id_artisan).subscribe(
+      data => {
+        this.listDevis = data;
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 
   /**
@@ -282,7 +299,8 @@ export class DevisComponent implements OnInit {
       montantHt: this.devisForm.get('montantHt').value,
       tauxTva: this.devisForm.get('tauxTva').value,
       montantTtc: this.devisForm.get('montantTtc').value,
-      client: this.id_client
+      client: this.id_client,
+      artisan: this.id_artisan
     };
     // Check si Add ou Update
     if (
@@ -293,16 +311,16 @@ export class DevisComponent implements OnInit {
       this.devisService.addDevis(newDevis).subscribe(
         data => {
           if (data.success) {
-            this.flashMessages.show('Devis créé', {
-              classes: ['alert', 'alert-success'],
-              timeout: 3000
-            });
+            this.flashMessages.show(
+              GP_flash_messages.DEVIS.ADD_DEVIS_SUCCESS,
+              GP_flash_config.SUCCESS
+            );
             this.addDetailsDevis(data.obj);
           } else {
-            this.flashMessages.show(data.message, {
-              classes: ['alert', 'alert-danger'],
-              timeout: 3000
-            });
+            this.flashMessages.show(
+              GP_flash_messages.DEVIS.ADD_DEVIS_ERROR,
+              GP_flash_config.ERROR
+            );
             this.processing = false;
             this.enableForm();
           }
@@ -321,7 +339,8 @@ export class DevisComponent implements OnInit {
           montantHt: this.devisForm.get('montantHt').value,
           tauxTva: this.devisForm.get('tauxTva').value,
           montantTtc: this.devisForm.get('montantTtc').value,
-          client: this.id_client
+          client: this.id_client,
+          artisan: this.id_artisan
         };
         // Save to database
         this.devisService
@@ -334,18 +353,18 @@ export class DevisComponent implements OnInit {
 
         this.devisService.updateDevis(this.devis).subscribe(
           data => {
-            this.flashMessages.show('Devis modifié', {
-              classes: ['alert', 'alert-success'],
-              timeout: 3000
-            });
+            this.flashMessages.show(
+              GP_flash_messages.DEVIS.UPDATE_DEVIS_SUCCESS,
+              GP_flash_config.SUCCESS
+            );
             this.fetchAnddeleteDetailsDevis(this.devis._id);
           },
           error => {
             console.log('Erreur :' + error);
-            this.flashMessages.show('Erreur modification devis', {
-              classes: ['alert', 'alert-danger'],
-              timeout: 3000
-            });
+            this.flashMessages.show(
+              GP_flash_messages.DEVIS.UPDATE_DEVIS_ERROR,
+              GP_flash_config.ERROR
+            );
             this.processing = false;
             this.enableForm();
           }
@@ -360,23 +379,24 @@ export class DevisComponent implements OnInit {
           montantHt: this.devisForm.get('montantHt').value,
           tauxTva: this.devisForm.get('tauxTva').value,
           montantTtc: this.devisForm.get('montantTtc').value,
-          client: this.id_client
+          client: this.id_client,
+          artisan: this.id_artisan
         };
         // Update to database
         this.devisService.updateDevis(updateDevis).subscribe(
           data => {
-            this.flashMessages.show('Devis modifié', {
-              classes: ['alert', 'alert-success'],
-              timeout: 3000
-            });
+            this.flashMessages.show(
+              GP_flash_messages.DEVIS.UPDATE_DEVIS_SUCCESS,
+              GP_flash_config.SUCCESS
+            );
             this.updateDetailsDevis(data.obj);
           },
           error => {
             console.log('Erreur :' + error);
-            this.flashMessages.show('Erreur modification devis', {
-              classes: ['alert', 'alert-danger'],
-              timeout: 3000
-            });
+            this.flashMessages.show(
+              GP_flash_messages.DEVIS.UPDATE_DEVIS_ERROR,
+              GP_flash_config.ERROR
+            );
             this.processing = false;
             this.enableForm();
           }
@@ -538,29 +558,26 @@ export class DevisComponent implements OnInit {
             // Delete Devis
             this.devisService.updateDevis(devis).subscribe(
               msg => {
-                this.flashMessages.show('Devis supprimé', {
-                  classes: ['alert', 'alert-warning'],
-                  timeout: 3000
-                });
+                this.flashMessages.show(
+                  GP_flash_messages.DEVIS.REMOVE_DEVIS_SUCCESS,
+                  GP_flash_config.WARNING
+                );
                 this.onSuccess();
                 // Fetch DetailsDevis by Devis._id & delete detailsDevis
                 this.fetchAnddeleteDetailsDevis(devis._id);
               },
               error => {
                 console.log(error),
-                  this.flashMessages.show('Erreur : Devis non supprimé', {
-                    classes: ['alert', 'alert-danger'],
-                    timeout: 3000
-                  });
+                  this.flashMessages.show(
+                    GP_flash_messages.DEVIS.REMOVE_DEVIS_ERROR,
+                    GP_flash_config.ERROR
+                  );
               }
             );
           } else {
             this.flashMessages.show(
-              'Suppression impossible ! Le devis est associé à des factures.',
-              {
-                classes: ['alert', 'alert-danger'],
-                timeout: 3000
-              }
+              GP_flash_messages.DEVIS.REMOVE_DEVIS_IMPOSSIBLE,
+              GP_flash_config.ERROR
             );
             this.onSuccess();
           }
@@ -573,29 +590,26 @@ export class DevisComponent implements OnInit {
           if (data.length === 0) {
             this.devisService.deleteDevis(devis._id).subscribe(
               dev => {
-                this.flashMessages.show('Devis supprimé', {
-                  classes: ['alert', 'alert-warning'],
-                  timeout: 3000
-                });
+                this.flashMessages.show(
+                  GP_flash_messages.DEVIS.REMOVE_DEVIS_SUCCESS,
+                  GP_flash_config.WARNING
+                );
                 this.onSuccess();
                 // Fetch DetailsDevis by Devis._id & delete detailsDevis
                 this.fetchAnddeleteDetailsDevis(devis._id);
               },
               err => {
                 console.log(err);
-                this.flashMessages.show('Erreur : Devis non supprimé', {
-                  classes: ['alert', 'alert-danger'],
-                  timeout: 3000
-                });
+                this.flashMessages.show(
+                  GP_flash_messages.DEVIS.REMOVE_DEVIS_ERROR,
+                  GP_flash_config.ERROR
+                );
               }
             );
           } else {
             this.flashMessages.show(
-              'Suppression impossible ! Le devis est associé à des factures.',
-              {
-                classes: ['alert', 'alert-danger'],
-                timeout: 3000
-              }
+              GP_flash_messages.DEVIS.REMOVE_DEVIS_IMPOSSIBLE,
+              GP_flash_config.ERROR
             );
             this.onSuccess();
           }
@@ -661,12 +675,27 @@ export class DevisComponent implements OnInit {
     this.devisForm.controls['montantTtc3'].setValue(0);
     this.enableForm();
     // Différente route à utiliser une fois le dashboard implémenté
-    if (this.activatedRoute.snapshot.params['id_client'] !== undefined) {
-      if (historique) {
+    if (
+      this.activatedRoute.root.snapshot.children[0].params['id_client'] !==
+      undefined
+    ) {
+      this.activatedRoute.params.subscribe(params => {
+        if (params['id_artisan']) {
+          this.id_artisan = params['id_artisan'];
+
+          // Load data by id_client & id_artisan
+          if (historique) {
+            this.getAllValidDevisByClient(this.id_client, params['id_artisan']);
+          } else {
+            this.getAllDevisByClient(this.id_client, params['id_artisan']);
+          }
+        }
+      });
+      /* if (historique) {
         this.getAllValidDevisByClient(this.id_client);
       } else {
         this.getAllDevisByClient(this.id_client);
-      }
+      } */
     } else {
       this.getAllDevis();
     }
@@ -1078,32 +1107,20 @@ export class DevisComponent implements OnInit {
     // différentes routes à utiliser quand le dashboard sera implémenté
     // if (this.activatedRoute.snapshot.params['id_client'] !== undefined) {
     if (
-      this.activatedRoute.root.snapshot.children[0].params['id_client'] !==
+      this.activatedRoute.root.children[0].snapshot.params['id_client'] !==
       undefined
     ) {
-      this.id_client = this.activatedRoute.root.snapshot.children[0].params[
+      this.id_client = this.activatedRoute.root.children[0].snapshot.params[
         'id_client'
       ];
       this.activatedRoute.params.subscribe(params => {
         if (params['id_artisan']) {
           this.id_artisan = params['id_artisan'];
-          // Load data correspondant a l'id_artisan
-          if (this.id_artisan === 'GP') {
-            if (historique) {
-              this.getAllValidDevisByClient(this.id_client);
-            } else {
-              this.getAllDevisByClient(this.id_client);
-            }
+          // Load data by id_client & id_artisan
+          if (historique) {
+            this.getAllValidDevisByClient(this.id_client, params['id_artisan']);
           } else {
-            // Load data by id_client & id_artisan
-            if (historique) {
-              this.getAllValidDevisByClient(
-                this.id_client,
-                params['id_artisan']
-              );
-            } else {
-              this.getAllDevisByClient(this.id_client, params['id_artisan']);
-            }
+            this.getAllDevisByClient(this.id_client, params['id_artisan']);
           }
         }
       });

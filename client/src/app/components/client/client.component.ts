@@ -1,14 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 // Models
 import { Client } from '../../models/client';
 import { CIVILITE } from '../../models/civilite.enum';
+import { Artisan } from 'app/models/artisan';
+import {
+  GP_flash_messages,
+  GP_flash_config
+} from '../../models/constants/GP-messages-utils';
 // Services
 import { ClientService } from '../../service/client.service';
 import { DevisService } from '../../service/devis.service';
+import { ArtisansService } from '../../service/artisans.service';
 import { FlashMessagesService } from 'ngx-flash-messages';
-
+// Environment
+import * as config from '../../../environments/config';
 /**
  *
  * @author Paul GUINARD
@@ -19,12 +26,12 @@ import { FlashMessagesService } from 'ngx-flash-messages';
 @Component({
   selector: 'app-client',
   templateUrl: './client.component.html',
-  styleUrls: [ './client.component.css' ]
+  styleUrls: ['./client.component.css']
 })
 export class ClientComponent implements OnInit {
   /**
    * liste clients
-   * 
+   *
    * @type {any[]}
    * @memberof ClientComponent
    */
@@ -32,7 +39,7 @@ export class ClientComponent implements OnInit {
 
   /**
    * client
-   * 
+   *
    * @type {*}
    * @memberof ClientComponent
    */
@@ -40,15 +47,23 @@ export class ClientComponent implements OnInit {
 
   /**
    * id client
-   * 
+   *
    * @type {number}
    * @memberof ClientComponent
    */
   client_id: number = null;
 
   /**
+   * id GP
+   *
+   * @type {number}
+   * @memberof ClientComponent
+   */
+  id_GP = config.GP_ID;
+
+  /**
    * keys for select option
-   * 
+   *
    * @type {any[]}
    * @memberof ClientComponent
    */
@@ -56,28 +71,28 @@ export class ClientComponent implements OnInit {
 
   /**
    * enum CIVILITE
-   * 
+   *
    * @memberof ClientComponent
    */
   civiliteEnum = CIVILITE;
 
   /**
    * mode form
-   * 
+   *
    * @memberof ClientComponent
    */
   mode = false;
 
   /**
    * on process
-   * 
+   *
    * @memberof ClientComponent
    */
   processing = false;
 
   /**
    * client form
-   * 
+   *
    * @type {FormGroup}
    * @memberof ClientComponent
    */
@@ -85,7 +100,7 @@ export class ClientComponent implements OnInit {
 
   /**
    * Validation unicité n° affaire
-   * 
+   *
    * @type {boolean}
    * @memberof ClientComponent
    */
@@ -93,22 +108,24 @@ export class ClientComponent implements OnInit {
 
   /**
    * Used for select client options
-   * 
+   *
    * @memberof ClientComponent
    */
   selectedClient = 'Ajouter une affaire à un client existant' || new Client();
 
+  GP_artisan = new Artisan();
+
   // Status images
   /**
    * image status true
-   * 
+   *
    * @memberof ClientComponent
    */
   status_true = '../../assets/images/status_true.png';
 
   /**
    * image status false
-   * 
+   *
    * @memberof ClientComponent
    */
   status_false = '../../assets/images/status_false.png';
@@ -126,6 +143,7 @@ export class ClientComponent implements OnInit {
     private clientService: ClientService,
     private devisService: DevisService,
     private formBuilder: FormBuilder,
+    private artisansService: ArtisansService,
     private flashMessages: FlashMessagesService
   ) {
     this.generateForm();
@@ -139,37 +157,37 @@ export class ClientComponent implements OnInit {
    * @memberof ClientComponent
    */
   getAllClients() {
-    this.clientService.getAllClients()
-      .subscribe(
+    this.clientService.getAllClients().subscribe(
       data => {
         this.listClient = data;
       },
       error => console.log(error)
-      );
+    );
   }
 
   /**
    * Get One Client.
-	 * Method not used.
+   * Method not used.
    *
    * @param {number} id client._id
    * @memberof ClientComponent
    */
   getOneClient(id: number) {
-    this.clientService.getOneClient(id)
+    this.clientService
+      .getOneClient(id)
       .subscribe(
-      client => this.client = client,
-      error => console.log('Erreur ' + error)
+        client => (this.client = client),
+        error => console.log('Erreur ' + error)
       );
   }
 
   /**
-  * ADD/UPDATE Client.
-  * - Si this.client._id exists : updateClient().
-  * - Si this.client._id == null || 0 : addClient().
-  *
-  * @memberof ClientComponent
-  */
+   * ADD/UPDATE Client.
+   * - Si this.client._id exists : updateClient().
+   * - Si this.client._id == null || 0 : addClient().
+   *
+   * @memberof ClientComponent
+   */
   addClient() {
     this.processing = true;
     this.disableForm();
@@ -177,65 +195,90 @@ export class ClientComponent implements OnInit {
     this.client._id = this.client_id;
     this.client.civilite = this.clientForm.get('civilite').value;
 
-    // Check method to use 
+    // Check method to use
     if (this.client_id === null || this.client_id === 0) {
-      this.clientService.addClient(this.client)
-        .subscribe(
+      this.clientService.addClient(this.client).subscribe(
         data => {
           if (!data.success) {
-            this.flashMessages.show(data.message, {
-              classes: [ 'alert', 'alert-danger' ],
-              timeout: 3000
-            });
+            this.flashMessages.show(
+              GP_flash_messages.CLIENT.ADD_CLIENT_ERROR,
+              GP_flash_config.ERROR
+            );
+
             this.processing = false;
             this.enableForm();
           } else {
-            this.flashMessages.show(data.message, {
-              classes: [ 'alert', 'alert-success' ],
-              timeout: 3000
-            });
+            this.flashMessages.show(
+              GP_flash_messages.CLIENT.ADD_CLIENT_SUCCESS,
+              GP_flash_config.SUCCESS
+            );
+            this.updateGPAffaires(this.GP_artisan);
             this.onSuccess();
           }
-        }, err => {
-          this.flashMessages.show('Erreur : Client non sauvé', {
-            classes: [ 'alert', 'alert-danger' ],
-            timeout: 3000
-          });
+        },
+        err => {
+          this.flashMessages.show(
+            GP_flash_messages.CLIENT.ADD_CLIENT_ERROR,
+            GP_flash_config.ERROR
+          );
           console.log(err);
           this.enableForm();
           this.processing = false;
         }
-        );
+      );
     } else {
-      this.clientService.updateClient(this.client)
-        .subscribe(
+      this.clientService.updateClient(this.client).subscribe(
         data => {
           if (data.success) {
-            this.flashMessages.show('Client mis à jour', {
-              classes: [ 'alert', 'alert-success' ],
-              timeout: 3000
-            });
+            this.updateGPAffaires(this.GP_artisan);
+            this.flashMessages.show(
+              GP_flash_messages.CLIENT.UPDATE_CLIENT_SUCCESS,
+              GP_flash_config.SUCCESS
+            );
             this.onSuccess();
           } else {
-            this.flashMessages.show('Erreur : Client non modifié', {
-              classes: [ 'alert', 'alert-danger' ],
-              timeout: 3000
-            });
+            this.flashMessages.show(
+              GP_flash_messages.CLIENT.UPDATE_CLIENT_ERROR,
+              GP_flash_config.ERROR
+            );
             console.log('Erreur update client :' + data);
             this.processing = false;
             this.enableForm();
           }
-        }, err => {
-          this.flashMessages.show('Erreur : Client non modifié', {
-            classes: [ 'alert', 'alert-danger' ],
-            timeout: 3000
-          });
+        },
+        err => {
+          this.flashMessages.show(
+            GP_flash_messages.CLIENT.UPDATE_CLIENT_ERROR,
+            GP_flash_config.ERROR
+          );
           console.log(err);
           this.processing = false;
           this.enableForm();
         }
-        );
+      );
     }
+  }
+
+  getGPData(id_artisan: any) {
+    this.artisansService.getOneArtisan(id_artisan).subscribe(
+      data => {
+        this.GP_artisan = data;
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
+  updateGPAffaires(artisan: Artisan) {
+    this.artisansService.updateArtisan(artisan).subscribe(
+      data => {
+        console.log(data);
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 
   /**
@@ -245,44 +288,43 @@ export class ClientComponent implements OnInit {
    * @memberof ClientComponent
    */
   onDelete(id: number) {
-    this.devisService.getAllDevisByClient(id)
-      .subscribe(
+    this.devisService.getAllDevisByClient(id);
+    const devisList = this.devisService.devisList.subscribe(
       data => {
         if (data.length === 0) {
-          this.clientService.deleteClient(id)
-            .subscribe(
+          this.clientService.deleteClient(id).subscribe(
             () => {
-              this.flashMessages.show('Client supprimé', {
-                classes: [ 'alert', 'alert-warning' ],
-                timeout: 3000
-              });
+              this.flashMessages.show(
+                GP_flash_messages.CLIENT.REMOVE_CLIENT_SUCCESS,
+                GP_flash_config.WARNING
+              );
               this.client = {};
               this.getAllClients();
             },
             error => {
               this.client = {};
               console.log(error);
-              this.flashMessages.show('Erreur: Client non supprimé', {
-                classes: [ 'alert', 'alert-danger' ],
-                timeout: 3000
-              });
+              this.flashMessages.show(
+                GP_flash_messages.CLIENT.REMOVE_CLIENT_ERROR,
+                GP_flash_config.ERROR
+              );
             }
-            );
+          );
         } else {
           this.client = {};
-          this.flashMessages.show('Suppression impossible ! le client est associé à des devis', {
-            classes: [ 'alert', 'alert-danger' ],
-            timeout: 3000
-          });
+          this.flashMessages.show(
+            GP_flash_messages.CLIENT.REMOVE_CLIENT_IMPOSSIBLE,
+            GP_flash_config.ERROR
+          );
         }
       },
       err => console.log('Erreur :' + err)
-      );
+    );
   }
 
   /**
    * Set client to delete on confirm
-   * 
+   *
    * @param {Client} client client body
    * @memberof ClientComponent
    */
@@ -292,7 +334,7 @@ export class ClientComponent implements OnInit {
 
   /**
    * on close modal
-   * 
+   *
    * @memberof ClientComponent
    */
   closeModal() {
@@ -302,7 +344,7 @@ export class ClientComponent implements OnInit {
 
   /**
    * Success function called when request to api successfull.
-	 * Fetch data from database to update table.
+   * Fetch data from database to update table.
    *
    * @memberof ClientComponent
    */
@@ -350,7 +392,9 @@ export class ClientComponent implements OnInit {
     this.clientForm.get('cpFact').setValue(client.cpFact);
     this.clientForm.get('villeFact').setValue(client.villeFact);
     this.clientForm.get('adresseChantier').setValue(client.adresseChantier);
-    this.clientForm.get('complAdresseChantier').setValue(client.complAdresseChantier);
+    this.clientForm
+      .get('complAdresseChantier')
+      .setValue(client.complAdresseChantier);
     this.clientForm.get('cpChantier').setValue(client.cpChantier);
     this.clientForm.get('villeChantier').setValue(client.villeChantier);
 
@@ -377,26 +421,24 @@ export class ClientComponent implements OnInit {
    */
   generateForm() {
     this.clientForm = this.formBuilder.group({
-      affaire: [ '', Validators.compose([
-        Validators.required
-      ]) ],
+      affaire: ['', Validators.compose([Validators.required])],
       civilite: '',
-      nom: [ '', Validators.compose([
-        Validators.required,
-        this.nomPrenomValidation
-      ]) ],
-      prenom: [ '', Validators.compose([
-        Validators.required,
-        this.nomPrenomValidation
-      ]) ],
-      email: [ '', Validators.compose([
-        Validators.required,
-        this.emailValidation
-      ]) ],
-      numTel: [ '', Validators.compose([
-        this.numTelValidation,
-        Validators.minLength(10)
-      ]) ],
+      nom: [
+        '',
+        Validators.compose([Validators.required, this.nomPrenomValidation])
+      ],
+      prenom: [
+        '',
+        Validators.compose([Validators.required, this.nomPrenomValidation])
+      ],
+      email: [
+        '',
+        Validators.compose([Validators.required, this.emailValidation])
+      ],
+      numTel: [
+        '',
+        Validators.compose([this.numTelValidation, Validators.minLength(10)])
+      ],
       adresseFact: '',
       complAdresseFact: '',
       cpFact: '',
@@ -404,24 +446,52 @@ export class ClientComponent implements OnInit {
       adresseChantier: '',
       complAdresseChantier: '',
       cpChantier: '',
-      villeChantier: '',
+      villeChantier: ''
     });
   }
 
-  get affaire(): string { return this.clientForm.get('affaire').value as string; }
-  get civilite(): string { return this.clientForm.get('civilite').value as string; }
-  get nom(): string { return this.clientForm.get('nom').value as string; }
-  get prenom(): string { return this.clientForm.get('prenom').value as string; }
-  get email(): string { return this.clientForm.get('email').value as string; }
-  get numTel(): string { return this.clientForm.get('numTel').value as string; }
-  get adresseFact(): string { return this.clientForm.get('adresseFact').value as string; }
-  get complAdresseFact(): string { return this.clientForm.get('complAdresseFact').value as string; }
-  get cpFact(): string { return this.clientForm.get('cpFact').value as string; }
-  get villeFact(): string { return this.clientForm.get('villeFact').value as string; }
-  get adresseChantier(): string { return this.clientForm.get('adresseChantier').value as string; }
-  get complAdresseChantier(): string { return this.clientForm.get('complAdresseChantier').value as string; }
-  get cpChantier(): string { return this.clientForm.get('cpChantier').value as string; }
-  get villeChantier(): string { return this.clientForm.get('villeChantier').value as string; }
+  get affaire(): string {
+    return this.clientForm.get('affaire').value as string;
+  }
+  get civilite(): string {
+    return this.clientForm.get('civilite').value as string;
+  }
+  get nom(): string {
+    return this.clientForm.get('nom').value as string;
+  }
+  get prenom(): string {
+    return this.clientForm.get('prenom').value as string;
+  }
+  get email(): string {
+    return this.clientForm.get('email').value as string;
+  }
+  get numTel(): string {
+    return this.clientForm.get('numTel').value as string;
+  }
+  get adresseFact(): string {
+    return this.clientForm.get('adresseFact').value as string;
+  }
+  get complAdresseFact(): string {
+    return this.clientForm.get('complAdresseFact').value as string;
+  }
+  get cpFact(): string {
+    return this.clientForm.get('cpFact').value as string;
+  }
+  get villeFact(): string {
+    return this.clientForm.get('villeFact').value as string;
+  }
+  get adresseChantier(): string {
+    return this.clientForm.get('adresseChantier').value as string;
+  }
+  get complAdresseChantier(): string {
+    return this.clientForm.get('complAdresseChantier').value as string;
+  }
+  get cpChantier(): string {
+    return this.clientForm.get('cpChantier').value as string;
+  }
+  get villeChantier(): string {
+    return this.clientForm.get('villeChantier').value as string;
+  }
 
   /**
    * enable form
@@ -456,7 +526,7 @@ export class ClientComponent implements OnInit {
     }
     return {
       nomPrenomValidation: true
-    }
+    };
   }
 
   /**
@@ -467,13 +537,15 @@ export class ClientComponent implements OnInit {
    * @memberof ClientComponent
    */
   emailValidation(controls) {
-    const regExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+    const regExp = new RegExp(
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
     if (regExp.test(controls.value)) {
       return null;
     }
     return {
       emailValidation: true
-    }
+    };
   }
 
   /**
@@ -496,12 +568,15 @@ export class ClientComponent implements OnInit {
   verifNumAffaire() {
     this.validNumAffaire = false;
     if (this.clientForm.get('affaire').value !== '') {
-      this.clientService.verifUniciteNumAffaire(this.clientForm.get('affaire').value)
-        .subscribe(data => {
-          if (!data.success) {
-            this.validNumAffaire = true;
-          }
-        }, err => console.log(err)
+      this.clientService
+        .verifUniciteNumAffaire(this.clientForm.get('affaire').value)
+        .subscribe(
+          data => {
+            if (!data.success) {
+              this.validNumAffaire = true;
+            }
+          },
+          err => console.log(err)
         );
     }
   }
@@ -517,7 +592,9 @@ export class ClientComponent implements OnInit {
     this.clientForm.get('cpFact').setValue(client.cpFact);
     this.clientForm.get('villeFact').setValue(client.villeFact);
     this.clientForm.get('adresseChantier').setValue(client.adresseChantier);
-    this.clientForm.get('complAdresseChantier').setValue(client.complAdresseChantier);
+    this.clientForm
+      .get('complAdresseChantier')
+      .setValue(client.complAdresseChantier);
     this.clientForm.get('cpChantier').setValue(client.cpChantier);
     this.clientForm.get('villeChantier').setValue(client.villeChantier);
   }
@@ -529,6 +606,6 @@ export class ClientComponent implements OnInit {
    */
   ngOnInit() {
     this.getAllClients();
+    this.getGPData(this.id_GP);
   }
-
 }

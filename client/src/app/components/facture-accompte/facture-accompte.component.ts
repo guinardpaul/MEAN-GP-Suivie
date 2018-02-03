@@ -3,7 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FlashMessagesService } from 'ngx-flash-messages';
-
+import {
+  GP_flash_config,
+  GP_flash_messages
+} from '../../models/constants/GP-messages-utils';
 import { Client } from '../../models/client';
 import { FactureAccompte } from '../../models/factureAccompte';
 import { FactureGlobal } from '../../models/factureGlobal';
@@ -61,6 +64,14 @@ export class FactureAccompteComponent implements OnInit {
    * @memberof FactureAccompteComponent
    */
   id_fact: number;
+
+  /**
+   * artisan id
+   *
+   * @type {number}
+   * @memberof FactureAccompteComponent
+   */
+  id_artisan: number;
 
   /**
    * facture global
@@ -371,10 +382,10 @@ export class FactureAccompteComponent implements OnInit {
       .addFactureAccompte(newFacture)
       .subscribe(data => {
         if (data.success) {
-          this.flashMessages.show(data.message, {
-            classes: ['alert', 'alert-success'],
-            timeout: 3000
-          });
+          this.flashMessages.show(
+            GP_flash_messages.FACTURE.ADD_FACTURE_SUCCESS,
+            GP_flash_config.SUCCESS
+          );
           // Update facture global montantTtcFacture
           this.updateMontantFactureGlobal(
             this.factureGlobal,
@@ -385,10 +396,10 @@ export class FactureAccompteComponent implements OnInit {
 
           this.onSuccess();
         } else {
-          this.flashMessages.show('data.message', {
-            classes: ['alert', 'alert-danger'],
-            timeout: 3000
-          });
+          this.flashMessages.show(
+            GP_flash_messages.FACTURE.ADD_FACTURE_ERROR,
+            GP_flash_config.ERROR
+          );
           this.processing = false;
           this.enableFactureForm();
         }
@@ -413,10 +424,10 @@ export class FactureAccompteComponent implements OnInit {
     // add Reglement
     this.reglementService.addReglement(newReglement).subscribe(
       data => {
-        this.flashMessages.show(data.message, {
-          classes: ['alert', 'alert-success'],
-          timeout: 3000
-        });
+        this.flashMessages.show(
+          GP_flash_messages.REGLEMENT.ADD_REGLEMENT_SUCCESS,
+          GP_flash_config.SUCCESS
+        );
         // update Facture accompte with new reglementClient
         this.updateReglementClientFactureAccompte(
           this.factureAccompte,
@@ -433,10 +444,10 @@ export class FactureAccompteComponent implements OnInit {
         this.onSuccess();
       },
       err => {
-        this.flashMessages.show(JSON.parse(err._body).message, {
-          classes: ['alert', 'alert-danger'],
-          timeout: 3000
-        });
+        this.flashMessages.show(
+          GP_flash_messages.REGLEMENT.ADD_REGLEMENT_ERROR,
+          GP_flash_config.ERROR
+        );
         this.processing = false;
         this.enableReglementForm();
       }
@@ -466,10 +477,10 @@ export class FactureAccompteComponent implements OnInit {
                 .updateFactureAccompte(factureAccompte)
                 .subscribe(factureData => {
                   if (factureData.success) {
-                    this.flashMessages.show(factureData.message, {
-                      classes: ['alert', 'alert-warning'],
-                      timeout: 3000
-                    });
+                    this.flashMessages.show(
+                      GP_flash_messages.FACTURE.UPDATE_FACTURE_SUCCESS,
+                      GP_flash_config.SUCCESS
+                    );
                     // Update Facture global montantTtcFacture
                     this.updateMontantFactureGlobal(
                       this.factureGlobal,
@@ -483,10 +494,10 @@ export class FactureAccompteComponent implements OnInit {
 
                     this.onSuccess();
                   } else {
-                    this.flashMessages.show(factureData.message, {
-                      classes: ['alert', 'alert-danger'],
-                      timeout: 3000
-                    });
+                    this.flashMessages.show(
+                      GP_flash_messages.FACTURE.UPDATE_FACTURE_ERROR,
+                      GP_flash_config.ERROR
+                    );
                   }
                 });
             } else {
@@ -494,10 +505,10 @@ export class FactureAccompteComponent implements OnInit {
                 .deleteFactureAccompte(factureAccompte._id)
                 .subscribe(factureData => {
                   if (factureData.success) {
-                    this.flashMessages.show(factureData.message, {
-                      classes: ['alert', 'alert-warning'],
-                      timeout: 3000
-                    });
+                    this.flashMessages.show(
+                      GP_flash_messages.FACTURE.REMOVE_FACTURE_SUCCESS,
+                      GP_flash_config.WARNING
+                    );
                     // Update Facture global montantTtcFacture
                     this.updateMontantFactureGlobal(
                       this.factureGlobal,
@@ -511,20 +522,17 @@ export class FactureAccompteComponent implements OnInit {
 
                     this.onSuccess();
                   } else {
-                    this.flashMessages.show(factureData.message, {
-                      classes: ['alert', 'alert-danger'],
-                      timeout: 3000
-                    });
+                    this.flashMessages.show(
+                      GP_flash_messages.FACTURE.REMOVE_FACTURE_ERROR,
+                      GP_flash_config.ERROR
+                    );
                   }
                 });
             }
           } else {
             this.flashMessages.show(
-              "Suppression impossible ! La facture d'accompte est associée à des règlements",
-              {
-                classes: ['alert', 'alert-danger'],
-                timeout: 3000
-              }
+              GP_flash_messages.FACTURE.REMOVE_FACTURE_IMPOSSIBLE,
+              GP_flash_config.ERROR
             );
           }
         },
@@ -566,10 +574,10 @@ export class FactureAccompteComponent implements OnInit {
     this.processing = true;
     this.reglementService.deleteReglement(id).subscribe(data => {
       if (data.success) {
-        this.flashMessages.show(data.message, {
-          classes: ['alert', 'alert-warning'],
-          timeout: 3000
-        });
+        this.flashMessages.show(
+          GP_flash_messages.REGLEMENT.REMOVE_REGLEMENT_SUCCESS,
+          GP_flash_config.WARNING
+        );
         // Update facture accompte reglementClient
         this.updateReglementClientFactureAccompte(
           this.factureAccompte,
@@ -585,10 +593,10 @@ export class FactureAccompteComponent implements OnInit {
 
         this.processing = false;
       } else {
-        this.flashMessages.show(data.message, {
-          classes: ['alert', 'alert-danger'],
-          timeout: 3000
-        });
+        this.flashMessages.show(
+          GP_flash_messages.REGLEMENT.REMOVE_REGLEMENT_ERROR,
+          GP_flash_config.ERROR
+        );
         this.processing = false;
       }
     });
@@ -840,11 +848,8 @@ export class FactureAccompteComponent implements OnInit {
       this.mode = true;
     } else {
       this.flashMessages.show(
-        'Création impossible : le montant total de la facture est égal à la somme des montants facturés',
-        {
-          classes: ['alert', 'alert-warning'],
-          timeout: 6000
-        }
+        GP_flash_messages.FACTURE.ADD_FACTURE_ACCOMPTE_IMPOSSIBLE,
+        GP_flash_config.ERROR
       );
     }
   }
@@ -1113,8 +1118,10 @@ export class FactureAccompteComponent implements OnInit {
    * @memberof FactureAccompteComponent
    */
   ngOnInit() {
-    if (this.activatedRoute.snapshot.params['id_fact'] !== undefined) {
-      this.id_fact = this.activatedRoute.snapshot.params['id_fact'];
+    console.log(this.activatedRoute);
+    if (this.activatedRoute.snapshot.params['id_facture'] !== undefined) {
+      this.id_fact = this.activatedRoute.snapshot.params['id_facture'];
+      this.id_artisan = this.activatedRoute.snapshot.params['id_artisan'];
       if (historique) {
         this.getAllValidFactureAccompteByFactureGlobal(this.id_fact);
       } else {

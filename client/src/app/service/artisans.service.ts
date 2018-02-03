@@ -5,22 +5,27 @@ import { Observable } from 'rxjs/Observable';
 import { Artisan } from '../models/artisan';
 // Environment variables
 import { environment } from '../../environments/environment';
+import * as config from '../../environments/config';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class ArtisansService {
   private url: string;
+  private id_GP = config.GP_ID;
   // UTILISER FILTRE ?
   artisansByClient: Observable<Artisan[]>;
   artisans: Observable<Artisan[]>;
+  artisansWithGP: Observable<Artisan[]>;
   artisansByClientNavBar: Observable<Artisan[]>;
   private _artisansByClient: BehaviorSubject<Artisan[]>;
   private _artisans: BehaviorSubject<Artisan[]>;
+  private _artisansWithGP: BehaviorSubject<Artisan[]>;
   private _artisansByClientNavBar: BehaviorSubject<Artisan[]>;
   private dataStore: {
     artisansByClient: Artisan[];
     artisans: Artisan[];
     artisansByClientNavBar: Artisan[];
+    artisansWithGP: Artisan[];
   };
 
   /**
@@ -33,7 +38,8 @@ export class ArtisansService {
     this.dataStore = {
       artisansByClient: [],
       artisans: [],
-      artisansByClientNavBar: []
+      artisansByClientNavBar: [],
+      artisansWithGP: []
     };
     this._artisansByClient = <BehaviorSubject<Artisan[]>>new BehaviorSubject(
       []
@@ -45,15 +51,27 @@ export class ArtisansService {
       Artisan[]
     >>new BehaviorSubject([]);
     this.artisansByClientNavBar = this._artisansByClientNavBar.asObservable();
+    this._artisansWithGP = <BehaviorSubject<Artisan[]>>new BehaviorSubject([]);
+    this.artisansWithGP = this._artisansWithGP.asObservable();
   }
 
+  /**
+   * Get All Artisans
+   *
+   * @param {number} id_client Client ID
+   * @returns
+   * @memberof ArtisansService
+   */
   getAllArtisans(id_client: number) {
     return this.http.get<Artisan[]>(`${this.url}/artisans`).subscribe(
       data => {
-        this.dataStore.artisans = data;
+        const filteredData = data.filter(art => String(art._id) !== this.id_GP);
+        this.dataStore.artisans = filteredData;
         this._artisans.next(Object.assign({}, this.dataStore).artisans);
+
         // Get Artisans By Client
-        this.getAllArtisansByClient(id_client);
+        this.getAllArtisansByClientWithoutGP(id_client);
+        this.getAllArtisansByClientWithGP(data, id_client);
       },
       err => {
         console.log(err);
@@ -63,7 +81,26 @@ export class ArtisansService {
 
   // Impossible d'utiliser array.filter car clients est une array
   // vraiment impossible ?
-  getAllArtisansByClient(id_client: number) {
+  getAllArtisansByClientWithGP(allArtisans: Artisan[], id_client) {
+    this.dataStore.artisansWithGP = [];
+    allArtisans.forEach((artisan, i) => {
+      if (artisan.clients.length > 0) {
+        artisan.clients.forEach(id => {
+          if (id === id_client) {
+            this.dataStore.artisansWithGP.push(artisan);
+          }
+        });
+      }
+    });
+
+    return this._artisansWithGP.next(
+      Object.assign({}, this.dataStore).artisansWithGP
+    );
+  }
+
+  // Impossible d'utiliser array.filter car clients est une array
+  // vraiment impossible ?
+  getAllArtisansByClientWithoutGP(id_client: number) {
     this.dataStore.artisansByClient = [];
     this.dataStore.artisans.forEach((artisan, i) => {
       if (artisan.clients.length > 0) {

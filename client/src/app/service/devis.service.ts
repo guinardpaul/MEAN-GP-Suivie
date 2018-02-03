@@ -57,7 +57,10 @@ export class DevisService {
    * @returns
    * @memberof DevisService
    */
-  getAllDevisByClient(client_id: number, artisan_id?: number) {
+  getAllDevisByClient(
+    client_id: number,
+    artisan_id?: number
+  ): Observable<Devis[]> {
     let url;
     if (artisan_id === undefined) {
       url = `${this.url}/devis/client/${client_id}`;
@@ -65,7 +68,8 @@ export class DevisService {
       url = `${this.url}/devis/client/${client_id}/artisan/${artisan_id}`;
     }
 
-    return this.http.get<Devis[]>(url).subscribe(
+    return this.http.get<Devis[]>(url);
+    /* .subscribe(
       data => {
         this.dataStore.devisList = data;
         this._devisList.next(Object.assign({}, this.dataStore).devisList);
@@ -73,7 +77,7 @@ export class DevisService {
       err => {
         console.log(err);
       }
-    );
+    ); */
   }
 
   /**

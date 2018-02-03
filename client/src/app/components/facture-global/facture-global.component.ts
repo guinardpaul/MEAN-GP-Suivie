@@ -3,11 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { FlashMessagesService } from 'ngx-flash-messages';
-
 // Models
 import { Client } from '../../models/client';
 import { FactureGlobal } from '../../models/factureGlobal';
-
+import {
+  GP_flash_config,
+  GP_flash_messages
+} from '../../models/constants/GP-messages-utils';
 // Services
 import { ClientService } from '../../service/client.service';
 import { FactureAccompteService } from '../../service/facture-accompte.service';
@@ -63,7 +65,7 @@ export class FactureGlobalComponent implements OnInit {
    * @type {number}
    * @memberof FactureGlobalComponent
    */
-  id_artisan: number | string;
+  id_artisan: number;
 
   /**
    * Attribut Description facture global
@@ -258,22 +260,23 @@ export class FactureGlobalComponent implements OnInit {
         montantTtcFacture: this.factureGlobal.montantTtcFacture,
         montantTtcRegle: this.factureGlobal.montantTtcRegle,
         client: this.factureGlobal.client,
-        devis: this.factureGlobal.devis
+        devis: this.factureGlobal.devis,
+        artisan: this.id_artisan
       };
 
       this.factureGlobalService.addFactureGlobal(newFacture).subscribe(
         data => {
-          this.flashMessages.show('Facture modifiée', {
-            classes: ['alert', 'alert-success'],
-            timeout: 3000
-          });
+          this.flashMessages.show(
+            GP_flash_messages.FACTURE.ADD_FACTURE_SUCCESS,
+            GP_flash_config.SUCCESS
+          );
         },
         error => {
           console.log('Erreur ' + error);
-          this.flashMessages.show('Erreur : Facture non modifiée', {
-            classes: ['alert', 'alert-danger'],
-            timeout: 3000
-          });
+          this.flashMessages.show(
+            GP_flash_messages.FACTURE.ADD_FACTURE_ERROR,
+            GP_flash_config.ERROR
+          );
           this.processing = false;
           this.enableForm();
         }
@@ -293,10 +296,10 @@ export class FactureGlobalComponent implements OnInit {
           },
           error => {
             console.log('Erreur ' + error);
-            this.flashMessages.show('Erreur : Facture non modifiée', {
-              classes: ['alert', 'alert-danger'],
-              timeout: 3000
-            });
+            this.flashMessages.show(
+              GP_flash_messages.FACTURE.UPDATE_FACTURE_ERROR,
+              GP_flash_config.ERROR
+            );
             this.processing = false;
             this.enableForm();
           }
@@ -318,18 +321,18 @@ export class FactureGlobalComponent implements OnInit {
 
       this.factureGlobalService.updateFactureGlobal(newFacture).subscribe(
         data => {
-          this.flashMessages.show('Facture modifiée', {
-            classes: ['alert', 'alert-success'],
-            timeout: 3000
-          });
+          this.flashMessages.show(
+            GP_flash_messages.FACTURE.UPDATE_FACTURE_SUCCESS,
+            GP_flash_config.SUCCESS
+          );
           this.onSuccess();
         },
         err => {
           console.log('Erreur ' + err);
-          this.flashMessages.show('Erreur : Facture non modifiée', {
-            classes: ['alert', 'alert-danger'],
-            timeout: 3000
-          });
+          this.flashMessages.show(
+            GP_flash_messages.FACTURE.UPDATE_FACTURE_ERROR,
+            GP_flash_config.ERROR
+          );
           this.processing = false;
           this.enableForm();
         }
@@ -368,29 +371,26 @@ export class FactureGlobalComponent implements OnInit {
                 .updateFactureGlobal(factureGlobal)
                 .subscribe(
                   factureData => {
-                    this.flashMessages.show('Facture supprimée', {
-                      classes: ['alert', 'alert-warning'],
-                      timeout: 3000
-                    });
+                    this.flashMessages.show(
+                      GP_flash_messages.FACTURE.REMOVE_FACTURE_SUCCESS,
+                      GP_flash_config.SUCCESS
+                    );
                     this.onSuccess();
                     this.descriptionModif = '';
                   },
                   error => {
                     console.log(error);
-                    this.flashMessages.show('Erreur: Facture non supprimée', {
-                      classes: ['alert', 'alert-danger'],
-                      timeout: 3000
-                    });
+                    this.flashMessages.show(
+                      GP_flash_messages.FACTURE.REMOVE_FACTURE_ERROR,
+                      GP_flash_config.ERROR
+                    );
                     this.factureGlobal = {};
                   }
                 );
             } else {
               this.flashMessages.show(
-                "Suppression impossible ! La facture est associée à des factures d'accomptes",
-                {
-                  classes: ['alert', 'alert-danger'],
-                  timeout: 3000
-                }
+                GP_flash_messages.FACTURE.REMOVE_FACTURE_IMPOSSIBLE,
+                GP_flash_config.WARNING
               );
               this.factureGlobal = {};
               this.descriptionModif = '';
@@ -408,28 +408,25 @@ export class FactureGlobalComponent implements OnInit {
                 .deleteFactureGlobal(factureGlobal._id)
                 .subscribe(
                   msg => {
-                    this.flashMessages.show('Facture supprimée', {
-                      classes: ['alert', 'alert-warning'],
-                      timeout: 3000
-                    });
+                    this.flashMessages.show(
+                      GP_flash_messages.FACTURE.REMOVE_FACTURE_SUCCESS,
+                      GP_flash_config.SUCCESS
+                    );
                     this.onSuccess();
                   },
                   error => {
                     console.log(error);
-                    this.flashMessages.show('Erreur: Facture non supprimée', {
-                      classes: ['alert', 'alert-danger'],
-                      timeout: 3000
-                    });
+                    this.flashMessages.show(
+                      GP_flash_messages.FACTURE.REMOVE_FACTURE_ERROR,
+                      GP_flash_config.ERROR
+                    );
                     this.factureGlobal = {};
                   }
                 );
             } else {
               this.flashMessages.show(
-                "Suppression impossible ! La facture est associée à des factures d'accomptes",
-                {
-                  classes: ['alert', 'alert-danger'],
-                  timeout: 3000
-                }
+                GP_flash_messages.FACTURE.REMOVE_FACTURE_IMPOSSIBLE,
+                GP_flash_config.WARNING
               );
               this.factureGlobal = {};
             }
@@ -693,40 +690,32 @@ export class FactureGlobalComponent implements OnInit {
   ngOnInit() {
     // différentes routes à implémenter pour le dashboard
     if (
-      this.activatedRoute.root.snapshot.children[0].params['id_client'] !==
+      this.activatedRoute.root.children[0].snapshot.params['id_client'] !==
       undefined
     ) {
-      this.id_client = this.activatedRoute.root.snapshot.children[0].params[
+      this.id_client = this.activatedRoute.root.children[0].snapshot.params[
         'id_client'
       ];
       this.activatedRoute.params.subscribe(params => {
         this.id_artisan = params['id_artisan'];
 
-        if (this.id_artisan === 'GP') {
-          if (historique) {
-            this.getAllValidFactureGlobalByClient(this.id_client);
-          } else {
-            this.getAllFactureGlobalByClient(this.id_client);
-          }
+        if (historique) {
+          this.getAllValidFactureGlobalByClient(
+            this.id_client,
+            params['id_artisan']
+          );
         } else {
-          if (historique) {
-            this.getAllValidFactureGlobalByClient(
-              this.id_client,
-              params['id_artisan']
-            );
-          } else {
-            this.getAllFactureGlobalByClient(
-              this.id_client,
-              params['id_artisan']
-            );
-          }
+          this.getAllFactureGlobalByClient(
+            this.id_client,
+            params['id_artisan']
+          );
         }
       });
-      if (historique) {
+      /*  if (historique) {
         this.getAllValidFactureGlobalByClient(this.id_client);
       } else {
         this.getAllFactureGlobalByClient(this.id_client);
-      }
+      } */
       this.getClient(this.id_client);
     } else {
       this.getAllFactureGlobal();

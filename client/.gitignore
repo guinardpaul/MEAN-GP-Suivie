@@ -3,6 +3,9 @@
 # logs
 *.log
 
+# Docs
+/documentation
+
 # compiled output
 /dist
 /tmp

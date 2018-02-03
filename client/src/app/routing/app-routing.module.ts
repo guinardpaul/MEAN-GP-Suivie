@@ -52,11 +52,6 @@ const routes: Routes = [
   },
   // { path: 'facture', component: FactureComponent },
   // path valider Devis into facture global
-  {
-    path: 'devis/client/valider-devis/:id_devis',
-    component: ValiderDevisComponent,
-    canActivate: [AuthGuard]
-  },
   // path facture d'accompte / facture mois
   {
     path: 'facture/facture-accompte/:id_fact',

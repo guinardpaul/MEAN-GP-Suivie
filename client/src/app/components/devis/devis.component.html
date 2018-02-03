@@ -1,7 +1,7 @@
 <div class="container-fluid">
     {{id_artisan}}
     <h4>{{client.nom}} {{client.prenom}}</h4>
-    <a class="btn btn-default" [routerLink]="['/affaires']">Retour page client</a>
+    <!--  <a class="btn btn-default" [routerLink]="['/affaires']">Retour page client</a> -->
 </div>
 <div class="container-fluid col-sm-6 col-md-6">
     <h4 style="text-align: center;">Devis</h4>
@@ -18,7 +18,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let d of listDevis | async | orderByDate: 'date_creation'">
+            <tr *ngFor="let d of listDevis | orderByDate: 'date_creation'">
                 <td>{{d.ref_devis}}</td>
                 <td>{{d.date_creation | date: 'dd/MM/yyyy'}}</td>
                 <td>{{d.montantHt.toFixed(2)}}</td>
@@ -27,7 +27,7 @@
                 <td>{{client.nom}} {{client.prenom}}</td>
                 <td>
                     <div class="btn-group-vertical">
-                        <a class="btn btn-success" [routerLink]="['/devis/client/valider-devis', d._id]">Valider</a>
+                        <a class="btn btn-success" [routerLink]="['/affaires', id_client, 'suivi', id_artisan, 'devis', d._id]">Valider</a>
                         <button class="btn btn-warning" (click)="onUpdate(d)">Modifier</button>
                         <button class="btn btn-danger" data-toggle="modal" data-target="#myModal" (click)="getDevisToDelete(d)">Supprimer</button>
                     </div>

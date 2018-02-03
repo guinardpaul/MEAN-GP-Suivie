@@ -13,21 +13,11 @@
   </li>
 
   <li *ngIf="!errorLoading" routerLinkActive="active">
-    <a [routerLink]="['/affaires', id_client, 'devis', 'GP']">GP</a>
+    <a [routerLink]="['/affaires', id_client, 'suivi', id_GP, 'devis']">GP</a>
   </li>
 
   <li *ngFor="let artisan of artisansByClientList | async" routerLinkActive="active">
-    <a [routerLink]="['/affaires', id_client, 'devis', artisan._id]">{{artisan.corps_metier}}</a>
+    <a [routerLink]="['/affaires', id_client, 'suivi', artisan._id, 'devis']">{{artisan.corps_metier}}</a>
   </li>
 
-
-  <li *ngIf="!errorLoading">
-    <a routerLink="devis">MOE 1</a>
-  </li>
-  <li *ngIf="!errorLoading">
-    <a href="#">MOE 2</a>
-  </li>
-  <li *ngIf="!errorLoading">
-    <a href="#">MOE 3</a>
-  </li>
 </ul>

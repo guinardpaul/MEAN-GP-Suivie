@@ -2,8 +2,34 @@
   <h4>Num Affaire : {{client.affaire}}</h4>
   <h4>Client: {{client.nom}} {{client.prenom}}</h4>
 
-  <br/>
+  <div class="container-fluid">
+    <table class="table table-striped" *ngIf="processed">
+      <thead>
+        <th>Modifier</th>
+        <th>Statut</th>
+        <th>Artisan</th>
+        <th>Montant Total TTC</th>
+        <th>Montant Facturé TTC</th>
+        <th>Montant Réglé</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let artisan of artisanData">
+          <td>
+            <a [routerLink]="['gestion-moe/artisans/', artisan.artisan_id]">
+              <span class="glyphicon glyphicon-edit"></span>
+            </a>
+          </td>
+          <td>{{artisan.status}}</td>
+          <td>{{artisan.artisan_corps_metier}}</td>
+          <td>{{artisan.montantTotalTTC}}</td>
+          <td>{{artisan.montantFactureTTC}}</td>
+          <td>{{artisan.montantRegle}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
+  <br />
   <p>Résumé de l'affaire (graph ou tableau à définir)</p>
   <p>bouton ajout MOE:</p>
   <p>

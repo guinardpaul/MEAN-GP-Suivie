@@ -15,7 +15,7 @@ export class FactureGlobal {
   montantTtcFacture: number;
   montantTtcRegle: number;
   client: number;
-  artisan?: number;
+  artisan: number;
   devis: number;
   valid?: boolean;
   description?: string;

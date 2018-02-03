@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-
 // Service
 import { BugsService } from '../../service/bugs.service';
 import { FlashMessagesService } from 'ngx-flash-messages';
-
 // Model
+import {
+  GP_flash_config,
+  GP_flash_messages
+} from '../../models/constants/GP-messages-utils';
 import { Bug } from '../../models/bug';
 import { CRITICITE } from '../../models/criticite.enum';
 import { STATUS } from '../../models/status-bug.enum';
@@ -21,11 +23,9 @@ import { STATUS } from '../../models/status-bug.enum';
 @Component({
   selector: 'app-bugs',
   templateUrl: './bugs.component.html',
-  styleUrls: [ './bugs.component.css' ]
+  styleUrls: ['./bugs.component.css']
 })
 export class BugsComponent implements OnInit {
-
-
   /*  constructor() { }
  
    ngOnInit() {
@@ -77,10 +77,11 @@ export class BugsComponent implements OnInit {
    * @memberof BugsComponent
    */
   getAllBugs() {
-    this.bugService.getAllBugs()
+    this.bugService
+      .getAllBugs()
       .subscribe(
-      data => this.listBugs = data,
-      error => console.log('Erreur :' + error)
+        data => (this.listBugs = data),
+        error => console.log('Erreur :' + error)
       );
   }
 
@@ -97,30 +98,30 @@ export class BugsComponent implements OnInit {
     this.disableForm();
     const newBug = new Bug({
       date_creation: this.bugForm.get('date_creation').value,
-      criticite: this.criticite[ this.bugForm.get('criticite').value ],
+      criticite: this.criticite[this.bugForm.get('criticite').value],
       description: this.bugForm.get('description').value
     });
     console.log(newBug);
 
-    this.bugService.addBug(newBug)
-      .subscribe(
+    this.bugService.addBug(newBug).subscribe(
       data => {
         console.log('Bug saved');
-        this.flashMessages.show('Bug ajouté', {
-          classes: [ 'alert', 'alert-success' ],
-          timeout: 3000
-        });
+        this.flashMessages.show(
+          GP_flash_messages.BUG.ADD_BUG_SUCCESS,
+          GP_flash_config.SUCCESS
+        );
         console.log(data);
         this.onSuccess();
-      }, err => {
+      },
+      err => {
         console.log('Erreur :' + err);
-        this.flashMessages.show('Erreur suppresion Bug', {
-          classes: [ 'alert', 'alert-danger' ],
-          timeout: 3000
-        });
+        this.flashMessages.show(
+          GP_flash_messages.BUG.ADD_BUG_ERROR,
+          GP_flash_config.ERROR
+        );
         this.enableForm();
       }
-      );
+    );
   }
 
   /**
@@ -139,24 +140,24 @@ export class BugsComponent implements OnInit {
       description: this.bugFormUpdate.get('description').value
     });
     console.log(newBug);
-    this.bugService.updateBug(newBug)
-      .subscribe(
+    this.bugService.updateBug(newBug).subscribe(
       data => {
         console.log('Bug updated');
-        this.flashMessages.show('Bug modifié', {
-          classes: [ 'alert', 'alert-success' ],
-          timeout: 3000
-        });
+        this.flashMessages.show(
+          GP_flash_messages.BUG.UPDATE_BUG_SUCCESS,
+          GP_flash_config.SUCCESS
+        );
         this.onSuccess();
-      }, err => {
+      },
+      err => {
         console.log('Erreur :' + err);
-        this.flashMessages.show('Erreur modification Bug', {
-          classes: [ 'alert', 'alert-danger' ],
-          timeout: 3000
-        });
+        this.flashMessages.show(
+          GP_flash_messages.BUG.UPDATE_BUG_ERROR,
+          GP_flash_config.ERROR
+        );
         this.enableForm();
-      });
-
+      }
+    );
   }
 
   /**
@@ -166,17 +167,23 @@ export class BugsComponent implements OnInit {
    * @memberof BugsComponent
    */
   deleteBug(id: number) {
-    this.bugService.deleteBug(id)
-      .subscribe(
+    this.bugService.deleteBug(id).subscribe(
       data => {
         console.log('Bug deleted');
-        this.flashMessages.show('Bug supprimé', {
-          classes: [ 'alert', 'alert-warning' ],
-          timeout: 3000
-        });
+        this.flashMessages.show(
+          GP_flash_messages.BUG.REMOVE_BUG_SUCCESS,
+          GP_flash_config.SUCCESS
+        );
         this.onSuccess();
-      }, err => console.log('Erreur :' + err)
-      );
+      },
+      err => {
+        console.log('Erreur :' + err);
+        this.flashMessages.show(
+          GP_flash_messages.BUG.REMOVE_BUG_ERROR,
+          GP_flash_config.ERROR
+        );
+      }
+    );
   }
 
   /**
@@ -211,7 +218,10 @@ export class BugsComponent implements OnInit {
     this.generateFormUpdate();
     this.id_bug = bug._id;
     this.bug = bug;
-    const latest_date = this.datePipe.transform(this.bug.date_creation, 'yyyy-MM-dd');
+    const latest_date = this.datePipe.transform(
+      this.bug.date_creation,
+      'yyyy-MM-dd'
+    );
     this.bug.date_creation = latest_date;
     // TODO: set valeur select option input
     this.bugFormUpdate.get('description').setValue(bug.description);
@@ -265,19 +275,19 @@ export class BugsComponent implements OnInit {
    */
   generateForm() {
     this.bugForm = this.formBuilder.group({
-      date_creation: [ this.bug.date_creation ],
-      description: [ this.bug.description, Validators.required ],
-      criticite: [ this.bug.criticite, Validators.required ]
+      date_creation: [this.bug.date_creation],
+      description: [this.bug.description, Validators.required],
+      criticite: [this.bug.criticite, Validators.required]
     });
   }
 
   generateFormUpdate() {
     this.bugFormUpdate = this.formBuilder.group({
-      status_correction: [ this.bug.status_correction, Validators.required ],
-      date_creation: [ this.bug.date_creation ],
-      description: [ this.bug.description, Validators.required ],
-      criticite: [ this.bug.criticite, Validators.required ]
-    })
+      status_correction: [this.bug.status_correction, Validators.required],
+      date_creation: [this.bug.date_creation],
+      description: [this.bug.description, Validators.required],
+      criticite: [this.bug.criticite, Validators.required]
+    });
   }
 
   /**
@@ -309,5 +319,4 @@ export class BugsComponent implements OnInit {
   ngOnInit() {
     this.getAllBugs();
   }
-
 }
