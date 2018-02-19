@@ -16,6 +16,8 @@ import { FactureAccompteService } from '../../service/facture-accompte.service';
 import { FactureGlobalService } from '../../service/facture-global.service';
 import { ReglementService } from '../../service/reglement.service';
 import { historique } from '../../../environments/config';
+import { Artisan } from '../../models/artisan';
+import { ArtisansService } from '../../service/artisans.service';
 
 // Models
 // Services
@@ -103,7 +105,7 @@ export class FactureAccompteComponent implements OnInit {
    * @type {Client}
    * @memberof FactureAccompteComponent
    */
-  client: Client;
+  client = new Client();
 
   /**
    * Description modif on delete facture accompte
@@ -200,6 +202,8 @@ export class FactureAccompteComponent implements OnInit {
    */
   reglementComplet: boolean;
 
+  artisan = new Artisan();
+
   // Status images
   /**
    * image status true
@@ -238,6 +242,7 @@ export class FactureAccompteComponent implements OnInit {
     private flashMessages: FlashMessagesService,
     private clientService: ClientService,
     private reglementService: ReglementService,
+    private artisanService: ArtisansService,
     private router: Router
   ) {
     this.generateForm();
@@ -259,6 +264,17 @@ export class FactureAccompteComponent implements OnInit {
         data => (this.client = data),
         err => console.log('Erreur :' + err)
       );
+  }
+
+  getArtisan(id_artisan) {
+    this.artisanService.getOneArtisan(id_artisan).subscribe(
+      data => {
+        this.artisan = data;
+      },
+      err => {
+        console.log('err: ', err);
+      }
+    );
   }
 
   /**
@@ -1122,11 +1138,14 @@ export class FactureAccompteComponent implements OnInit {
     if (this.activatedRoute.snapshot.params['id_facture'] !== undefined) {
       this.id_fact = this.activatedRoute.snapshot.params['id_facture'];
       this.id_artisan = this.activatedRoute.snapshot.params['id_artisan'];
+      // Load artisan
+      this.getArtisan(this.activatedRoute.snapshot.params['id_artisan']);
       if (historique) {
         this.getAllValidFactureAccompteByFactureGlobal(this.id_fact);
       } else {
         this.getAllFactureAccompteByFactureGlobal(this.id_fact);
       }
+      // Load facture Global + client
       this.getOneFactureGlobal(this.id_fact);
     } else {
       this.router.navigate(['/pageNotFound']);

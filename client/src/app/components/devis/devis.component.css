@@ -1,0 +1,12 @@
+.cursor {
+  cursor: pointer;
+}
+
+.bck-color {
+  background-color: lightblue;
+}
+
+.marge {
+  padding: 0px 0px;
+  text-align: left;
+}

@@ -30,7 +30,7 @@ const affaireRoutes: Routes = [
         component: ValiderDevisComponent
       },
       {
-        path: 'suivi/:id_artisan/factures/:id_facture',
+        path: 'suivi/:id_artisan/devis/factures/:id_facture',
         component: FactureAccompteComponent
       }
     ]

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 // Models
 import { Artisan } from '../models/artisan';
 // Environment variables
 import { environment } from '../../environments/environment';
 import * as config from '../../environments/config';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class ArtisansService {

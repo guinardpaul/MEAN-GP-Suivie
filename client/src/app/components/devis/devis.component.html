@@ -1,6 +1,12 @@
 <div class="container-fluid">
-    {{id_artisan}}
-    <h4>{{client.nom}} {{client.prenom}}</h4>
+    <div class="btn-group-vertical">
+        <a class="btn marge cursor" data-toggle="modal" data-target="#clientModal">
+            <h4>Client : {{client.nom}} {{client.prenom}}</h4>
+        </a>
+        <a class="btn marge cursor" data-toggle="modal" data-target="#artisanModal">
+            <h4>Artisan : {{artisan.corps_metier}}</h4>
+        </a>
+    </div>
     <!--  <a class="btn btn-default" [routerLink]="['/affaires']">Retour page client</a> -->
 </div>
 <div class="container-fluid col-sm-6 col-md-6">
@@ -214,4 +220,96 @@
 <div class="container-fluid col-sm-6 col-md-6">
     <!-- Facture global component -->
     <app-facture-global></app-facture-global>
+</div>
+
+
+<!-- client Modal -->
+<div id="clientModal" class="modal fade" role="dialog" keyboard="true">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header bck-color">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Informations Client - Affaire N°{{client.affaire}}</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <th></th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Nom - Prénom</td>
+                            <td> {{client.nom}} {{client.prenom}}</td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td> {{client.email}}</td>
+                        </tr>
+                        <tr>
+                            <td>N° Tél</td>
+                            <td> {{client.numTel}}</td>
+                        </tr>
+                        <tr>
+                            <td>Adresse Facturation</td>
+                            <td>{{client.adresseChantier}} {{client.complAdresseChantier}}
+                                <br/>{{client.cpChantier}} {{client.villeChantier}}</td>
+                        </tr>
+                        <tr>
+                            <td>Adresse Chantier</td>
+                            <td> {{client.adresseFact}} {{client.complAdresseFact}}
+                                <br/> {{client.cpFact}} {{client.villeFact}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- artisan Modal -->
+<div id="artisanModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header bck-color">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Informations Artisan</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <th></th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Nom - Prénom</td>
+                            <td> {{artisan.nom}} {{artisan.prenom}}</td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td> {{artisan.email}}</td>
+                        </tr>
+                        <tr>
+                            <td>N° Tél</td>
+                            <td> {{artisan.numTel}}</td>
+                        </tr>
+                        <tr>
+                            <td>Adresse</td>
+                            <td>{{artisan.adresse}} {{artisan.complAdresse}}
+                                <br/> {{artisan.cp}} {{artisan.ville}}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
 </div>

@@ -3,7 +3,8 @@
   <h4>Client: {{client.nom}} {{client.prenom}}</h4>
 
   <div class="container-fluid">
-    <table class="table table-striped" *ngIf="processed">
+    <mat-spinner *ngIf="!processed" class="table-spinner"></mat-spinner>
+    <table *ngIf="processed" class="table table-striped">
       <thead>
         <th>Modifier</th>
         <th>Statut</th>

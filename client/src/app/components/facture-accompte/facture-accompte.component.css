@@ -1,0 +1,16 @@
+.cursor {
+  cursor: pointer;
+}
+
+.bck-color {
+  background-color: lightblue;
+}
+
+.retour-link {
+  float: right;
+}
+
+.marge {
+  padding: 0px 0px;
+  text-align: left;
+}

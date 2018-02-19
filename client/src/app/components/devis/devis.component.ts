@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FlashMessagesService } from 'ngx-flash-messages';
@@ -21,6 +21,7 @@ import { ArtisansService } from 'app/service/artisans.service';
 // Env const
 import { historique } from '../../../environments/config';
 import { Observable } from 'rxjs/Observable';
+import { Artisan } from '../../models/artisan';
 
 /**
  *
@@ -151,6 +152,8 @@ export class DevisComponent implements OnInit {
    */
   devisForm: FormGroup;
 
+  artisan = new Artisan();
+
   /**
    * Creates an instance of DevisComponent.
    * @param {DevisService} devisService devis service
@@ -280,6 +283,17 @@ export class DevisComponent implements OnInit {
         devis => (this.devis = devis),
         error => console.log('Erreur :' + error)
       );
+  }
+
+  getArtisan(id_artisan: number) {
+    this.artisanService.getOneArtisan(id_artisan).subscribe(
+      data => {
+        this.artisan = data;
+      },
+      err => {
+        console.log('err: ', err);
+      }
+    );
   }
 
   /**
@@ -1116,6 +1130,8 @@ export class DevisComponent implements OnInit {
       this.activatedRoute.params.subscribe(params => {
         if (params['id_artisan']) {
           this.id_artisan = params['id_artisan'];
+          // Load artisan
+          this.getArtisan(params['id_artisan']);
           // Load data by id_client & id_artisan
           if (historique) {
             this.getAllValidDevisByClient(this.id_client, params['id_artisan']);
