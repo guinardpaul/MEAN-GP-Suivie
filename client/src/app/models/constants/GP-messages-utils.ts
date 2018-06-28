@@ -20,14 +20,14 @@ export const GP_flash_messages = {
       'Suppression impossible ! Le devis est associé à des factures.'
   },
   FACTURE: {
-    ADD_FACTURE_SUCCESS: 'Facture sauvé avec succès',
-    ADD_FACTURE_ERROR: 'Erreur création du Facture',
-    UPDATE_FACTURE_SUCCESS: 'Facture modifié avec succès',
-    UPDATE_FACTURE_ERROR: 'Erreur modification du Facture',
-    REMOVE_FACTURE_SUCCESS: 'Facture supprimé avec succès',
-    REMOVE_FACTURE_ERROR: 'Erreur suppression du Facture',
+    ADD_FACTURE_SUCCESS: 'Facture sauvée avec succès',
+    ADD_FACTURE_ERROR: 'Erreur création de la Facture',
+    UPDATE_FACTURE_SUCCESS: 'Facture modifiée avec succès',
+    UPDATE_FACTURE_ERROR: 'Erreur modification de la Facture',
+    REMOVE_FACTURE_SUCCESS: 'Facture supprimée avec succès',
+    REMOVE_FACTURE_ERROR: 'Erreur suppression de la Facture',
     REMOVE_FACTURE_IMPOSSIBLE:
-      'Suppression impossible ! La facture est associé à des règlements.',
+      'Suppression impossible ! La facture est associée à des règlements.',
     ADD_FACTURE_ACCOMPTE_IMPOSSIBLE:
       'Création impossible : le montant total de la facture est égal à la somme des montants facturés'
   },

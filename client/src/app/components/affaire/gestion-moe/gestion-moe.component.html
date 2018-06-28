@@ -16,47 +16,47 @@ ajouter modal pour sécuriser la suppression d'artisan à l'affaire => problème
     </div>
 
     <div class="col-sm-2 select-btn btn-group-vertical">
-      <button (click)="removeArtisanToAffaire()" class="btn btn-default">
+      <button class="btn btn-default" (click)="removeArtisanToAffaire()">
         <span class="glyphicon glyphicon-chevron-right"></span>
       </button>
-      <button (click)="addArtisanToAffaire()" class="btn btn-default">
+      <button class="btn btn-default" (click)="addArtisanToAffaire()">
         <span class="glyphicon glyphicon-chevron-left"></span>
       </button>
-      <button data-toggle="modal" data-target="#myModal" class="btn btn-success">Sauvegarder</button>
+      <button class="btn btn-success" data-target="#myModal" data-toggle="modal">Sauvegarder</button>
     </div>
 
     <div class="col-sm-5">
-      <h3>Liste d'artisan enregistré</h3>
+      <h3>Liste d'artisan enregistré <a class="btn btn-default add-btn" routerLink="artisans">Ajouter un Artisan</a></h3>  
+      
       <select class="form-control" size="8">
         <option (click)="selectArtisanToAdd(artisan)" *ngFor="let artisan of artisansList | async">{{artisan.corps_metier}} {{artisan.nom_societe}}</option>
       </select>
-      <a class="btn btn-default" routerLink="artisans">Ajouter un Artisan</a>
+    
     </div>
 
   </div>
 </div>
 
 <!-- Confirm delete Modal -->
-<div id="myModal" class="modal fade" role="dialog">
+<div class="modal fade" id="myModal" role="dialog">
   <div class="modal-dialog">
     <!-- Modal content-->
     <form #modalForm="ngForm">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <button class="close" data-dismiss="modal" type="button">&times;</button>
           <h4 class="modal-title">Confirmer modifications</h4>
         </div>
         <div class="modal-body">
           <p>Etes-vous sûr de vouloir continuer ?
-            <br /> La suppression d'un artisan entraînera la perte des données pour cet artisan.</p>
+            <br> Toute modification peut entraîner la perte des données pour cet artisan.</p>
           <div *ngIf="historique">
             <label for="descriptionModif">Description :</label>
-            <input type="text" name="descriptionModif" id="descriptionModif" class="form-control" placeholder="Expliquer la modification"
-              [(ngModel)]="descriptionModif" required />
+            <input class="form-control" id="descriptionModif" name="descriptionModif" type="text" placeholder="Expliquer la modification" [(ngModel)]="descriptionModif" required>
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-danger" (click)="sauverModifications()" data-dismiss="modal">Confirmer</button>
+          <button class="btn btn-danger" data-dismiss="modal" (click)="sauverModifications()">Confirmer</button>
           <button class="btn btn-default" data-dismiss="modal">Annuler</button>
         </div>
       </div>

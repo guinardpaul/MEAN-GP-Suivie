@@ -6,7 +6,7 @@ mongoose.Promise = global.Promise;
 // Validators Function
 let validNomChecker = nom => {
   if (!nom) {
-    return false;
+    return true;
   } else {
     const regExp = new RegExp(/[a-zA-z-_éè]+$/);
     return regExp.test(nom);
@@ -15,7 +15,7 @@ let validNomChecker = nom => {
 
 let validPrenomChecker = prenom => {
   if (!prenom) {
-    return false;
+    return true;
   } else {
     const regExp = new RegExp(/[a-zA-z-_éè]+$/);
     return regExp.test(prenom);
@@ -58,7 +58,7 @@ const emailValidator = [
 const ArtisanSchema = new mongoose.Schema({
   civilite: {
     type: String,
-    enum: ['', 'Mr', 'Mme/Mlle']
+    enum: [null, 'Mr', 'Mme/Mlle']
   },
   nom_societe: {
     type: String,

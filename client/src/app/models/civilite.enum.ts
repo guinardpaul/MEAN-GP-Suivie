@@ -1,6 +1,6 @@
 /**
  * Enum Civilite for client
- * 
+ *
  * @export
  * @enum {number}
  */

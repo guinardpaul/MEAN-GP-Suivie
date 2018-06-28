@@ -1,6 +1,6 @@
 <!-- ADD ARTISAN FORM -->
 <div *ngIf="addMode" class="panel-group container">
-  <form class="form-horizontal" [formGroup]="artisanForm" (submit)="addArtisan()">
+  <form class="form-horizontal" [formGroup]="artisanForm">
     <div class="panel-info col-sm-4">
       <div class="panel-heading">Société
         <span style="font-weight: bold">(Requis)</span>
@@ -57,7 +57,7 @@
 
         <div class="form-group">
           <md-spinner *ngIf="processing" style="float: left;width: 24px;height: 24px;"></md-spinner>
-          <button [disabled]="!artisanForm.valid || processing" type="submit" class="btn btn-success">Sauver</button>
+          <button [disabled]="!artisanForm.valid || processing" (click)="addArtisan()" type="submit" class="btn btn-success">Sauver</button>
           <button [disabled]="processing" (click)="onResetForm()" class="btn btn-default">Reset formulaire</button>
         </div>
       </div>
@@ -133,7 +133,7 @@
 
 <!-- UPDATE ARTISAN FORM -->
 <div *ngIf="!addMode" class="panel-group container">
-  <form class="form-horizontal" [formGroup]="artisanForm" (submit)="updateArtisan()">
+  <form class="form-horizontal" [formGroup]="artisanForm">
     <div class="panel-info col-sm-4">
       <div class="panel-heading">Société
         <span style="font-weight: bold">(Requis)</span>
@@ -190,7 +190,7 @@
 
         <div class="form-group">
           <md-spinner *ngIf="processing" style="float: left;width: 24px;height: 24px;"></md-spinner>
-          <button [disabled]="!artisanForm.valid || processing" type="submit" class="btn btn-warning">Modifier</button>
+          <button [disabled]="!artisanForm.valid || processing" (click)="updateArtisan()" type="submit" class="btn btn-warning">Modifier</button>
           <button [disabled]="processing" (click)="onResetForm()" class="btn btn-default">Reset formulaire</button>
         </div>
       </div>
