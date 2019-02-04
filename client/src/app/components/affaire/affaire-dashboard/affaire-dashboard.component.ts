@@ -112,6 +112,7 @@ export class AffaireDashboardComponent implements OnInit {
     this.artisanData = new Array<AffaireDashboardData>();
     for (let i = 0; i < artisansList.length; i++) {
       const artisan = artisansList[i];
+      // On initialise les valeurs
       let montantTotalTTC = 0;
       let montantFactureTTC = 0;
       let montantRegle = 0;
@@ -125,12 +126,12 @@ export class AffaireDashboardComponent implements OnInit {
               montantFactureTTC += factures.montantTtcFacture;
               montantRegle += factures.montantTtcRegle;
             });
-
+            // On verifie le status
             let status_artisan = false;
             if (montantFactureTTC === montantRegle) {
               status_artisan = true;
             }
-
+            // On construit la donnee
             const artisanData = new AffaireDashboardData({
               artisan_id: artisan._id,
               status: status_artisan,
@@ -139,7 +140,7 @@ export class AffaireDashboardComponent implements OnInit {
               montantFactureTTC: montantFactureTTC,
               montantRegle: montantRegle
             });
-
+            // On ajoute a la liste
             this.artisanData.push(artisanData);
           },
           err => console.log(err)
@@ -167,10 +168,7 @@ export class AffaireDashboardComponent implements OnInit {
         data => {
           this.artisansList = data;
           setTimeout(() => {
-            this.getAllFactureGlobalByArtisanID(
-              this.id_client,
-              this.artisansList
-            );
+            this.getAllFactureGlobalByArtisanID(this.id_client, data);
           }, 1500);
         },
         err => console.log(err)
